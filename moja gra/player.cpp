@@ -9,10 +9,13 @@ Player::~Player()
 { }
 
 //metody odpowiedzialne za poruszanie gracza i atakowanie
-void Player::moveHitbox(const Uint8* keys, float speed, float deltaTime)
+void Player::moveHitbox(const Uint8* keys, float speed, float deltaTime, SDL_Renderer* ren)
 {
 	float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
 	float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
+
+	//zmienna okreslajaca kierunek ruchu gracza
+	string direction = to_string((int)dx) + to_string((int)dy);
 
 	float magnitude = sqrt(dx * dx + dy * dy);
 	if (magnitude > 0)
@@ -26,6 +29,194 @@ void Player::moveHitbox(const Uint8* keys, float speed, float deltaTime)
 
 	playerHitbox.x += velocity.x;
 	playerHitbox.y += velocity.y;
+
+	//zmiana textury w zaleznosci od kierunku
+
+	cout << direction;
+
+	if (direction == "-1-1" || lastLink != "assets/ruch w lewo gora.png")
+	{ 
+		if (texture) 
+		{ 
+			SDL_DestroyTexture(texture);
+			texture = NULL; 
+		}
+
+		surface = IMG_Load("assets/ruch w lewo gora.png"); 
+
+		if (!surface) 
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		} 
+		else 
+		{ 
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w lewo gora.png";
+		} 
+	}
+	else if (direction == "-10" || lastLink != "assets/ruch w gore.png")
+	{
+		if (texture)
+		{
+			SDL_DestroyTexture(texture);
+			texture = NULL; 
+		} 
+		
+		surface = IMG_Load("assets/ruch w gore.png"); 
+		
+		if (!surface) 
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError()); 
+		} 
+		else 
+		{
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w gore.png"; 
+		} 
+	}
+	else if (direction == "-11" || lastLink != "assets/ruch w prawo gora.png")
+	{
+		if (texture) 
+		{ 
+			SDL_DestroyTexture(texture);
+			texture = NULL;
+		} 
+		
+		surface = IMG_Load("assets/ruch w prawo gora.png"); 
+		
+		if (!surface)
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		} 
+		else 
+		{ 
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w prawo gora.png"; 
+		}
+	}
+	else if (direction == "0-1" || lastLink != "assets/ruch w lewo.png")
+	{ 
+		if (texture) 
+		{
+			SDL_DestroyTexture(texture);
+			texture = NULL; 
+		}
+		
+		surface = IMG_Load("assets/ruch w lewo.png");
+		
+		if (!surface) 
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		}
+		else
+		{ 
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w lewo.png";
+		} 
+	}
+	else if (direction == "00" || lastLink != "assets/ruch w brak.png")
+	{ 
+		if (texture)
+		{
+			SDL_DestroyTexture(texture);
+			texture = NULL;
+		} 
+		
+		surface = IMG_Load("assets/ruch w brak.png");
+		
+		if (!surface) 
+		{
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		} 
+		else
+		{
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w brak.png";
+		} 
+	}
+	else if (direction == "01" || lastLink != "assets/ruch w prawo.png")
+	{ 
+		if (texture) 
+		{ 
+			SDL_DestroyTexture(texture);
+			texture = NULL;
+		} 
+		
+		surface = IMG_Load("assets/ruch w prawo.png"); 
+		
+		if (!surface)
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		}
+		else 
+		{ 
+			cout << "Image loaded successfully.\n";
+			lastLink = "assets/ruch w prawo.png"; 
+		} 
+	}
+	else if (direction == "1-1" || lastLink != "assets/ruch w lewo dol.png")
+	{
+		if (texture) 
+		{ 
+			SDL_DestroyTexture(texture);
+			texture = NULL; 
+		}
+		
+		surface = IMG_Load("assets/ruch w lewo dol.png");
+		
+		if (!surface)
+		{ 
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		}
+		else
+		{ 
+			cout << "Image loaded successfully.\n";
+			lastLink = "assets/ruch w lewo dol.png";
+		} 
+	}
+	else if (direction == "10" || lastLink != "assets/ruch w dol.png")
+	{ 
+		if (texture) 
+		{ 
+			SDL_DestroyTexture(texture);
+			texture = NULL; 
+		} 
+		
+		surface = IMG_Load("assets/ruch w dol.png");
+
+		if (!surface) 
+		{
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		} 
+		else 
+		{ 
+			cout << "Image loaded successfully.\n"; 
+			lastLink = "assets/ruch w dol.png";
+		}
+	}
+	else if (direction == "11" || lastLink != "assets/ruch w prawo dol.png")
+	{
+		if (texture) 
+		{
+			SDL_DestroyTexture(texture);
+			texture = NULL;
+		}
+		
+		surface = IMG_Load("assets/ruch w prawo dol.png");
+		
+		if (!surface)
+		{
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		}
+		else 
+		{ 
+			cout << "Image loaded successfully.\n";
+			lastLink = "assets/ruch w prawo dol.png"; 
+		}
+	}
+
+	texture = SDL_CreateTextureFromSurface(ren, surface);
+
 }
 
 void Player::attack(Uint32 mouseButtons)
@@ -50,9 +241,31 @@ void Player::attack(Uint32 mouseButtons)
 	}
 }
 
+void Player::render(SDL_Renderer* ren) {
+	if (!texture) {
+		SDL_SetError("Error creating texture: %s\n", SDL_GetError());
+	}
+
+	SDL_FreeSurface(surface);
+	surface = NULL;
+
+	if (!texture) {
+		std::cout << "Texture is NULL, cannot render!" << std::endl;
+		return;
+	}
+
+	SDL_Rect srcRect = { 0, 0, 64, 64 };  // Rozmiar oryginalnej tekstury
+	SDL_Rect destRect = { (int)playerHitbox.x, (int)playerHitbox.y, 64, 64 };  // Pozycja na ekranie
+
+	if (SDL_RenderCopy(ren, texture, &srcRect, &destRect) != 0) {
+		printf("Error during rendering texture: %s\n", SDL_GetError());
+	}
+}
+
 //metoda z innymi metodami
-void Player::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons)
+void Player::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons, SDL_Renderer* ren)
 {
-	this->moveHitbox(keys, speed, deltaTime);
+	this->moveHitbox(keys, speed, deltaTime, ren);
 	this->attack(mouseButtons);
+	this->render(ren);
 }

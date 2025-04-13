@@ -105,13 +105,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Xrejg\Desktop\moja gra\SDL2-2.30.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\moja gra\SDL2_image\SDL2_image-2.8.8\include;$(SolutionDir)..\moja gra\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Xrejg\Desktop\moja gra\SDL2-2.30.10\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\moja gra\SDL2_image\SDL2_image-2.8.8\lib\x64;$(SolutionDir)..\moja gra\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -138,6 +138,17 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="player.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\ruch w brak.png" />
+    <Image Include="assets\ruch w dol.png" />
+    <Image Include="assets\ruch w gore.png" />
+    <Image Include="assets\ruch w lewo dol.png" />
+    <Image Include="assets\ruch w lewo gora.png" />
+    <Image Include="assets\ruch w lewo.png" />
+    <Image Include="assets\ruch w prawo dol.png" />
+    <Image Include="assets\ruch w prawo gora.png" />
+    <Image Include="assets\ruch w prawo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

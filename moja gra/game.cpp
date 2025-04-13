@@ -25,8 +25,14 @@ void Game::init(const char* title, int xpos, int ypos, int witdh, int height, bo
 	}
 	else
 	{
-		std::cout << "Initializing..." << endl;
+		cout << "Initializing..." << endl;
 	}
+
+	if (!IMG_Init(IMG_INIT_PNG))
+	{
+		SDL_SetError("SDL_image initialization failed: %s\n", IMG_GetError());
+	}
+
 
 	window = SDL_CreateWindow(title, xpos, ypos, witdh, height, fullscreen);
 	if (!window)
@@ -38,7 +44,7 @@ void Game::init(const char* title, int xpos, int ypos, int witdh, int height, bo
 		cout << "Window creatred" << endl;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, 0);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
 	{
 		SDL_SetError("Renderer isn't initialized properly : %s", SDL_GetError());
@@ -95,16 +101,19 @@ void Game::handleEvents()
 //renderowanie wszytkiego
 void Game::renderering()
 {
+	//okreslanie tla
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	//okreslanie hitboxa gracza
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
 
 	if (!SDL_RenderFillRectF(renderer, &player.getHitbox()))
 	{
 		SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
 	}
 	
+	//rysowanie hitboxa ataku
 	if (player.getWasAtacking() && !player.getcanAttack())
 	{
 
@@ -119,7 +128,7 @@ void Game::renderering()
 		player.setcanAttack(true);
 	}
 
-
+	//rysowanie aktualnej przeszkody
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	if (!SDL_RenderFillRectF(renderer, &wall))
@@ -133,7 +142,7 @@ void Game::renderering()
 //metoda zawieracjaca inne metody
 void Game::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons)
 {
-	player.update(keys, speed, deltaTime, mouseButtons);
+	player.update(keys, speed, deltaTime, mouseButtons, renderer);
 	this->Game::renderering();
 	this->Game::handleEvents();
 }

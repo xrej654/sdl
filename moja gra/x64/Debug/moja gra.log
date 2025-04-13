@@ -1,7 +1,2 @@
 ﻿  game.cpp
-  main.cpp
-  player.cpp
-C:\Users\Xrejg\Desktop\moja gra\moja gra\player.cpp(14,11): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\player.cpp(15,11): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-  Generowanie kodu...
   moja gra.vcxproj -> C:\Users\Xrejg\Desktop\moja gra\x64\Debug\moja gra.exe
