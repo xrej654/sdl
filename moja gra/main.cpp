@@ -25,11 +25,11 @@ int main(int argc, char* argv[])
 	//glowna petla gry
 	while (game.running())
 	{
-		game.update(keys, speed, deltaTime, mouseButtons);
-
 		//ciagle okreslanie pozycji myszki
 		int mouseX, mouseY;
 		mouseButtons = SDL_GetMouseState(&mouseX, &mouseY);
+
+		game.update(keys, speed, deltaTime, mouseButtons, mouseX, mouseY);
 
 		//obliczanie deltaTime
 		Uint32 currentTicks = SDL_GetTicks();

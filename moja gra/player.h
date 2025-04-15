@@ -4,7 +4,6 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include <iostream>
-#include <unordered_map>
 #include <string>
 #include "Game.h"
 
@@ -14,7 +13,7 @@ class Player {
 private:
 	SDL_FRect playerHitbox = { 200.0f, 200.0f, 50.0f, 50.0f };
 	SDL_FRect hitboxAtack = { playerHitbox.x - 10, playerHitbox.y + playerHitbox.h, playerHitbox.w + 20, playerHitbox.h - 10 };
-	SDL_Surface* surface = IMG_Load("assets/ruch w brak.png");
+	SDL_Surface* surface = NULL;
 	SDL_Texture* texture = NULL;
 
 	struct Velocity {
@@ -22,7 +21,7 @@ private:
 		float y = 0;
 	} velocity;
 
-	string lastLink = "";
+	const char* lastLink;
 
 	bool wasAtacking = false;
 	bool canAttack = false;
@@ -47,9 +46,11 @@ public:
 	bool getWasAtacking() { return wasAtacking; }
 	bool getcanAttack() { return canAttack; }
 
-	void setcanAttack(bool ValueOfBool) { canAttack = ValueOfBool; }
+	void setcanAttack(bool valueOfBool) { canAttack = valueOfBool; }
 	void setPositionAfterCollision(float x, float y) { playerHitbox.x += x; playerHitbox.y += y; }
 	void setHitboxAtackPosition(float x, float y) { hitboxAtack.x = x - 10; hitboxAtack.y = y + playerHitbox.h; }
+	
+	void setSurfaceNull() { surface = NULL; }
 };
 
 #endif // !PLAYER_H

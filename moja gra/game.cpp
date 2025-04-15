@@ -95,35 +95,54 @@ void Game::handleEvents()
 		lastHitTime = currentTime; 
 	}
 
-
 }
 
 //renderowanie wszytkiego
-void Game::renderering()
+void Game::renderering(float mouseX, float mouseY)
 {
+	SDL_Rect srcRect; //zmienna okreslajaca co sie rysuje ze zdjecia
+	SDL_Rect destRect = { (int)player.getHitbox().x, (int)player.getHitbox().y, (int)player.getHitbox().w, (int)player.getHitbox().h };  // Pozycja na ekranie
+
 	//okreslanie tla
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	//okreslanie hitboxa gracza
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
+	float dx = (player.getHitbox().x + (player.getHitbox().w / 2)) - mouseX;
+	float dy = (player.getHitbox().y + (player.getHitbox().h / 2)) - mouseY;
 
-	if (!SDL_RenderFillRectF(renderer, &player.getHitbox()))
-	{
-		SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
-	}
+	float angle = atan2(dy, dx);
+
+	//dodac save, restor, transfore(na srodek gracza) i dodac sin i cos do pozycji gracza
 	
 	//rysowanie hitboxa ataku
 	if (player.getWasAtacking() && !player.getcanAttack())
 	{
+		srcRect = { 0,0,70,40 };
+		destRect = { (int)player.getHitboxAtack().x, (int)player.getHitboxAtack().y, (int)player.getHitboxAtack().w, (int)player.getHitboxAtack().h };
 
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-		player.setHitboxAtackPosition(player.getHitbox().x, player.getHitbox().y);
+		SDL_Surface* atak = IMG_Load("assets/atak.png");
+		SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, atak);
+		int centerOfPlayerX = (player.getHitbox().x + (player.getHitbox().w / 2));
+		int centerOfPlayerY = (player.getHitbox().y + (player.getHitbox().h / 2));
 
-		if (!SDL_RenderFillRectF(renderer, &player.getHitboxAtack()))
-		{
-			SDL_SetError("Nie mozna zaladowac hitboxa ataku: %s", SDL_GetError());
+		// Tworzymy strukturê SDL_Point
+		SDL_Point center = { centerOfPlayerX - destRect.x, centerOfPlayerY - destRect.y };
+
+		SDL_Point* centerPtr = &center;
+
+		if (SDL_RenderCopyEx(renderer, text, &srcRect, &destRect, (angle * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
+			printf("Error during rendering texture: %s\n", SDL_GetError());
 		}
+
+		SDL_FreeSurface(atak);
+		atak = NULL;
+
+		float tempX = player.getHitboxAtack().x - centerOfPlayerX;
+		float tempY = player.getHitboxAtack().y - centerOfPlayerY;
+
+		float newX = centerOfPlayerX + (sqrt(tempX * tempX + tempY * tempY)) * cos(angle);
+
+		player.setHitboxAtackPosition(player.getHitbox().x, player.getHitbox().y);
 
 		player.setcanAttack(true);
 	}
@@ -131,18 +150,34 @@ void Game::renderering()
 	//rysowanie aktualnej przeszkody
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
+	//rysowanie textury gracza
 	if (!SDL_RenderFillRectF(renderer, &wall))
 	{
 		SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
+	}
+
+	SDL_FreeSurface(player.getSurface());
+	player.setSurfaceNull();
+
+	if (!player.getTexture()) {
+		std::cout << "Texture is NULL, cannot render!" << std::endl;
+		return;
+	}
+
+	srcRect = { 0, 0, 64, 64 };  // Rozmiar oryginalnej tekstury
+	destRect = { (int)player.getHitbox().x, (int)player.getHitbox().y, (int)player.getHitbox().w, (int)player.getHitbox().h };  // Pozycja na ekranie
+
+	if (SDL_RenderCopy(renderer, player.getTexture(), &srcRect, &destRect) != 0) {
+		printf("Error during rendering texture: %s\n", SDL_GetError());
 	}
 
 	SDL_RenderPresent(renderer);
 }
 
 //metoda zawieracjaca inne metody
-void Game::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons)
+void Game::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY)
 {
 	player.update(keys, speed, deltaTime, mouseButtons, renderer);
-	this->Game::renderering();
+	this->Game::renderering(mouseX, mouseY);
 	this->Game::handleEvents();
 }
