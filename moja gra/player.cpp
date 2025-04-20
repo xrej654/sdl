@@ -212,7 +212,7 @@ void Player::moveHitbox(const Uint8* keys, float speed, float deltaTime, SDL_Ren
 			lastLink = "assets/ruch w prawo dol.png"; 
 		}
 	}
-	//ten else ciqgle sie wykonuje poniewaz potem bedzie ciagle null
+	//ten else ciagle sie wykonuje poniewaz potem bedzie ciagle null
 	else {
 		if (texture)
 		{

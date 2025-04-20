@@ -24,6 +24,9 @@
     <ClCompile Include="player.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="AlgorithSAT.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -32,5 +35,40 @@
     <ClInclude Include="player.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="AlgorithSAT.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\ruch w brak.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w dol.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w gore.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w lewo dol.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w lewo gora.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w lewo.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w prawo dol.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w prawo gora.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\ruch w prawo.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\atak.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

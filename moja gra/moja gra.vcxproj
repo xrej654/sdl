@@ -131,15 +131,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlgorithSAT.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlgorithSAT.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\atak.png" />
     <Image Include="assets\ruch w brak.png" />
     <Image Include="assets\ruch w dol.png" />
     <Image Include="assets\ruch w gore.png" />

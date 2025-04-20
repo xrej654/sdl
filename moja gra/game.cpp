@@ -79,20 +79,19 @@ void Game::handleEvents()
 		player.setPositionAfterCollision(-player.getVelocity().x, -player.getVelocity().y);
 	}
 
-	static Uint32 lastHitTime = 0; 
-	Uint32 cooldown = 500;    
+	static Uint32 lastHitTime = 0;
+	Uint32 cooldown = 500;
 	Uint32 currentTime = SDL_GetTicks();
 
-	if (player.getHitboxAtack().x + player.getHitboxAtack().w > wall.x &&
-		player.getHitboxAtack().x < wall.x + wall.w &&
-		player.getHitboxAtack().y + player.getHitboxAtack().h > wall.y &&
-		player.getHitboxAtack().y < wall.y + wall.h && //do tego momentu jest okreslanie samej kolizji
-		(currentTime - lastHitTime >= cooldown) && //tutaj czy jest roznica czasowa jeli nie ma przerwy miedzy obrazeniami 0,5s to sie nie wykona(bez tego jest parenascie razy na raz)
-		(player.getcanAttack() == player.getWasAtacking())) //sprawdzanie tych dwoch wartosci jesli sa one rowne atakuje jest to tylko przez jedna klatke kiedy atakujemy i gra nie zdarzy zmienic dugiej przed atakiem (kolejnosc bardzo wazna)
+	SDL_FPoint* attackCorners = player.getCorners(); // 4 rogi po obrocie
+
+	if (rotatedRectCollides(attackCorners, wall) &&
+		(currentTime - lastHitTime >= cooldown) &&
+		player.getcanAttack() == player.getWasAtacking())
 	{
 		currentTime = SDL_GetTicks();
-		cout << "Zadano obrazenia!" << endl;  
-		lastHitTime = currentTime; 
+		cout << "Zadano obrazenia!" << endl;
+		lastHitTime = currentTime;
 	}
 
 }
@@ -107,44 +106,72 @@ void Game::renderering(float mouseX, float mouseY)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
+	// zmienne pomagajace w atakowaniu
 	float dx = (player.getHitbox().x + (player.getHitbox().w / 2)) - mouseX;
 	float dy = (player.getHitbox().y + (player.getHitbox().h / 2)) - mouseY;
-
 	float angle = atan2(dy, dx);
 
-	//dodac save, restor, transfore(na srodek gracza) i dodac sin i cos do pozycji gracza
-	
-	//rysowanie hitboxa ataku
+	// statyczna zmienna do trzymania czasu rozpoczêcia rysowania
+	static Uint32 attackDrawStartTime = 0;
+
+	// jeœli gracz w³aœnie zaatakowa³ – zapisujemy czas rozpoczêcia rysowania
 	if (player.getWasAtacking() && !player.getcanAttack())
 	{
-		srcRect = { 0,0,70,40 };
+		attackDrawStartTime = SDL_GetTicks();
+	}
+
+	// sprawdzamy, czy nadal mamy rysowaæ animacjê (0.4s)
+	if (SDL_GetTicks() - attackDrawStartTime <= 400)
+	{
+		srcRect = { 0, 0, 70, 40 };
 		destRect = { (int)player.getHitboxAtack().x, (int)player.getHitboxAtack().y, (int)player.getHitboxAtack().w, (int)player.getHitboxAtack().h };
 
 		SDL_Surface* atak = IMG_Load("assets/atak.png");
-		SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, atak);
+		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, atak);
+
 		int centerOfPlayerX = (player.getHitbox().x + (player.getHitbox().w / 2));
 		int centerOfPlayerY = (player.getHitbox().y + (player.getHitbox().h / 2));
 
-		// Tworzymy strukturê SDL_Point
 		SDL_Point center = { centerOfPlayerX - destRect.x, centerOfPlayerY - destRect.y };
-
 		SDL_Point* centerPtr = &center;
 
-		if (SDL_RenderCopyEx(renderer, text, &srcRect, &destRect, (angle * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
+		if (SDL_RenderCopyEx(renderer, texture, &srcRect, &destRect, (angle * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
 			printf("Error during rendering texture: %s\n", SDL_GetError());
 		}
 
+		float rad = angle + M_PI / 2.0f;
+		auto rotate = [&](float x, float y) -> SDL_FPoint {
+			float dx = x - centerOfPlayerX;
+			float dy = y - centerOfPlayerY;
+			return {
+				centerOfPlayerX + dx * cos(rad) - dy * sin(rad),
+				centerOfPlayerY + dx * sin(rad) + dy * cos(rad)
+			};
+			};
+
+		player.setCorners(rotate(destRect.x, destRect.y),
+			rotate(destRect.x + destRect.w, destRect.y),
+			rotate(destRect.x + destRect.w, destRect.y + destRect.h),
+			rotate(destRect.x, destRect.y + destRect.h));
+
+		//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		//SDL_FPoint* attackCorners = player.getCorners();
+		//for (int i = 0; i < 4; i++) {
+		//	SDL_Rect pointRect = {
+		//		(int)(attackCorners[i].x - 2),
+		//		(int)(attackCorners[i].y - 2),
+		//		4, 4
+		//	};
+		//	SDL_RenderFillRect(renderer, &pointRect);
+		//}
+
 		SDL_FreeSurface(atak);
+		SDL_DestroyTexture(texture);
 		atak = NULL;
-
-		float tempX = player.getHitboxAtack().x - centerOfPlayerX;
-		float tempY = player.getHitboxAtack().y - centerOfPlayerY;
-
-		float newX = centerOfPlayerX + (sqrt(tempX * tempX + tempY * tempY)) * cos(angle);
+		texture = NULL;
 
 		player.setHitboxAtackPosition(player.getHitbox().x, player.getHitbox().y);
-
-		player.setcanAttack(true);
+		player.setcanAttack(true); // sygna³ ¿e animacja dzia³a – a nie ¿e gracz znowu zaatakowa³
 	}
 
 	//rysowanie aktualnej przeszkody

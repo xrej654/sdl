@@ -16,6 +16,8 @@ private:
 	SDL_Surface* surface = NULL;
 	SDL_Texture* texture = NULL;
 
+	SDL_FPoint corners[4];
+
 	struct Velocity {
 		float x = 0;
 		float y = 0;
@@ -40,6 +42,7 @@ public:
 	SDL_FRect& getHitboxAtack() { return hitboxAtack; }
 	SDL_Surface* getSurface() { return surface; }
 	SDL_Texture* getTexture() { return texture; }
+	SDL_FPoint* getCorners() { return corners; }
 
 	Velocity getVelocity() { return velocity; }
 
@@ -49,6 +52,7 @@ public:
 	void setcanAttack(bool valueOfBool) { canAttack = valueOfBool; }
 	void setPositionAfterCollision(float x, float y) { playerHitbox.x += x; playerHitbox.y += y; }
 	void setHitboxAtackPosition(float x, float y) { hitboxAtack.x = x - 10; hitboxAtack.y = y + playerHitbox.h; }
+	void setCorners(SDL_FPoint corner1, SDL_FPoint corner2, SDL_FPoint corner3, SDL_FPoint corner4) { corners[0] = corner1;corners[1] = corner2; corners[2] = corner3; corners[3] = corner4; }
 	
 	void setSurfaceNull() { surface = NULL; }
 };

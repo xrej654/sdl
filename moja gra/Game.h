@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include <iostream>
 #include <cmath>
+#include "AlgorithSAT.h"
 
 class Game {
 private:
