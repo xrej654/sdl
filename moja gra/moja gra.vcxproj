@@ -142,7 +142,14 @@
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\atak.png" />
+    <Image Include="assets\atackAnimation\1.png" />
+    <Image Include="assets\atackAnimation\2.png" />
+    <Image Include="assets\atackAnimation\3.png" />
+    <Image Include="assets\atackAnimation\4.png" />
+    <Image Include="assets\atackAnimation\5.png" />
+    <Image Include="assets\atackAnimation\6.png" />
+    <Image Include="assets\atackAnimation\7.png" />
+    <Image Include="assets\atackAnimation\8.png" />
     <Image Include="assets\ruch w brak.png" />
     <Image Include="assets\ruch w dol.png" />
     <Image Include="assets\ruch w gore.png" />

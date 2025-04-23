@@ -11,8 +11,8 @@ using namespace std;
 
 class Player {
 private:
-	SDL_FRect playerHitbox = { 200.0f, 200.0f, 50.0f, 50.0f };
-	SDL_FRect hitboxAtack = { playerHitbox.x - 10, playerHitbox.y + playerHitbox.h, playerHitbox.w + 20, playerHitbox.h - 10 };
+	SDL_FRect playerHitbox = { 200.0f, 200.0f, 32.0f, 32.0f };
+	SDL_FRect hitboxAtack = { playerHitbox.x - 22.f, playerHitbox.y + playerHitbox.h, playerHitbox.w + 22.f, playerHitbox.h - 12.f  + 10.f};
 	SDL_Surface* surface = NULL;
 	SDL_Texture* texture = NULL;
 

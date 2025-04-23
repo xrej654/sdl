@@ -126,7 +126,43 @@ void Game::renderering(float mouseX, float mouseY)
 		srcRect = { 0, 0, 70, 40 };
 		destRect = { (int)player.getHitboxAtack().x, (int)player.getHitboxAtack().y, (int)player.getHitboxAtack().w, (int)player.getHitboxAtack().h };
 
-		SDL_Surface* atak = IMG_Load("assets/atak.png");
+
+		const char* zdj = NULL;
+
+		if (attackDrawStartTime < 50)
+		{
+			zdj = "assets/atackAnimation/1.png";
+		}
+		else if (attackDrawStartTime > 50 && attackDrawStartTime < 100)
+		{
+			zdj = "assets/atackAnimation/2.png";
+		}
+		else if (attackDrawStartTime > 100 && attackDrawStartTime < 150)
+		{
+			zdj = "assets/atackAnimation/3.png";
+		}
+		else if (attackDrawStartTime > 150 && attackDrawStartTime < 200)
+		{
+			zdj = "assets/atackAnimation/4.png";
+		}
+		else if (attackDrawStartTime > 200 && attackDrawStartTime < 250)
+		{
+			zdj = "assets/atackAnimation/5.png";
+		}
+		else if (attackDrawStartTime > 250 && attackDrawStartTime < 300)
+		{
+			zdj = "assets/atackAnimation/6.png";
+		}
+		else if (attackDrawStartTime > 300 && attackDrawStartTime < 350)
+		{
+			zdj = "assets/atackAnimation/7.png";
+		}
+		else if (attackDrawStartTime > 350 && attackDrawStartTime < 400)
+		{
+			zdj = "assets/atackAnimation/8.png";
+		}
+
+		SDL_Surface* atak = IMG_Load(zdj);
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, atak);
 
 		int centerOfPlayerX = (player.getHitbox().x + (player.getHitbox().w / 2));
@@ -154,16 +190,16 @@ void Game::renderering(float mouseX, float mouseY)
 			rotate(destRect.x + destRect.w, destRect.y + destRect.h),
 			rotate(destRect.x, destRect.y + destRect.h));
 
-		//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		//SDL_FPoint* attackCorners = player.getCorners();
-		//for (int i = 0; i < 4; i++) {
-		//	SDL_Rect pointRect = {
-		//		(int)(attackCorners[i].x - 2),
-		//		(int)(attackCorners[i].y - 2),
-		//		4, 4
-		//	};
-		//	SDL_RenderFillRect(renderer, &pointRect);
-		//}
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_FPoint* attackCorners = player.getCorners();
+		for (int i = 0; i < 4; i++) {
+			SDL_Rect pointRect = {
+				(int)(attackCorners[i].x - 2),
+				(int)(attackCorners[i].y - 2),
+				4, 4
+			};
+			SDL_RenderFillRect(renderer, &pointRect);
+		}
 
 		SDL_FreeSurface(atak);
 		SDL_DestroyTexture(texture);
