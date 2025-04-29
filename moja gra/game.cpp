@@ -115,7 +115,7 @@ void Game::renderering(float mouseX, float mouseY)
 	static Uint32 attackDrawStartTime = 0;
 
 	// jeœli gracz w³aœnie zaatakowa³ – zapisujemy czas rozpoczêcia rysowania
-	if (player.getWasAtacking() && !player.getcanAttack() && !atackAmination)
+	if (player.getWasAtacking() && !player.getcanAttack())
 	{
 		attackDrawStartTime = SDL_GetTicks();
 	}
@@ -126,43 +126,20 @@ void Game::renderering(float mouseX, float mouseY)
 		srcRect = { 0, 0, 70, 40 };
 		destRect = { (int)player.getHitboxAtack().x, (int)player.getHitboxAtack().y, (int)player.getHitboxAtack().w, (int)player.getHitboxAtack().h };
 
-
-		const char* zdj = NULL;
-
 		SDL_Surface* atak = NULL;
 
-		if (attackDrawStartTime < 50)
-		{
-			atak = IMG_Load("assets/atackAnimation/1.png");
+		static int nrOfAnimation = 1;
+
+		if (attackDrawStartTime % 50 == 0) {
+			if (nrOfAnimation > 8)
+			{
+				nrOfAnimation = 1;
+			}
+			char filePath[50];
+			sprintf_s(filePath, "assets/atackAnimation/%d.png", nrOfAnimation++);
+			atak = IMG_Load(filePath);
 		}
-		else if (attackDrawStartTime > 50 && attackDrawStartTime < 100)
-		{
-			atak = IMG_Load("assets/atackAnimation/2.png");
-		}
-		else if (attackDrawStartTime > 100 && attackDrawStartTime < 150)
-		{
-			atak = IMG_Load("assets/atackAnimation/3.png");
-		}
-		else if (attackDrawStartTime > 150 && attackDrawStartTime < 200)
-		{
-			atak = IMG_Load("assets/atackAnimation/4.png");
-		}
-		else if (attackDrawStartTime > 200 && attackDrawStartTime < 250)
-		{
-			atak = IMG_Load("assets/atackAnimation/5.png");
-		}
-		else if (attackDrawStartTime > 250 && attackDrawStartTime < 300)
-		{
-			atak = IMG_Load("assets/atackAnimation/6.png");
-		}
-		else if (attackDrawStartTime > 300 && attackDrawStartTime < 350)
-		{
-			atak = IMG_Load("assets/atackAnimation/7.png");
-		}
-		else if (attackDrawStartTime > 350 && attackDrawStartTime < 400)
-		{
-			atak = IMG_Load("assets/atackAnimation/8.png");
-		}
+
 
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, atak);
 
