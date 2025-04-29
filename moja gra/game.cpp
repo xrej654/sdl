@@ -117,29 +117,12 @@ void Game::renderering(float mouseX, float mouseY)
 	// jeœli gracz w³aœnie zaatakowa³ – zapisujemy czas rozpoczêcia rysowania
 	if (player.getWasAtacking() && !player.getcanAttack())
 	{
-		attackDrawStartTime = SDL_GetTicks();
-	}
-
-	// sprawdzamy, czy nadal mamy rysowaæ animacjê (0.4s)
-	if (SDL_GetTicks() - attackDrawStartTime <= 400)
-	{
 		srcRect = { 0, 0, 70, 40 };
 		destRect = { (int)player.getHitboxAtack().x, (int)player.getHitboxAtack().y, (int)player.getHitboxAtack().w, (int)player.getHitboxAtack().h };
 
 		SDL_Surface* atak = NULL;
 
-		static int nrOfAnimation = 1;
-
-		if (attackDrawStartTime % 50 == 0) {
-			if (nrOfAnimation > 8)
-			{
-				nrOfAnimation = 1;
-			}
-			char filePath[50];
-			sprintf_s(filePath, "assets/atackAnimation/%d.png", nrOfAnimation++);
-			atak = IMG_Load(filePath);
-		}
-
+		atak = IMG_Load("assets/atackAnimation/5.png");
 
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, atak);
 
