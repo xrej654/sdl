@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	Game game;
 
 	//inicjalizacja
-	game.init("gra", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, 1);
+	game.init("gra", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, 0);
 
 	//zmienne potrzebne to klawiszy klawiatury i obsluga myszki
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
