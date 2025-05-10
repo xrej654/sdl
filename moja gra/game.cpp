@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "Player.h"
+#include "ECS.h"
+#include "Components.h"
 #include <cmath>
 
 using namespace std;
@@ -70,6 +72,7 @@ void Game::handleEvents()
 		}
 	}
 
+	//
 	if (player.getHitbox().x + player.getHitbox().w > wall.x &&
 		player.getHitbox().x < wall.x + wall.w &&
 		player.getHitbox().y + player.getHitbox().h > wall.y &&
@@ -93,7 +96,7 @@ void Game::handleEvents()
 		cout << "Zadano obrazenia!" << endl;
 		lastHitTime = currentTime;
 	}
-
+	//
 }
 
 //renderowanie wszytkiego
@@ -184,7 +187,7 @@ void Game::renderering(float mouseX, float mouseY)
 	player.setSurfaceNull();
 
 	if (!player.getTexture()) {
-		std::cout << "Texture is NULL, cannot render!" << std::endl;
+		cout << "Texture is NULL, cannot render!" << endl;
 		return;
 	}
 
