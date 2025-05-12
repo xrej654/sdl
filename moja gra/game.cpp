@@ -72,7 +72,7 @@ void Game::handleEvents()
 		}
 	}
 
-	//
+	
 	if (player.getHitbox().x + player.getHitbox().w > wall.x &&
 		player.getHitbox().x < wall.x + wall.w &&
 		player.getHitbox().y + player.getHitbox().h > wall.y &&
@@ -96,7 +96,7 @@ void Game::handleEvents()
 		cout << "Zadano obrazenia!" << endl;
 		lastHitTime = currentTime;
 	}
-	//
+	
 }
 
 //renderowanie wszytkiego

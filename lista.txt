@@ -1,0 +1,7 @@
+1. zastanowić się czy dodac mape do textur przez animacje czy się będzie dalo (pisać z botem chat gpt!)
+2. zrobić pare wersji zdj dla "ruch w brak.png" (czy jakos tak) i zrobić animacje która bot dal i poczytać o tym!!!
+3. zrobić w renderSystem funkcje do rysowania hitboxa
+4. przepatrzec plik 'player.h' z celu sprawdzenoia czy wszystko jest
+5. przerobić kolizje na system
+6. dodac player'a i wall jako obiekty ECS
+7. testować czy ECS działa!!!
