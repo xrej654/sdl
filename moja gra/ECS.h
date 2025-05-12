@@ -137,4 +137,5 @@ class Systems {
 public:
 	static void movmentSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren);
 	static void renderingSystem(Manager& manager, SDL_Renderer* ren);
+	static void atackSystem(Manager& manager, Uint32 mouseButtons)
 };

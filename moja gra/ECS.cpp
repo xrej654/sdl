@@ -2,7 +2,7 @@
 #include "Components.h"
 #include <string>
 
-void Systems::movmentSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren)
+void Systems::movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -21,7 +21,7 @@ void Systems::movmentSystem(Manager& manager, float deltaTime, float speed, cons
 			string direction = to_string((int)dx) + to_string((int)dy);
 
 			e->getComponent<VelocityComponent>().setVels(dx * speed * deltaTime, dy * speed * deltaTime);
-			e->getComponent<HitboxComponent>().setPos(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+			e->getComponent<HitboxComponent>().updatePos(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 
 			if (direction == "-1-1")
 			{
@@ -64,11 +64,13 @@ void Systems::movmentSystem(Manager& manager, float deltaTime, float speed, cons
 
 			if (!e->getComponent<SpriteComponent>().getTexture())
 			{
-				std::cerr << "Failed to create texture!" << std::endl;
+				cerr << "Failed to create texture!" << endl;
 			}
 
-			SDL_FreeSurface(e->getComponent<SpriteComponent>().getSurface());
-			e->getComponent<SpriteComponent>().setSurface(NULL);
+			if (e->getComponent<SpriteComponent>().getSurface()) {
+				SDL_FreeSurface(e->getComponent<SpriteComponent>().getSurface());
+				e->getComponent<SpriteComponent>().setSurface(NULL);
+			}
 		}
 	}
 }
@@ -90,5 +92,27 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			printf("Error during rendering texture: %s\n", SDL_GetError());
 		}
 
+	}
+}
+
+void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
+{
+	for (auto& e : manager.getVectorOfEntities())
+	{
+		//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
+		Uint32 cooldown = 500;
+
+		if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // Przyciœniêcie przycisku
+		{
+			// Oznaczenie, ¿e gracz zaatakowa³
+			e->getComponent<AtackComponent>().setAttackState(true);
+			cout << "ATAK" << endl;
+			e->getComponent<AtackComponent>().getLastHitTime() = SDL_GetTicks();
+		}
+		else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))) // Kiedy przycisk jest zwolniony
+		{
+			//Zwolnienie przycisku mozna zaatakowac
+			e->getComponent<AtackComponent>().setAttackState(false);
+		}
 	}
 }

@@ -66,6 +66,11 @@ public:
 		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 
+	void drawHitbox()
+	{
+
+	}
+
 	SDL_Surface* getSurface() { return surface; }
 	SDL_Texture* getTexture() { return texture; }
 	int getWidth() { return witdhOfPicture; }
@@ -98,9 +103,34 @@ public:
 		hitbox.h = h;
 	}
 
-	void setPos(float x, float y)
+	void updatePos(float x, float y)
 	{
 		hitbox.x += x;
 		hitbox.y += y;
+	}
+};
+
+class AtackComponent : public Component
+{
+private:
+	static Uint32 lastHitTime;
+	bool wasAttacking, canAttack;
+public:
+
+	bool getWasAttacking() { return wasAttacking; }
+	bool getCanAttacking() { return canAttack; }
+	Uint32 getLastHitTime() { return lastHitTime; }
+
+	void init() override
+	{
+		wasAttacking = false;
+		canAttack = true;
+		lastHitTime = 0;
+	}
+
+	void setAttackState(bool attacking)
+	{
+		wasAttacking = attacking;
+		canAttack = !attacking;
 	}
 };
