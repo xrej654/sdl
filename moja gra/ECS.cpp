@@ -79,8 +79,8 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		SDL_Rect srcRect = { 0, 0, e->getComponent<SpriteComponent>().getWidth(), e->getComponent<SpriteComponent>().getHeight()};  // Rozmiar oryginalnej tekstury
-		SDL_Rect destRect = { (int)e->getComponent<HitboxComponent>().getX(), (int)e->getComponent<HitboxComponent>().getY(), (int)e->getComponent<HitboxComponent>().getWidth(), (int)e->getComponent<HitboxComponent>().getHeight() };  // Pozycja na ekranie
+		
+		e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
 		if (!e->getComponent<SpriteComponent>().getTexture())
 		{
@@ -88,14 +88,13 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			return;
 		}
 
-		if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), &srcRect, &destRect) != 0) {
+		if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRect(), e->getComponent<SpriteComponent>().getDestRect()) != 0) {
 			printf("Error during rendering texture: %s\n", SDL_GetError());
 		}
-
 	}
 }
 
-void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
+void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -107,7 +106,17 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
 			// Oznaczenie, ¿e gracz zaatakowa³
 			e->getComponent<AtackComponent>().setAttackState(true);
 			cout << "ATAK" << endl;
-			e->getComponent<AtackComponent>().getLastHitTime() = SDL_GetTicks();
+			e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
+			int centerOfPlayerX = (e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2));
+			int centerOfPlayerY = (e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2));
+
+			SDL_Point center = { centerOfPlayerX - e->getComponent<SpriteComponent>().getDestRectValues().x, centerOfPlayerY - e->getComponent<SpriteComponent>().getDestRectValues().y };
+			SDL_Point* centerPtr = &center;
+
+			if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRect(), e->getComponent<SpriteComponent>().getDestRect(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
+				printf("Error during rendering texture: %s\n", SDL_GetError());
+			}
+
 		}
 		else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))) // Kiedy przycisk jest zwolniony
 		{

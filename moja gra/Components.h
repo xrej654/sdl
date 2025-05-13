@@ -31,6 +31,8 @@ private:
 	int witdhOfPicture, heightOfPicture;
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = NULL;
+	SDL_Rect srcRect;
+	SDL_Rect destRect;
 public:
 
 	void init() override
@@ -47,6 +49,12 @@ public:
 		{
 			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
 		}
+	}
+
+	void setRects(SDL_FRect rect)
+	{
+		srcRect = { 0, 0, witdhOfPicture, heightOfPicture };  // Rozmiar oryginalnej tekstury
+		destRect = { (int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h };
 	}
 
 	void setWidthAndHeight(int w, int h)
@@ -66,15 +74,24 @@ public:
 		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 
-	void drawHitbox()
+	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
 	{
+		SDL_SetRenderDrawColor(ren, r, b, g, a);
 
+		if (!SDL_RenderFillRectF(ren, &obj))
+		{
+			SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
+		}
 	}
 
 	SDL_Surface* getSurface() { return surface; }
 	SDL_Texture* getTexture() { return texture; }
 	int getWidth() { return witdhOfPicture; }
 	int getHeight() { return heightOfPicture; }
+	SDL_Rect* getSrcRect() { return &srcRect; }
+	SDL_Rect* getDestRect() { return &destRect; }
+	SDL_Rect getSrcRectValues() { return srcRect; }
+	SDL_Rect getDestRectValues() { return destRect; }
 };
 
 class HitboxComponent : public Component
@@ -86,6 +103,7 @@ public:
 	float getHeight() { return hitbox.h; }
 	float getX() { return hitbox.x; }
 	float getY() { return hitbox.y; }
+	SDL_FRect getHitbox() { return hitbox; }
 
 	void init() override
 	{
@@ -112,25 +130,42 @@ public:
 
 class AtackComponent : public Component
 {
-private:
+protected:
 	static Uint32 lastHitTime;
 	bool wasAttacking, canAttack;
+	float dx, dy, angle;
 public:
 
 	bool getWasAttacking() { return wasAttacking; }
 	bool getCanAttacking() { return canAttack; }
 	Uint32 getLastHitTime() { return lastHitTime; }
+	float getAngle() { return angle; }
 
 	void init() override
 	{
 		wasAttacking = false;
 		canAttack = true;
 		lastHitTime = 0;
+		dx = 0;
+		dy = 0;
+		angle = 0;
 	}
 
 	void setAttackState(bool attacking)
 	{
 		wasAttacking = attacking;
 		canAttack = !attacking;
+	}
+
+	void setLastHitTime(Uint32 ticks)
+	{
+		lastHitTime = ticks;
+	}
+
+	void setDxAndDy(SDL_FRect obj, float mouseX, float mouseY)
+	{
+		float dx = (obj.x + (obj.w / 2)) - mouseX;
+		float dy = (obj.y + (obj.h / 2)) - mouseY;
+		angle = atan2(dy, dx);
 	}
 };

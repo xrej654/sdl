@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithSAT.cpp" />
+    <ClCompile Include="Components.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
