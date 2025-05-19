@@ -7,6 +7,7 @@
 #include <bitset>
 #include <array>
 #include "SDL.h"
+#include "AlgorithSAT.h"
 
 using namespace std;
 
@@ -75,7 +76,7 @@ public:
 	{
 		if (hasComponent<T>()) 
 		{
-			throw std::runtime_error("Component already exists");
+			throw  runtime_error("Component already exists");
 		}
 
 		T* c(new T(forward<TArgs>(mArgs)...));
@@ -94,7 +95,7 @@ public:
 	{
 		if (!hasComponent<T>()) 
 		{
-			throw std::runtime_error("Component does not exist");
+			throw  runtime_error("Component does not exist");
 		}
 
 		auto ptr(componentArray[getComponentTypeID<T>()]);
@@ -138,4 +139,5 @@ public:
 	static void movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren);
 	static void renderingSystem(Manager& manager, SDL_Renderer* ren);
 	static void atackSystem(Manager& manager, Uint32 mouseButtons);
+	static void collisionSystem(Manager& manager);
 };

@@ -131,7 +131,7 @@ void Game::renderering(float mouseX, float mouseY)
 		SDL_Point* centerPtr = &center;
 
 		if (SDL_RenderCopyEx(renderer, texture, &srcRect, &destRect, (angle * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
-			printf("Error during rendering texture: %s\n", SDL_GetError());
+			cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 		}
 
 		float rad = angle + M_PI / 2.0f;
@@ -190,7 +190,7 @@ void Game::renderering(float mouseX, float mouseY)
 	destRect = { (int)player.getHitbox().x, (int)player.getHitbox().y, (int)player.getHitbox().w, (int)player.getHitbox().h };  // Pozycja na ekranie
 
 	if (SDL_RenderCopy(renderer, player.getTexture(), &srcRect, &destRect) != 0) {
-		printf("Error during rendering texture: %s\n", SDL_GetError());
+		cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 	}
 
 	SDL_RenderPresent(renderer);

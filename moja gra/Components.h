@@ -5,6 +5,8 @@
 #include "SDL.h"
 #include <iostream>
 
+using namespace std;
+
 class VelocityComponent : public Component
 {
 private:
@@ -40,6 +42,8 @@ public:
 	{
 		witdhOfPicture = 0;
 		heightOfPicture = 0;
+		srcRect = { NULL, NULL, NULL, NULL };
+		destRect = { NULL, NULL, NULL, NULL };
 	}
 
 	void setSurface(const char* link)
@@ -66,9 +70,22 @@ public:
 
 	void createTexture(SDL_Renderer* ren)
 	{
+		if (!surface) {
+			 cout << "Surface is NULL, cannot create texture!" <<  endl;
+			return;
+		}
+
 		if (texture)
 		{
-			SDL_DestroyTexture(texture);
+			Uint32 format;
+			int access, w, h;
+			SDL_QueryTexture(texture, &format, &access, &w, &h);
+
+			if (w == surface->w && h == surface->h) {
+				return; // Nie tworzymy nowej tekstury, jeœli rozmiar siê nie zmieni³
+			}
+
+			SDL_DestroyTexture(texture); // Jeœli rozmiar siê zmieni³, usuwamy star¹ teksturê
 			texture = NULL;
 		}
 
@@ -89,10 +106,10 @@ public:
 	SDL_Texture* getTexture() { return texture; }
 	int getWidth() { return witdhOfPicture; }
 	int getHeight() { return heightOfPicture; }
-	SDL_Rect* getSrcRect() { return &srcRect; }
-	SDL_Rect* getDestRect() { return &destRect; }
-	SDL_Rect getSrcRectValues() { return srcRect; }
-	SDL_Rect getDestRectValues() { return destRect; }
+	SDL_Rect* getSrcRectReference() { return &srcRect; }
+	SDL_Rect* getDestRectReference() { return &destRect; }
+	SDL_Rect getSrcRect() { return srcRect; }
+	SDL_Rect getDestRect() { return destRect; }
 };
 
 class HitboxComponent : public Component
@@ -106,6 +123,7 @@ public:
 	float getX() { return hitbox.x; }
 	float getY() { return hitbox.y; }
 	SDL_FRect getHitbox() { return hitbox; }
+	SDL_FRect* getHitboxReference() { return &hitbox; }
 	SDL_FPoint* getCorners() { return corners; }
 
 	HitboxComponent()
@@ -124,7 +142,7 @@ public:
 		hitbox.h = h;
 	}
 
-	void updatePos(float x, float y)
+	void setPosition(float x, float y)
 	{
 		hitbox.x += x;
 		hitbox.y += y;
