@@ -10,14 +10,7 @@ using namespace std;
 Player player;
 SDL_FRect wall = { 100, 130, 50, 50 };
 
-Game::Game()
-{ }
-
-Game::~Game()
-{ }
-
-//inicjalizacja okno i innych rzeczy pomocnych
-void Game::init(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen)
+Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen)
 {
 	isRunning = true;
 
@@ -54,9 +47,11 @@ void Game::init(const char* title, int xpos, int ypos, int witdh, int height, bo
 	else
 	{
 		cout << "Renderer creatred" << endl;
-	}       
-
+	}
 }
+
+Game::~Game()
+{ }
 
 //metoda odpowiedzialna za wszystkie wydarzenie dziejace sie podczas gry
 void Game::handleEvents()
@@ -148,7 +143,7 @@ void Game::renderering(float mouseX, float mouseY)
 				centerOfPlayerY + dx * sin(rad) + dy * cos(rad)
 			};
 			};
-
+		//
 		player.setCorners(rotate(destRect.x, destRect.y),
 			rotate(destRect.x + destRect.w, destRect.y),
 			rotate(destRect.x + destRect.w, destRect.y + destRect.h),

@@ -1,0 +1,22 @@
+﻿  AlgorithSAT.cpp
+  Components.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\AlgorithSAT.h(4,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  (kompilowanie pliku źródłowego „AlgorithSAT.cpp”)
+  
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\ECS.h(9,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  (kompilowanie pliku źródłowego „Components.cpp”)
+  
+  ECS.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\ECS.h(9,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  (kompilowanie pliku źródłowego „ECS.cpp”)
+  
+  game.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\Game.h(4,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  (kompilowanie pliku źródłowego „game.cpp”)
+  
+  main.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\main.cpp(1,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  player.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\player.h(4,10): error C1083: Nie można otworzyć pliku dołącz: 'SDL.h': No such file or directory
+  (kompilowanie pliku źródłowego „player.cpp”)
+  

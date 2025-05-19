@@ -1,4 +1,5 @@
-﻿  Components.cpp
+﻿  AlgorithSAT.cpp
+  Components.cpp
   ECS.cpp
 C:\Users\23.knapik.j\Desktop\moja gra\moja gra\ECS.cpp(11,13): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\23.knapik.j\Desktop\moja gra\moja gra\ECS.cpp(12,13): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
@@ -16,5 +17,11 @@ C:\Users\23.knapik.j\Desktop\moja gra\moja gra\game.cpp(154,47): warning C4244: 
 C:\Users\23.knapik.j\Desktop\moja gra\moja gra\game.cpp(154,22): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\23.knapik.j\Desktop\moja gra\moja gra\game.cpp(155,34): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\23.knapik.j\Desktop\moja gra\moja gra\game.cpp(155,19): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  main.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\main.cpp(31,61): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\main.cpp(31,53): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  player.cpp
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\player.cpp(14,11): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\23.knapik.j\Desktop\moja gra\moja gra\player.cpp(15,11): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
   Generowanie kodu...
   moja gra.vcxproj -> C:\Users\23.knapik.j\Desktop\moja gra\x64\Debug\moja gra.exe

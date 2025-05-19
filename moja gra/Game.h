@@ -14,11 +14,10 @@ private:
 	SDL_Window* window;
 	SDL_Event event;
 public:
-	Game();
+	Game(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen);
 	~Game();
 
 	void update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY);
-	void init(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen);
 	void handleEvents();
 	void renderering(float mouseX, float mouseY);
 

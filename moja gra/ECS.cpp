@@ -91,10 +91,27 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 		if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRect(), e->getComponent<SpriteComponent>().getDestRect()) != 0) {
 			printf("Error during rendering texture: %s\n", SDL_GetError());
 		}
+
+		if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking())
+		{
+			if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRect(), e->getComponent<SpriteComponent>().getDestRect(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+				printf("Error during rendering texture: %s\n", SDL_GetError());
+			}
+
+			SDL_FPoint* attackCorners = e->getComponent<HitboxComponent>().getCorners();
+			for (int i = 0; i < 4; i++) {
+				SDL_Rect pointRect = {
+					(int)(attackCorners[i].x - 2),
+					(int)(attackCorners[i].y - 2),
+					4, 4
+				};
+				SDL_RenderFillRect(ren, &pointRect);
+			}
+		}
 	}
 }
 
-void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, SDL_Renderer* ren)
+void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -107,16 +124,31 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, SDL_Renderer* r
 			e->getComponent<AtackComponent>().setAttackState(true);
 			cout << "ATAK" << endl;
 			e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
-			int centerOfPlayerX = (e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2));
-			int centerOfPlayerY = (e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2));
 
-			SDL_Point center = { centerOfPlayerX - e->getComponent<SpriteComponent>().getDestRectValues().x, centerOfPlayerY - e->getComponent<SpriteComponent>().getDestRectValues().y };
-			SDL_Point* centerPtr = &center;
+			e->getComponent<RotatedRectComponent>().setCenter(
+				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2) - e->getComponent<SpriteComponent>().getDestRectValues().x,
+				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2) - e->getComponent<SpriteComponent>().getDestRectValues().y
+			);
 
-			if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRect(), e->getComponent<SpriteComponent>().getDestRect(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, centerPtr, SDL_FLIP_NONE) != 0) {
-				printf("Error during rendering texture: %s\n", SDL_GetError());
-			}
-
+			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
+			e->getComponent<HitboxComponent>().setCorners(
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<SpriteComponent>().getDestRect()->x,
+					e->getComponent<SpriteComponent>().getDestRect()->y
+				),
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<SpriteComponent>().getDestRect()->x + e->getComponent<SpriteComponent>().getDestRect()->w,
+					e->getComponent<SpriteComponent>().getDestRect()->y
+				),
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<SpriteComponent>().getDestRect()->x + e->getComponent<SpriteComponent>().getDestRect()->w,
+					e->getComponent<SpriteComponent>().getDestRect()->y + e->getComponent<SpriteComponent>().getDestRect()->h
+				),
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<SpriteComponent>().getDestRect()->x,
+					e->getComponent<SpriteComponent>().getDestRect()->y + e->getComponent<SpriteComponent>().getDestRect()->h
+				)
+			);
 		}
 		else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))) // Kiedy przycisk jest zwolniony
 		{

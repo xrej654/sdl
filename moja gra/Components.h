@@ -3,13 +3,14 @@
 #include "ECS.h"
 #include "SDL_image.h"
 #include "SDL.h"
+#include <iostream>
 
 class VelocityComponent : public Component
 {
 private:
 	float xVel, yVel;
 public:
-	void init() override
+	VelocityComponent()
 	{
 		xVel = 0;
 		yVel = 0;
@@ -35,7 +36,7 @@ private:
 	SDL_Rect destRect;
 public:
 
-	void init() override
+	SpriteComponent()
 	{
 		witdhOfPicture = 0;
 		heightOfPicture = 0;
@@ -98,14 +99,16 @@ class HitboxComponent : public Component
 {
 private:
 	SDL_FRect hitbox;
+	SDL_FPoint corners[4];
 public:
 	float getWidth() { return hitbox.w; }
 	float getHeight() { return hitbox.h; }
 	float getX() { return hitbox.x; }
 	float getY() { return hitbox.y; }
 	SDL_FRect getHitbox() { return hitbox; }
+	SDL_FPoint* getCorners() { return corners; }
 
-	void init() override
+	HitboxComponent()
 	{
 		hitbox.x = 0;
 		hitbox.y = 0;
@@ -126,6 +129,14 @@ public:
 		hitbox.x += x;
 		hitbox.y += y;
 	}
+
+	void setCorners(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4)
+	{
+		corners[0] = p1;
+		corners[1] = p2;
+		corners[2] = p3;
+		corners[3] = p4;
+	}
 };
 
 class AtackComponent : public Component
@@ -141,7 +152,7 @@ public:
 	Uint32 getLastHitTime() { return lastHitTime; }
 	float getAngle() { return angle; }
 
-	void init() override
+	AtackComponent()
 	{
 		wasAttacking = false;
 		canAttack = true;
@@ -168,4 +179,39 @@ public:
 		float dy = (obj.y + (obj.h / 2)) - mouseY;
 		angle = atan2(dy, dx);
 	}
+};
+
+class RotatedRectComponent : public Component
+{
+private:
+	SDL_Point center;
+	float rad;
+public:
+	RotatedRectComponent()
+	{
+		center = { NULL, NULL };
+		rad = 0.0f;
+	}
+
+	//funkcja lambdowa
+	SDL_FPoint rotate(float x, float y) {
+		float dx = x - center.x;
+		float dy = y - center.y;
+		return {
+			center.x + dx * cos(rad) - dy * sin(rad),
+			center.y + dx * sin(rad) + dy * cos(rad)
+		};
+		};
+
+	void setCenter(int x,int y)
+	{
+		this->center = {x, y};
+	}
+
+	void setRad(float rad)
+	{
+		this->rad = rad;
+	}
+
+	SDL_Point* getPtrCenter() { return &center; }
 };
