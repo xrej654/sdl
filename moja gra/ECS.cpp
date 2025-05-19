@@ -111,7 +111,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 	}
 }
 
-void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
+void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -129,6 +129,8 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons)
 				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2) - e->getComponent<SpriteComponent>().getDestRect().x,
 				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2) - e->getComponent<SpriteComponent>().getDestRect().y
 			);
+
+			e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
 
 			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
 			e->getComponent<HitboxComponent>().setCorners(

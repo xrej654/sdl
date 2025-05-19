@@ -13,6 +13,8 @@ using namespace std;
 
 class Component;
 class Entity;
+class Systems;
+class Manager;
 
 using ComponentID = size_t;
 
@@ -103,12 +105,35 @@ public:
 	}
 };
 
+class Systems {
+public:
+	Systems() { }
+	void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
+	{
+		movementSystem(manager, deltaTime, speed, keys, ren);
+		renderingSystem(manager, ren);
+		atackSystem(manager, mouseButtons, mouseX, mouseY);
+		collisionSystem(manager);
+	}
+
+	static void movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren);
+	static void renderingSystem(Manager& manager, SDL_Renderer* ren);
+	static void atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
+	static void collisionSystem(Manager& manager);
+};
+
 class Manager
 {
 private:
+	Systems* system;
 	vector<unique_ptr<Entity>> entities;
 public:
-	void update() { for (auto& e : entities) e->update(); }
+	void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
+	{ 
+		system = new Systems();
+		(*system).update(manager, ren, deltaTime, speed, keys, mouseButtons, mouseX, mouseY);
+		for (auto& e : entities) e->update();
+	}
 
 	void draw() { for (auto& e : entities) e->draw(); }
 
@@ -132,12 +157,4 @@ public:
 
 	vector<unique_ptr<Entity>>& getVectorOfEntities() { return entities; }
 
-};
-
-class Systems {
-public:
-	static void movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren);
-	static void renderingSystem(Manager& manager, SDL_Renderer* ren);
-	static void atackSystem(Manager& manager, Uint32 mouseButtons);
-	static void collisionSystem(Manager& manager);
 };

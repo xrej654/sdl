@@ -36,6 +36,7 @@ private:
 	SDL_Surface* surface = NULL;
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
+	const char* link;
 public:
 
 	SpriteComponent()
@@ -48,12 +49,7 @@ public:
 
 	void setSurface(const char* link)
 	{
-		surface = IMG_Load(link);
-
-		if (!surface)
-		{
-			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
-		}
+		this->link = link;
 	}
 
 	void setRects(SDL_FRect rect)
@@ -89,7 +85,7 @@ public:
 			texture = NULL;
 		}
 
-		texture = SDL_CreateTextureFromSurface(ren, surface);
+		texture = IMG_LoadTexture(ren, link);
 	}
 
 	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
