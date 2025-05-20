@@ -6,7 +6,7 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<SpriteComponent>())
 		{
 			float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
 			float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
@@ -79,35 +79,38 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		
-		e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
-
-		if (!e->getComponent<SpriteComponent>().getTexture())
+		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AtackComponent>())
 		{
-			cout << "Texture is NULL, cannot render!" << endl;
-			return;
-		}
+			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
-		if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference()) != 0) {
-			cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
-		}
+			if (!e->getComponent<SpriteComponent>().getTexture())
+			{
+				cout << "Texture is NULL, cannot render!" << endl;
+				return;
+			}
 
-		if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking())
-		{
-			if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+			if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference()) != 0) {
 				cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 			}
 
-			SDL_FPoint* attackCorners = e->getComponent<HitboxComponent>().getCorners();
-			for (int i = 0; i < 4; i++) {
-				SDL_Rect pointRect = {
-					(int)(attackCorners[i].x - 2),
-					(int)(attackCorners[i].y - 2),
-					4, 4
-				};
-				SDL_RenderFillRect(ren, &pointRect);
+			if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking() && e->hasComponent<RotatedRectComponent>())
+			{
+				if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
+				}
+
+				SDL_FPoint* attackCorners = e->getComponent<HitboxComponent>().getCorners();
+				for (int i = 0; i < 4; i++) {
+					SDL_Rect pointRect = {
+						(int)(attackCorners[i].x - 2),
+						(int)(attackCorners[i].y - 2),
+						4, 4
+					};
+					SDL_RenderFillRect(ren, &pointRect);
+				}
 			}
 		}
+		e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 255, 0, 0);
 	}
 }
 
@@ -115,47 +118,50 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
-		Uint32 cooldown = 500;
-
-		if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // Przyciœniêcie przycisku
+		if (e->hasComponent<AtackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
 		{
-			// Oznaczenie, ¿e gracz zaatakowa³
-			e->getComponent<AtackComponent>().setAttackState(true);
-			cout << "ATAK" << endl;
-			e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
+			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
+			Uint32 cooldown = 500;
 
-			e->getComponent<RotatedRectComponent>().setCenter(
-				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2) - e->getComponent<SpriteComponent>().getDestRect().x,
-				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2) - e->getComponent<SpriteComponent>().getDestRect().y
-			);
+			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // Przyciœniêcie przycisku
+			{
+				// Oznaczenie, ¿e gracz zaatakowa³
+				e->getComponent<AtackComponent>().setAttackState(true);
+				cout << "ATAK" << endl;
+				e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
 
-			e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
+				e->getComponent<RotatedRectComponent>().setCenter(
+					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2) - e->getComponent<SpriteComponent>().getDestRect().x,
+					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2) - e->getComponent<SpriteComponent>().getDestRect().y
+				);
 
-			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
-			e->getComponent<HitboxComponent>().setCorners(
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<SpriteComponent>().getDestRect().x,
-					e->getComponent<SpriteComponent>().getDestRect().y
-				),
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
-					e->getComponent<SpriteComponent>().getDestRect().y
-				),
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
-					e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
-				),
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<SpriteComponent>().getDestRect().x,
-					e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
-				)
-			);
-		}
-		else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))) // Kiedy przycisk jest zwolniony
-		{
-			//Zwolnienie przycisku mozna zaatakowac
-			e->getComponent<AtackComponent>().setAttackState(false);
+				e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
+
+				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
+				e->getComponent<HitboxComponent>().setCorners(
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<SpriteComponent>().getDestRect().x,
+						e->getComponent<SpriteComponent>().getDestRect().y
+					),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
+						e->getComponent<SpriteComponent>().getDestRect().y
+					),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
+						e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
+					),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<SpriteComponent>().getDestRect().x,
+						e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
+					)
+				);
+			}
+			else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))) // Kiedy przycisk jest zwolniony
+			{
+				//Zwolnienie przycisku mozna zaatakowac
+				e->getComponent<AtackComponent>().setAttackState(false);
+			}
 		}
 	}
 }
@@ -165,31 +171,33 @@ void Systems::collisionSystem(Manager& manager)
 	Uint32 currentTime = SDL_GetTicks();
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		Uint32 cooldown = 500;
-
-		SDL_FPoint* attackCorners = e->getComponent<HitboxComponent>().getCorners(); // 4 rogi po obrocie
-		for (auto& en : manager.getVectorOfEntities())
+		if (e->hasComponent<HitboxComponent>())
 		{
-			if (e != en)
+			Uint32 cooldown = 500;
+
+			SDL_FPoint* attackCorners = e->getComponent<HitboxComponent>().getCorners(); // 4 rogi po obrocie
+			for (auto& en : manager.getVectorOfEntities())
 			{
-				if (e->hasComponent<AtackComponent>())
+				if (e != en)
 				{
-					if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
-						(currentTime - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown) &&
-						e->getComponent<AtackComponent>().getCanAttacking() == e->getComponent<AtackComponent>().getWasAttacking())
+					if (e->hasComponent<AtackComponent>())
 					{
-						currentTime = SDL_GetTicks();
-						cout << "Zadano obrazenia!" << endl;
-						e->getComponent<AtackComponent>().setLastHitTime(currentTime);
+						if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
+							(currentTime - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown) &&
+							e->getComponent<AtackComponent>().getCanAttacking() == e->getComponent<AtackComponent>().getWasAttacking())
+						{
+							currentTime = SDL_GetTicks();
+							cout << "Zadano obrazenia!" << endl;
+							e->getComponent<AtackComponent>().setLastHitTime(currentTime);
+						}
+					}
+
+					if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()) && e->hasComponent<VelocityComponent>())
+					{
+						cout << "Sciana" << endl;
+						e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
 					}
 				}
-
-				if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
-				{
-					cout << "Sciana" << endl;
-					e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-				}
-
 			}
 		}
 	}

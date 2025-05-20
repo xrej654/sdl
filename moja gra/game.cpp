@@ -59,6 +59,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	wall.addComponent<HitboxComponent>();
 
 	player.getComponent<HitboxComponent>().setVariables(200.0f, 200.0f, 32.0f, 32.0f);
+	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	wall.getComponent<HitboxComponent>().setVariables(100, 130, 50, 50);
 }
 
@@ -115,6 +116,7 @@ void Game::renderering(float mouseX, float mouseY)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
+	manager.draw(manager, renderer);
 
 	//// zmienne pomagajace w atakowaniu
 	//float dx = (player.getHitbox().x + (player.getHitbox().w / 2)) - mouseX;
@@ -182,7 +184,7 @@ void Game::renderering(float mouseX, float mouseY)
 	//}
 
 	//rysowanie aktualnej przeszkody
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	//rysowanie textury gracza
 	/*if (!SDL_RenderFillRectF(renderer, &wall))

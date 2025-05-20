@@ -106,5 +106,8 @@
     <Image Include="assets\atackAnimation\8.png">
       <Filter>Pliki zasobów\atackAnimation</Filter>
     </Image>
+    <Image Include="assets\blad.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>

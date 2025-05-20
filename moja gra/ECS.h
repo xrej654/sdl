@@ -111,7 +111,6 @@ public:
 	void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
 	{
 		movementSystem(manager, deltaTime, speed, keys, ren);
-		renderingSystem(manager, ren);
 		atackSystem(manager, mouseButtons, mouseX, mouseY);
 		collisionSystem(manager);
 	}
@@ -125,17 +124,20 @@ public:
 class Manager
 {
 private:
-	Systems* system;
+	Systems system;
 	vector<unique_ptr<Entity>> entities;
 public:
 	void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
 	{ 
-		system = new Systems();
-		(*system).update(manager, ren, deltaTime, speed, keys, mouseButtons, mouseX, mouseY);
+		system.update(manager, ren, deltaTime, speed, keys, mouseButtons, mouseX, mouseY);
 		for (auto& e : entities) e->update();
 	}
 
-	void draw() { for (auto& e : entities) e->draw(); }
+	void draw(Manager& manager, SDL_Renderer* ren)
+	{ 
+		system.renderingSystem(manager, ren);
+		for (auto& e : entities) e->draw(); 
+	}
 
 	void refresh()
 	{

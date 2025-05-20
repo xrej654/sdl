@@ -36,7 +36,6 @@ private:
 	SDL_Surface* surface = NULL;
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
-	const char* link;
 public:
 
 	SpriteComponent()
@@ -47,9 +46,16 @@ public:
 		destRect = { NULL, NULL, NULL, NULL };
 	}
 
-	void setSurface(const char* link)
+	void setSurface(const char* link = "assets/blad.png")
 	{
-		this->link = link;
+		cout << link;
+		if (!link) return;
+
+		surface = IMG_Load(link);
+		if (!surface)
+		{
+			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+		}
 	}
 
 	void setRects(SDL_FRect rect)
@@ -85,17 +91,7 @@ public:
 			texture = NULL;
 		}
 
-		texture = IMG_LoadTexture(ren, link);
-	}
-
-	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
-	{
-		SDL_SetRenderDrawColor(ren, r, b, g, a);
-
-		if (!SDL_RenderFillRectF(ren, &obj))
-		{
-			SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
-		}
+		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 
 	SDL_Surface* getSurface() { return surface; }
@@ -150,6 +146,16 @@ public:
 		corners[1] = p2;
 		corners[2] = p3;
 		corners[3] = p4;
+	}
+
+	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
+	{
+		SDL_SetRenderDrawColor(ren, r, b, g, a);
+
+		if (!SDL_RenderFillRectF(ren, &obj))
+		{
+			SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
+		}
 	}
 };
 

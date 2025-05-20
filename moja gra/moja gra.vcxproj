@@ -154,6 +154,7 @@
     <Image Include="assets\atackAnimation\6.png" />
     <Image Include="assets\atackAnimation\7.png" />
     <Image Include="assets\atackAnimation\8.png" />
+    <Image Include="assets\blad.png" />
     <Image Include="assets\ruch w brak.png" />
     <Image Include="assets\ruch w dol.png" />
     <Image Include="assets\ruch w gore.png" />
