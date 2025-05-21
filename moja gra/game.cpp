@@ -60,6 +60,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 	player.getComponent<HitboxComponent>().setVariables(200.0f, 200.0f, 32.0f, 32.0f);
 	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
 	wall.getComponent<HitboxComponent>().setVariables(100, 130, 50, 50);
 }
 

@@ -46,16 +46,17 @@ public:
 		destRect = { NULL, NULL, NULL, NULL };
 	}
 
-	void setSurface(const char* link = "assets/blad.png")
+	void setSurface(SDL_Surface* surface = IMG_Load("assets/blad.png"))
 	{
-		cout << link;
-		if (!link) return;
 
-		surface = IMG_Load(link);
 		if (!surface)
 		{
 			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
 		}
+
+		if (this->surface) SDL_FreeSurface(this->surface);
+
+		this->surface = surface;
 	}
 
 	void setRects(SDL_FRect rect)
@@ -77,19 +78,8 @@ public:
 			return;
 		}
 
-		if (texture)
-		{
-			Uint32 format;
-			int access, w, h;
-			SDL_QueryTexture(texture, &format, &access, &w, &h);
-
-			if (w == surface->w && h == surface->h) {
-				return; // Nie tworzymy nowej tekstury, jeœli rozmiar siê nie zmieni³
-			}
-
-			SDL_DestroyTexture(texture); // Jeœli rozmiar siê zmieni³, usuwamy star¹ teksturê
-			texture = NULL;
-		}
+		SDL_DestroyTexture(texture); // Jeœli rozmiar siê zmieni³, usuwamy star¹ teksturê
+		texture = NULL;
 
 		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}

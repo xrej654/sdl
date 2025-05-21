@@ -11,6 +11,8 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 			float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
 			float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
 
+			string direction = to_string((int)dx) + to_string((int)dy);
+
 			float magnitude = sqrt(dx * dx + dy * dy);
 			if (magnitude > 0)
 			{
@@ -18,46 +20,44 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 				dy /= magnitude;
 			}
 
-			string direction = to_string((int)dx) + to_string((int)dy);
-
 			e->getComponent<VelocityComponent>().setVels(dx * speed * deltaTime, dy * speed * deltaTime);
 			e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 
 			if (direction == "-1-1")
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w lewo gora.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
 			}
-			else if (direction == "-10") {
-
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w lewo.png");
+			else if (direction == "-10") 
+			{
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
 			}
 			else if (direction == "-11")
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w lewo dol.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
 			}
 			else if (direction == "0-1")
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w gore.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
 			}
 			else if (direction == "00") 
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w brak.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w brak.png"));
 			}
 			else if (direction == "01")
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w dol.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
 			}
 			else if (direction == "1-1") 
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w prawo gora.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
 			}
 			else if (direction == "10") 
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w prawo.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
 			}
 			else if (direction == "11") 
 			{
-				e->getComponent<SpriteComponent>().setSurface("assets/ruch w prawo dol.png");
+				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
 			}
 
 			e->getComponent<SpriteComponent>().createTexture(ren);
@@ -65,11 +65,6 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 			if (!e->getComponent<SpriteComponent>().getTexture())
 			{
 				cout << "Failed to create texture!" << endl;
-			}
-
-			if (e->getComponent<SpriteComponent>().getSurface()) {
-				SDL_FreeSurface(e->getComponent<SpriteComponent>().getSurface());
-				e->getComponent<SpriteComponent>().setSurface(NULL);
 			}
 		}
 	}
@@ -81,6 +76,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 	{
 		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AtackComponent>())
 		{
+
 			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
 			if (!e->getComponent<SpriteComponent>().getTexture())
@@ -110,7 +106,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				}
 			}
 		}
-		e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 255, 0, 0);
+		if(!e->hasComponent<SpriteComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 255, 0, 0);
 	}
 }
 
