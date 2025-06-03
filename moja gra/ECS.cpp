@@ -79,6 +79,12 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 
 			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
+			e->getComponent<AtttackSpriteComponent>().setRects({
+				e->getComponent<HitboxComponent>().getX() - 16.f,
+				e->getComponent<HitboxComponent>().getY() + e->getComponent<HitboxComponent>().getHeight(),
+				64,32
+				});
+
 			if (!e->getComponent<SpriteComponent>().getTexture())
 			{
 				cout << "Texture is NULL, cannot render!" << endl;
@@ -89,9 +95,15 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 			}
 
-			if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking() && e->hasComponent<RotatedRectComponent>())
+			if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AtttackSpriteComponent>())
 			{
-				if (SDL_RenderCopyEx(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
+				SDL_RenderDrawPoint(ren, e->getComponent<RotatedRectComponent>().getPtrCenter()->x, e->getComponent<RotatedRectComponent>().getPtrCenter()->y); // Wspó³rzêdne punktu
+
+				e->getComponent<AtttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
+				e->getComponent<AtttackSpriteComponent>().createTexture(ren);
+
+				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
 					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
@@ -134,22 +146,23 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 				e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
 
 				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
+
 				e->getComponent<HitboxComponent>().setCorners(
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<SpriteComponent>().getDestRect().x,
-						e->getComponent<SpriteComponent>().getDestRect().y
+						e->getComponent<AtttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AtttackSpriteComponent>().getDestRect().y
 					),
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
-						e->getComponent<SpriteComponent>().getDestRect().y
+						e->getComponent<AtttackSpriteComponent>().getDestRect().x + e->getComponent<AtttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AtttackSpriteComponent>().getDestRect().y
 					),
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<SpriteComponent>().getDestRect().x + e->getComponent<SpriteComponent>().getDestRect().w,
-						e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
+						e->getComponent<AtttackSpriteComponent>().getDestRect().x + e->getComponent<AtttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AtttackSpriteComponent>().getDestRect().y + e->getComponent<AtttackSpriteComponent>().getDestRect().h
 					),
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<SpriteComponent>().getDestRect().x,
-						e->getComponent<SpriteComponent>().getDestRect().y + e->getComponent<SpriteComponent>().getDestRect().h
+						e->getComponent<AtttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AtttackSpriteComponent>().getDestRect().y + e->getComponent<AtttackSpriteComponent>().getDestRect().h
 					)
 				);
 			}

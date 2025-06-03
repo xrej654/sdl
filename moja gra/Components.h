@@ -94,6 +94,12 @@ public:
 	SDL_Rect getDestRect() { return destRect; }
 };
 
+class AtttackSpriteComponent : public SpriteComponent
+{
+public:
+	AtttackSpriteComponent() : SpriteComponent() { }
+};
+
 class HitboxComponent : public Component
 {
 private:
