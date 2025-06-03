@@ -104,7 +104,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				e->getComponent<AtttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
 				e->getComponent<AtttackSpriteComponent>().createTexture(ren);
 
-				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI), e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
 					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
