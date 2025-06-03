@@ -97,13 +97,14 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 
 			if (e->getComponent<AtackComponent>().getWasAttacking() && !e->getComponent<AtackComponent>().getCanAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AtttackSpriteComponent>())
 			{
+
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 				SDL_RenderDrawPoint(ren, e->getComponent<RotatedRectComponent>().getPtrCenter()->x, e->getComponent<RotatedRectComponent>().getPtrCenter()->y); // Wspó³rzêdne punktu
 
 				e->getComponent<AtttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
 				e->getComponent<AtttackSpriteComponent>().createTexture(ren);
 
-				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
+				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI), e->getComponent<RotatedRectComponent>().getPtrCenter(), SDL_FLIP_NONE) != 0) {
 					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
@@ -139,8 +140,8 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 				e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
 
 				e->getComponent<RotatedRectComponent>().setCenter(
-					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2) - e->getComponent<SpriteComponent>().getDestRect().x,
-					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2) - e->getComponent<SpriteComponent>().getDestRect().y
+					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
+					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
 				);
 
 				e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
