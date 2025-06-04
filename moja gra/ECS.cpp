@@ -152,9 +152,9 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
 			Uint32 cooldown = 500;
 
-			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // Przyciœniêcie przycisku
+			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // PrzyciÅ“niÃªcie przycisku
 			{
-				// Oznaczenie, ¿e gracz zaatakowa³
+				// Oznaczenie, Â¿e gracz zaatakowaÂ³
 				e->getComponent<AtackComponent>().setAttackState(true);
 				cout << "ATAK" << endl;
 				e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
@@ -204,7 +204,7 @@ void Systems::collisionSystem(Manager& manager)
 	Uint32 currentTime = SDL_GetTicks();
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AtackComponent>())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
 			Uint32 cooldown = 500;
