@@ -7,6 +7,10 @@
 
 using namespace std;
 
+//wszystkie mozliwe komponenty ktire obiekt moze posiadac
+
+//okresla szybkosc z jaka entity moze sie poruszac
+//jest wykorzystywana przy kolizji ze sciana itp. (cofniecie imituje brak ruchu)
 class VelocityComponent : public Component
 {
 private:
@@ -28,14 +32,17 @@ public:
 	}
 };
 
+//komponent okreslajacy texture entity
 class SpriteComponent : public Component
 {
 private:
 	int witdhOfPicture, heightOfPicture;
+
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = NULL;
-	SDL_Rect srcRect;
-	SDL_Rect destRect;
+
+	SDL_Rect srcRect; //prostokat ktory rysujemy
+	SDL_Rect destRect; //prostokat gdzie rysujemy
 public:
 
 	SpriteComponent()
@@ -94,17 +101,18 @@ public:
 	SDL_Rect getDestRect() { return destRect; }
 };
 
+//komponnet potrzebny aby obiket mogl miec dwa sprite'y jeden do gracza drugi do ataku
 class AtttackSpriteComponent : public SpriteComponent
 {
 public:
 	AtttackSpriteComponent() : SpriteComponent() { }
 };
 
+//komponent okreslajacy komponent
 class HitboxComponent : public Component
 {
 private:
 	SDL_FRect hitbox;
-	SDL_FPoint corners[4];
 public:
 	float getWidth() { return hitbox.w; }
 	float getHeight() { return hitbox.h; }
@@ -112,7 +120,6 @@ public:
 	float getY() { return hitbox.y; }
 	SDL_FRect getHitbox() { return hitbox; }
 	SDL_FRect* getHitboxReference() { return &hitbox; }
-	SDL_FPoint* getCorners() { return corners; }
 
 	HitboxComponent()
 	{
@@ -136,14 +143,6 @@ public:
 		hitbox.y += y;
 	}
 
-	void setCorners(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4)
-	{
-		corners[0] = p1;
-		corners[1] = p2;
-		corners[2] = p3;
-		corners[3] = p4;
-	}
-
 	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
 	{
 		SDL_SetRenderDrawColor(ren, r, b, g, a);
@@ -155,23 +154,24 @@ public:
 	}
 };
 
+//komponent do ataku obiektu
 class AtackComponent : public Component
 {
 protected:
-	static Uint32 lastHitTime;
-	bool wasAttacking, canAttack;
-	float dx, dy, angle;
+	static Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
+	bool wasAttacking; //boole do ataku
+	float dx, dy, angle; //zmienne potrzebne do obrtu
+	SDL_FPoint corners[4]; //rogi ataku
 public:
 
 	bool getWasAttacking() { return wasAttacking; }
-	bool getCanAttacking() { return canAttack; }
 	Uint32 getLastHitTime() { return lastHitTime; }
 	float getAngle() { return angle; }
+	SDL_FPoint* getCorners() { return corners; }
 
 	AtackComponent()
 	{
 		wasAttacking = false;
-		canAttack = true;
 		lastHitTime = 0;
 		dx = 0;
 		dy = 0;
@@ -181,7 +181,6 @@ public:
 	void setAttackState(bool attacking)
 	{
 		wasAttacking = attacking;
-		canAttack = !attacking;
 	}
 
 	void setLastHitTime(Uint32 ticks)
@@ -195,8 +194,17 @@ public:
 		float dy = (obj.y + (obj.h / 2)) - mouseY;
 		angle = atan2(dy, dx);
 	}
+
+	void setCorners(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4)
+	{
+		corners[0] = p1;
+		corners[1] = p2;
+		corners[2] = p3;
+		corners[3] = p4;
+	}
 };
 
+//komponent pomagajacy z obrotem ataku bardziej skupiony na obrocie
 class RotatedRectComponent : public Component
 {
 private:
@@ -229,5 +237,5 @@ public:
 		this->rad = rad;
 	}
 
-	SDL_Point* getPtrCenter() { return &center; }
+	SDL_Point getCenter() { return center; }
 };
