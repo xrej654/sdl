@@ -107,7 +107,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			if (e->getComponent<AtackComponent>().getWasAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AtttackSpriteComponent>())
 			{
 				//kolor okreslajacy rogi (do debbugu)
-				//SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
+				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
 				//robocze okreslenie zdjecia ataku -> animacja
 				e->getComponent<AtttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
@@ -225,7 +225,12 @@ void Systems::collisionSystem(Manager& manager)
 						{
 							currentTime = SDL_GetTicks();
 							cout << "Zadano obrazenia!" << endl;
+							e->getComponent<AtackComponent>().setAttackState(false);
 							e->getComponent<AtackComponent>().setLastHitTime(currentTime);
+						}
+						else if ((currentTime - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown) &&
+								e->getComponent<AtackComponent>().getWasAttacking())
+						{
 							e->getComponent<AtackComponent>().setAttackState(false);
 						}
 					}
