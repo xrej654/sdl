@@ -22,21 +22,21 @@ public:
 		yVel = 0;
 	}
 
-	float getXVel() { return xVel; }
-	float getYVel() { return yVel; }
-
 	void setVels(float x, float y)
 	{
 		xVel = x;
 		yVel = y;
 	}
+
+	float getXVel() { return xVel; }
+	float getYVel() { return yVel; }
 };
 
 //komponent okreslajacy texture entity
 class SpriteComponent : public Component
 {
 private:
-	int witdhOfPicture, heightOfPicture;
+	int widthOfPicture, heightOfPicture;
 
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = NULL;
@@ -44,10 +44,9 @@ private:
 	SDL_Rect srcRect; //prostokat ktory rysujemy
 	SDL_Rect destRect; //prostokat gdzie rysujemy
 public:
-
 	SpriteComponent()
 	{
-		witdhOfPicture = 0;
+		widthOfPicture = 0;
 		heightOfPicture = 0;
 		srcRect = { NULL, NULL, NULL, NULL };
 		destRect = { NULL, NULL, NULL, NULL };
@@ -55,7 +54,6 @@ public:
 
 	void setSurface(SDL_Surface* surface = IMG_Load("assets/blad.png"))
 	{
-
 		if (!surface)
 		{
 			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
@@ -68,13 +66,13 @@ public:
 
 	void setRects(SDL_FRect rect)
 	{
-		srcRect = { 0, 0, witdhOfPicture, heightOfPicture };  // Rozmiar oryginalnej tekstury
+		srcRect = { 0, 0, widthOfPicture, heightOfPicture };  // Rozmiar oryginalnej tekstury
 		destRect = { (int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h };
 	}
 
 	void setWidthAndHeight(int w, int h)
 	{
-		witdhOfPicture = w;
+		widthOfPicture = w;
 		heightOfPicture = h;
 	}
 
@@ -93,19 +91,20 @@ public:
 
 	SDL_Surface* getSurface() { return surface; }
 	SDL_Texture* getTexture() { return texture; }
-	int getWidth() { return witdhOfPicture; }
+	int getWidth() { return widthOfPicture; }
 	int getHeight() { return heightOfPicture; }
-	SDL_Rect* getSrcRectReference() { return &srcRect; }
-	SDL_Rect* getDestRectReference() { return &destRect; }
 	SDL_Rect getSrcRect() { return srcRect; }
 	SDL_Rect getDestRect() { return destRect; }
+
+	SDL_Rect* getSrcRectReference() { return &srcRect; }
+	SDL_Rect* getDestRectReference() { return &destRect; }
 };
 
 //komponnet potrzebny aby obiket mogl miec dwa sprite'y jeden do gracza drugi do ataku
-class AtttackSpriteComponent : public SpriteComponent
+class AttackSpriteComponent : public SpriteComponent
 {
 public:
-	AtttackSpriteComponent() : SpriteComponent() { }
+	AttackSpriteComponent() : SpriteComponent() { }
 };
 
 //komponent okreslajacy komponent
@@ -114,13 +113,6 @@ class HitboxComponent : public Component
 private:
 	SDL_FRect hitbox;
 public:
-	float getWidth() { return hitbox.w; }
-	float getHeight() { return hitbox.h; }
-	float getX() { return hitbox.x; }
-	float getY() { return hitbox.y; }
-	SDL_FRect getHitbox() { return hitbox; }
-	SDL_FRect* getHitboxReference() { return &hitbox; }
-
 	HitboxComponent()
 	{
 		hitbox.x = 0;
@@ -152,35 +144,47 @@ public:
 			SDL_SetError("Nie mozna zaladowac hitboxa gracza: %s", SDL_GetError());
 		}
 	}
+
+	float getWidth() { return hitbox.w; }
+	float getHeight() { return hitbox.h; }
+	float getX() { return hitbox.x; }
+	float getY() { return hitbox.y; }
+	SDL_FRect getHitbox() { return hitbox; }
+
+	SDL_FRect* getHitboxReference() { return &hitbox; }
 };
 
 //komponent do ataku obiektu
-class AtackComponent : public Component
+class AttackComponent : public Component
 {
 protected:
 	static Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
-	bool wasAttacking; //boole do ataku
+	bool wasAttacking, hasBeenPressed; //boole do ataku
 	float dx, dy, angle; //zmienne potrzebne do obrtu
 	SDL_FPoint corners[4]; //rogi ataku
 public:
-
-	bool getWasAttacking() { return wasAttacking; }
-	Uint32 getLastHitTime() { return lastHitTime; }
-	float getAngle() { return angle; }
-	SDL_FPoint* getCorners() { return corners; }
-
-	AtackComponent()
+	AttackComponent()
 	{
 		wasAttacking = false;
+		hasBeenPressed = false;
 		lastHitTime = 0;
 		dx = 0;
 		dy = 0;
 		angle = 0;
+		corners[0] = {NULL, NULL};
+		corners[1] = {NULL, NULL};
+		corners[2] = {NULL, NULL};
+		corners[3] = {NULL, NULL};
 	}
 
-	void setAttackState(bool attacking)
+	void setWasAttacking(bool attacking)
 	{
 		wasAttacking = attacking;
+	}
+
+	void setHasBeenPressed(bool attacking)
+	{
+		hasBeenPressed = attacking;
 	}
 
 	void setLastHitTime(Uint32 ticks)
@@ -202,6 +206,12 @@ public:
 		corners[2] = p3;
 		corners[3] = p4;
 	}
+
+	bool getWasAttacking() { return wasAttacking; }
+	bool getHasBeenPressed() { return hasBeenPressed; }
+	Uint32 getLastHitTime() { return lastHitTime; }
+	float getAngle() { return angle; }
+	SDL_FPoint* getCorners() { return corners; }
 };
 
 //komponent pomagajacy z obrotem ataku bardziej skupiony na obrocie

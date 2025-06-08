@@ -81,12 +81,12 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AtackComponent>())
+		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
 			//ustawianie srcrect'ow i destrect'ow na texture
 			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
-			e->getComponent<AtttackSpriteComponent>().setRects({
+			e->getComponent<AttackSpriteComponent>().setRects({
 				e->getComponent<HitboxComponent>().getX() - 16.f,
 				e->getComponent<HitboxComponent>().getY() + e->getComponent<HitboxComponent>().getHeight(),
 				64,32
@@ -104,29 +104,29 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			}
 
 			//rysowanie ataku
-			if (e->getComponent<AtackComponent>().getWasAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AtttackSpriteComponent>())
+			if (e->getComponent<AttackComponent>().getWasAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AttackSpriteComponent>())
 			{
 				//kolor okreslajacy rogi (do debbugu)
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
 				//robocze okreslenie zdjecia ataku -> animacja
-				e->getComponent<AtttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
-				e->getComponent<AtttackSpriteComponent>().createTexture(ren);
+				e->getComponent<AttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
+				e->getComponent<AttackSpriteComponent>().createTexture(ren);
 
 				//dobry punkt obrotu textury (jest dobrze dla rogow ale nie dla textury xd)
 				SDL_Point centerOfAPlayerWithAttackOffset =
 				{
-					e->getComponent<RotatedRectComponent>().getCenter().x - e->getComponent<AtttackSpriteComponent>().getDestRect().x,
-					e->getComponent<RotatedRectComponent>().getCenter().y - e->getComponent<AtttackSpriteComponent>().getDestRect().y
+					e->getComponent<RotatedRectComponent>().getCenter().x - e->getComponent<AttackSpriteComponent>().getDestRect().x,
+					e->getComponent<RotatedRectComponent>().getCenter().y - e->getComponent<AttackSpriteComponent>().getDestRect().y
 				};
 
 				//obracanie ataku wzgledem myszy
-				if (SDL_RenderCopyEx(ren, e->getComponent<AtttackSpriteComponent>().getTexture(), e->getComponent<AtttackSpriteComponent>().getSrcRectReference(), e->getComponent<AtttackSpriteComponent>().getDestRectReference(), (e->getComponent<AtackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
+				if (SDL_RenderCopyEx(ren, e->getComponent<AttackSpriteComponent>().getTexture(), e->getComponent<AttackSpriteComponent>().getSrcRectReference(), e->getComponent<AttackSpriteComponent>().getDestRectReference(), (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
 					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
 				//rysowanie rogow ataku (tez debbug)
-				/*SDL_FPoint* attackCorners = e->getComponent<AtackComponent>().getCorners();
+				/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
 				for (int i = 0; i < 4; i++) {
 					SDL_Rect pointRect = {
 						(int)(attackCorners[i].x - 2),
@@ -147,18 +147,28 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<AtackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
+		if (e->hasComponent<AttackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
 		{
 			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
 			Uint32 cooldown = 500;
 
-			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) && (SDL_GetTicks() - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown)) // Przyciœniêcie przycisku
+			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) 
+				&& (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown)
+				&& !e->getComponent<AttackComponent>().getHasBeenPressed()) // Przyciœniêcie przycisku
 			{
 				// Oznaczenie, ¿e gracz zaatakowa³
-				e->getComponent<AtackComponent>().setAttackState(true);
+				e->getComponent<AttackComponent>().setHasBeenPressed(true);
+				e->getComponent<AttackComponent>().setWasAttacking(true);
 				cout << "ATAK" << endl;
-				e->getComponent<AtackComponent>().setLastHitTime(SDL_GetTicks());
+				e->getComponent<AttackComponent>().setLastHitTime(SDL_GetTicks());
+			}
+			else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)))
+			{
+				e->getComponent<AttackComponent>().setHasBeenPressed(false);
+			}
 
+			if (e->getComponent<AttackComponent>().getWasAttacking())
+			{
 				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
 				e->getComponent<RotatedRectComponent>().setCenter(
 					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
@@ -166,32 +176,32 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 				);
 
 				//strona w ktora jest zwrocony atak
-				e->getComponent<AtackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
+				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
 
 				//zmiana kata na radian
-				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AtackComponent>().getAngle() + M_PI / 2.0);
+				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
 
 				//okreslanie rogow
-				e->getComponent<AtackComponent>().setCorners(
+				e->getComponent<AttackComponent>().setCorners(
 
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AtttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AtttackSpriteComponent>().getDestRect().y
+						e->getComponent<AttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y
 					),
 
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AtttackSpriteComponent>().getDestRect().x + e->getComponent<AtttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AtttackSpriteComponent>().getDestRect().y
+						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y
 					),
 
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AtttackSpriteComponent>().getDestRect().x + e->getComponent<AtttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AtttackSpriteComponent>().getDestRect().y + e->getComponent<AtttackSpriteComponent>().getDestRect().h
+						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
 					),
 
 					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AtttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AtttackSpriteComponent>().getDestRect().y + e->getComponent<AtttackSpriteComponent>().getDestRect().h
+						e->getComponent<AttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
 					)
 				);
 			}
@@ -204,34 +214,34 @@ void Systems::collisionSystem(Manager& manager)
 	Uint32 currentTime = SDL_GetTicks();
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AtackComponent>())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
 			Uint32 cooldown = 500;
 
-			SDL_FPoint* attackCorners = e->getComponent<AtackComponent>().getCorners(); // 4 rogi po obrocie
+			SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners(); // 4 rogi po obrocie
 
 			//for na drugi obiekt aby sprawdzac kolizje miedzy dwoma obiektami
 			for (auto& en : manager.getVectorOfEntities())
 			{
 				if (e != en)
 				{
-					if (e->hasComponent<AtackComponent>())
+					if (e->hasComponent<AttackComponent>())
 					{
 						//sprawdzanie kolizji po obrotu strict'e pod atak
 						if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
-							(currentTime - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown) &&
-							e->getComponent<AtackComponent>().getWasAttacking())
+							(currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+							e->getComponent<AttackComponent>().getWasAttacking())
 						{
 							currentTime = SDL_GetTicks();
 							cout << "Zadano obrazenia!" << endl;
-							e->getComponent<AtackComponent>().setAttackState(false);
-							e->getComponent<AtackComponent>().setLastHitTime(currentTime);
+							e->getComponent<AttackComponent>().setWasAttacking(false);
+							e->getComponent<AttackComponent>().setLastHitTime(currentTime);
 						}
-						else if ((currentTime - e->getComponent<AtackComponent>().getLastHitTime() >= cooldown) &&
-								e->getComponent<AtackComponent>().getWasAttacking())
+						else if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+								e->getComponent<AttackComponent>().getWasAttacking())
 						{
-							e->getComponent<AtackComponent>().setAttackState(false);
+							e->getComponent<AttackComponent>().setWasAttacking(false);
 						}
 					}
 
