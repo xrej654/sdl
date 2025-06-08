@@ -50,8 +50,8 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 	//stworzenie obiektu player i wall
 
-	auto& player(manager.addEntity());
 	auto& wall(manager.addEntity());
+	auto& player(manager.addEntity());
 
 	player.addComponent<HitboxComponent>();
 	player.addComponent<VelocityComponent>();
@@ -67,6 +67,16 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
+		"assets/atackAnimation/1.png",
+		"assets/atackAnimation/2.png",
+		"assets/atackAnimation/3.png",
+		"assets/atackAnimation/4.png",
+		"assets/atackAnimation/5.png",
+		"assets/atackAnimation/6.png",
+		"assets/atackAnimation/7.png",
+		"assets/atackAnimation/8.png",
+		});
 
 	wall.getComponent<HitboxComponent>().setVariables(100, 130, 50, 50);
 }

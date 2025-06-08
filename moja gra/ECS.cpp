@@ -81,6 +81,9 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
+		//rysowanie hitboxa jesli nie ma sprite'a
+		if (!e->hasComponent<SpriteComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 255, 0);
+
 		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
 			//ustawianie srcrect'ow i destrect'ow na texture
@@ -110,8 +113,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
 				//robocze okreslenie zdjecia ataku -> animacja
-				e->getComponent<AttackSpriteComponent>().setSurface(IMG_Load("assets/atackAnimation/4.png"));
-				e->getComponent<AttackSpriteComponent>().createTexture(ren);
+				e->getComponent<AttackSpriteComponent>().changeAsset("attack", 8, 50 ,ren);
 
 				//dobry punkt obrotu textury (jest dobrze dla rogow ale nie dla textury xd)
 				SDL_Point centerOfAPlayerWithAttackOffset =
@@ -122,7 +124,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 
 				//obracanie ataku wzgledem myszy
 				if (SDL_RenderCopyEx(ren, e->getComponent<AttackSpriteComponent>().getTexture(), e->getComponent<AttackSpriteComponent>().getSrcRectReference(), e->getComponent<AttackSpriteComponent>().getDestRectReference(), (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
-					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
+					//cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
 				//rysowanie rogow ataku (tez debbug)
@@ -137,9 +139,6 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				}*/
 			}
 		}
-
-		//rysowanie hitboxa jesli nie ma sprite'a
-		if(!e->hasComponent<SpriteComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 0);
 	}
 }
 
@@ -217,7 +216,7 @@ void Systems::collisionSystem(Manager& manager)
 		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
-			Uint32 cooldown = 500;
+			Uint32 cooldown = 400;
 
 			SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners(); // 4 rogi po obrocie
 

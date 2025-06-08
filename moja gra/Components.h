@@ -43,6 +43,11 @@ private:
 
 	SDL_Rect srcRect; //prostokat ktory rysujemy
 	SDL_Rect destRect; //prostokat gdzie rysujemy
+
+	map<string, vector<string>> assets;
+
+	int currentFrame = -1, allFrames = 0, frameTime = 0;
+	Uint32 lastFrameTime = 0;
 public:
 	SpriteComponent()
 	{
@@ -87,6 +92,26 @@ public:
 		texture = NULL;
 
 		texture = SDL_CreateTextureFromSurface(ren, surface);
+	}
+
+	void addElementOfAssets(string key, vector<string> links)
+	{
+		assets[key] = links;
+	}
+
+	void changeAsset(string key, int frames, int frameTime, SDL_Renderer* ren, Uint32 actualFrameTime = SDL_GetTicks())
+	{
+		allFrames = frames;
+		this->frameTime = frameTime;
+		if (actualFrameTime - lastFrameTime >= frameTime)
+		{
+			currentFrame++;
+			if (currentFrame >= allFrames) currentFrame = 0;
+			lastFrameTime = actualFrameTime;
+
+			setSurface(IMG_Load(assets[key][currentFrame].c_str()));
+			createTexture(ren);
+		}
 	}
 
 	SDL_Surface* getSurface() { return surface; }

@@ -1,4 +1,5 @@
-﻿  Components.cpp
-  game.cpp
-  Generowanie kodu...
+﻿  game.cpp
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(106,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „game.cpp”)
+  
   moja gra.vcxproj -> C:\Users\Xrejg\Desktop\moja gra\x64\Debug\moja gra.exe

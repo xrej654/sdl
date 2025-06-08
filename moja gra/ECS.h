@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <bitset>
 #include <array>
+#include <map>
 #include "SDL.h"
 #include "AlgorithSAT.h"
 
