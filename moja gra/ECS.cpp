@@ -90,9 +90,9 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
 			e->getComponent<AttackSpriteComponent>().setRects({
-				e->getComponent<HitboxComponent>().getX() - 16.f,
+				e->getComponent<HitboxComponent>().getX() - 32.f,
 				e->getComponent<HitboxComponent>().getY() + e->getComponent<HitboxComponent>().getHeight(),
-				64,32
+				128,64
 				});
 
 			//rysowanie
@@ -113,7 +113,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
 				//robocze okreslenie zdjecia ataku -> animacja
-				e->getComponent<AttackSpriteComponent>().changeAsset("attack", 8, 50 ,ren);
+				e->getComponent<AttackSpriteComponent>().changeAsset("attack", 8, 51 ,ren);
 
 				//dobry punkt obrotu textury (jest dobrze dla rogow ale nie dla textury xd)
 				SDL_Point centerOfAPlayerWithAttackOffset =
@@ -149,7 +149,7 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 		if (e->hasComponent<AttackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
 		{
 			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
-			Uint32 cooldown = 500;
+			Uint32 cooldown = 600;
 
 			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) 
 				&& (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown)

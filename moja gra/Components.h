@@ -109,6 +109,8 @@ public:
 			if (currentFrame >= allFrames) currentFrame = 0;
 			lastFrameTime = actualFrameTime;
 
+			cout << currentFrame << allFrames <<endl;
+
 			setSurface(IMG_Load(assets[key][currentFrame].c_str()));
 			createTexture(ren);
 		}
