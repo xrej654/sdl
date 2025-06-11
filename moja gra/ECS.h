@@ -60,6 +60,8 @@ class Entity
 {
 private:
     bool active = true; // Status aktywnoœci jednostki
+    bool isPlayer = false;
+    bool isEnemy = false;
     vector<unique_ptr<Component>> components; // Wektor przechowuj¹cy komponenty danej jednostki
 
     ComponentArray componentArray; // Tablica wskaŸników na komponenty
@@ -70,6 +72,20 @@ public:
     {
         for (auto& c : components) c->update();
     }
+
+    void setIsPlayer()
+    {
+        isPlayer = true;
+    }
+
+    bool getIsPlayer() { return isPlayer; }
+
+    void setIsEnemy()
+    {
+        isEnemy = true;
+    }
+
+    bool getIsEnemy() { return isEnemy; }
 
     // Rysowanie wszystkich komponentów jednostki
     void draw()

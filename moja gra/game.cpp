@@ -52,6 +52,8 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 	auto& wall(manager.addEntity());
 	auto& player(manager.addEntity());
+	player.setIsPlayer();
+	wall.setIsEnemy();
 
 	player.addComponent<HitboxComponent>();
 	player.addComponent<VelocityComponent>();
@@ -61,9 +63,11 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<AttackSpriteComponent>();
 
 	wall.addComponent<HitboxComponent>();
+	wall.addComponent<VelocityComponent>();
+	wall.addComponent<DetectedRectComponent>();
 
 	//ustawianie potrzebnych zmiennych
-	player.getComponent<HitboxComponent>().setVariables(200.0f, 200.0f, 64.0f, 64.0f);
+	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
 	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
@@ -79,6 +83,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		});
 
 	wall.getComponent<HitboxComponent>().setVariables(100, 130, 64, 64);
+	wall.getComponent<DetectedRectComponent>().setVariables(100 - 224, 130 - 224, 512, 512);
+	wall.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+
 }
 
 Game::~Game()

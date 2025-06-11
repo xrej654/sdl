@@ -11,67 +11,111 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 	{
 		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<SpriteComponent>())
 		{
-			//okreslnie kierunku poruszania sie
-			float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
-			float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
+			if (e->getIsPlayer())
+			{
+				//okreslnie kierunku poruszania sie
+				float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
+				float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
 
-			string direction = to_string((int)dx) + to_string((int)dy);
+				string direction = to_string((int)dx) + to_string((int)dy);
 
-			//obliczanie drogi na klatke (na skosk jest sqrt z 2 a nie 1)
-			float magnitude = sqrt(dx * dx + dy * dy);
-			if (magnitude > 0)
-			{
-				dx /= magnitude;
-				dy /= magnitude;
-			}
+				//obliczanie drogi na klatke (na skosk jest sqrt z 2 a nie 1)
+				float magnitude = sqrt(dx * dx + dy * dy);
+				if (magnitude > 0)
+				{
+					dx /= magnitude;
+					dy /= magnitude;
+				}
 
-			//okreslanie szybkosci ruchu
-			e->getComponent<VelocityComponent>().setVels(dx * speed * deltaTime, dy * speed * deltaTime);
-			e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+				//okreslanie szybkosci ruchu
+				e->getComponent<VelocityComponent>().setVels(dx * speed * deltaTime, dy * speed * deltaTime);
+				e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 
-			//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
-			if (direction == "-1-1")
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
-			}
-			else if (direction == "-10") 
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
-			}
-			else if (direction == "-11")
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
-			}
-			else if (direction == "0-1")
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
-			}
-			else if (direction == "00") 
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w brak.png"));
-			}
-			else if (direction == "01")
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
-			}
-			else if (direction == "1-1") 
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
-			}
-			else if (direction == "10") 
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
-			}
-			else if (direction == "11") 
-			{
-				e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
-			}
+				//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
+				if (direction == "-1-1")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
+				}
+				else if (direction == "-10")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
+				}
+				else if (direction == "-11")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
+				}
+				else if (direction == "0-1")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
+				}
+				else if (direction == "00")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w brak.png"));
+				}
+				else if (direction == "01")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
+				}
+				else if (direction == "1-1")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
+				}
+				else if (direction == "10")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
+				}
+				else if (direction == "11")
+				{
+					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
+				}
 
-			e->getComponent<SpriteComponent>().createTexture(ren);
+				e->getComponent<SpriteComponent>().createTexture(ren);
 
-			if (!e->getComponent<SpriteComponent>().getTexture())
+				if (!e->getComponent<SpriteComponent>().getTexture())
+				{
+					cout << "Failed to create texture!" << endl;
+				}
+			}
+		}
+
+		if (!e->getIsPlayer())
+		{
+			for (auto& en : manager.getVectorOfEntities())
 			{
-				cout << "Failed to create texture!" << endl;
+				if (en->getIsPlayer() && e->hasComponent<DetectedRectComponent>())
+				{
+					if (SDL_HasIntersectionF(e->getComponent<DetectedRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
+					{
+						//cout << "Wykryto" << endl;
+						e->getComponent<DetectedRectComponent>().setLastDetectionTime();
+						e->getComponent<DetectedRectComponent>().setHasSthDetected(true);
+					}
+					else 
+					{
+						Uint32 currentTime = SDL_GetTicks();
+						if (e->getComponent<DetectedRectComponent>().getHasSthDetected() && currentTime - e->getComponent<DetectedRectComponent>().getLastDetectionTime() > 10000)
+						{
+							e->getComponent<DetectedRectComponent>().setHasSthDetected(false);
+						}
+					}
+				}
+
+				if (e->getComponent<DetectedRectComponent>().getHasSthDetected())
+				{
+					int dx = 0, dy = 0;
+
+					if (e->getComponent<HitboxComponent>().getX() < en->getComponent<HitboxComponent>().getX()) { dx = 1; }
+					else if (e->getComponent<HitboxComponent>().getX() > en->getComponent<HitboxComponent>().getX()) { dx = -1; }
+					else if (e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX()) { dx = 0; }
+
+					if (e->getComponent<HitboxComponent>().getY() < en->getComponent<HitboxComponent>().getY()) { dy = 1; }
+					else if (e->getComponent<HitboxComponent>().getY() > en->getComponent<HitboxComponent>().getY()) { dy = -1; }
+					else if (e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY()) { dy = 0; }
+
+					e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
+					e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+					e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+				}
 			}
 		}
 	}
@@ -82,7 +126,8 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		//rysowanie hitboxa jesli nie ma sprite'a
-		if (!e->hasComponent<SpriteComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 255, 0);
+		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
+		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
 
 		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
@@ -148,61 +193,63 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 	{
 		if (e->hasComponent<AttackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
 		{
-			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
-			Uint32 cooldown = 600;
+			if (e->getIsPlayer()){
+				//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
+				Uint32 cooldown = 600;
 
-			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) 
-				&& (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown)
-				&& !e->getComponent<AttackComponent>().getHasBeenPressed()) // Przyciœniêcie przycisku
-			{
-				// Oznaczenie, ¿e gracz zaatakowa³
-				e->getComponent<AttackComponent>().setHasBeenPressed(true);
-				e->getComponent<AttackComponent>().setWasAttacking(true);
-				cout << "ATAK" << endl;
-				e->getComponent<AttackComponent>().setLastHitTime(SDL_GetTicks());
-			}
-			else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)))
-			{
-				e->getComponent<AttackComponent>().setHasBeenPressed(false);
-			}
+				if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
+					&& (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown)
+					&& !e->getComponent<AttackComponent>().getHasBeenPressed()) // Przyciœniêcie przycisku
+				{
+					// Oznaczenie, ¿e gracz zaatakowa³
+					e->getComponent<AttackComponent>().setHasBeenPressed(true);
+					e->getComponent<AttackComponent>().setWasAttacking(true);
+					cout << "ATAK" << endl;
+					e->getComponent<AttackComponent>().setLastHitTime(SDL_GetTicks());
+				}
+				else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)))
+				{
+					e->getComponent<AttackComponent>().setHasBeenPressed(false);
+				}
 
-			if (e->getComponent<AttackComponent>().getWasAttacking())
-			{
-				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
-				e->getComponent<RotatedRectComponent>().setCenter(
-					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
-					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
-				);
+				if (e->getComponent<AttackComponent>().getWasAttacking())
+				{
+					//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+					e->getComponent<RotatedRectComponent>().setCenter(
+						e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
+						e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
+					);
 
-				//strona w ktora jest zwrocony atak
-				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
+					//strona w ktora jest zwrocony atak
+					e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), mouseX, mouseY);
 
-				//zmiana kata na radian
-				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
+					//zmiana kata na radian
+					e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
 
-				//okreslanie rogow
-				e->getComponent<AttackComponent>().setCorners(
+					//okreslanie rogow
+					e->getComponent<AttackComponent>().setCorners(
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<RotatedRectComponent>().rotate(
+							e->getComponent<AttackSpriteComponent>().getDestRect().x,
+							e->getComponent<AttackSpriteComponent>().getDestRect().y
+						),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<RotatedRectComponent>().rotate(
+							e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+							e->getComponent<AttackSpriteComponent>().getDestRect().y
+						),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-					),
+						e->getComponent<RotatedRectComponent>().rotate(
+							e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+							e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
+						),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-					)
-				);
+						e->getComponent<RotatedRectComponent>().rotate(
+							e->getComponent<AttackSpriteComponent>().getDestRect().x,
+							e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
+						)
+					);
+				}
 			}
 		}
 	}
@@ -244,11 +291,14 @@ void Systems::collisionSystem(Manager& manager)
 						}
 					}
 
-					//sprawdzanie kolizji dla poruszania sie
-					if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()) && e->hasComponent<VelocityComponent>())
+					if (!e->hasComponent<VelocityComponent>() && en->getIsEnemy())
 					{
-						cout << "Sciana" << endl;
-						e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						//sprawdzanie kolizji dla poruszania sie
+						if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
+						{
+							cout << "Sciana" << endl;
+							e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						}
 					}
 				}
 			}

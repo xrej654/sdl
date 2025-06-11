@@ -109,7 +109,7 @@ public:
 			if (currentFrame >= allFrames) currentFrame = 0;
 			lastFrameTime = actualFrameTime;
 
-			cout << currentFrame << allFrames <<endl;
+			//cout << currentFrame << allFrames <<endl;
 
 			setSurface(IMG_Load(assets[key][currentFrame].c_str()));
 			createTexture(ren);
@@ -164,7 +164,8 @@ public:
 
 	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
 	{
-		SDL_SetRenderDrawColor(ren, r, b, g, a);
+		SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(ren, r, g, b, a);
 
 		if (!SDL_RenderFillRectF(ren, &obj))
 		{
@@ -275,4 +276,26 @@ public:
 	}
 
 	SDL_Point getCenter() { return center; }
+};
+
+class DetectedRectComponent : public HitboxComponent 
+{
+private:
+	bool hasSthDetected = false;
+	Uint32 lastDetectionTime;
+public:
+	DetectedRectComponent() : HitboxComponent()
+	{
+		lastDetectionTime = 0;
+	}
+
+	void setHasSthDetected(bool value)
+	{
+		hasSthDetected = value;
+	}
+
+	void setLastDetectionTime() { lastDetectionTime = SDL_GetTicks(); }
+
+	bool getHasSthDetected() { return hasSthDetected; }
+	bool getLastDetectionTime() { return lastDetectionTime; }
 };
