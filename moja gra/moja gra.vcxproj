@@ -135,6 +135,7 @@
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="JBP.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>

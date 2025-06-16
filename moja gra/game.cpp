@@ -48,12 +48,12 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		cout << "Renderer creatred" << endl;
 	}
 
-	//stworzenie obiektu player i wall
+	//stworzenie obiektu player i enemy
 
-	auto& wall(manager.addEntity());
+	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());
 	player.setIsPlayer();
-	wall.setIsEnemy();
+	enemy.setIsEnemy();
 
 	player.addComponent<HitboxComponent>();
 	player.addComponent<VelocityComponent>();
@@ -62,9 +62,10 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<RotatedRectComponent>();
 	player.addComponent<AttackSpriteComponent>();
 
-	wall.addComponent<HitboxComponent>();
-	wall.addComponent<VelocityComponent>();
-	wall.addComponent<DetectedRectComponent>();
+	enemy.addComponent<HitboxComponent>();
+	enemy.addComponent<VelocityComponent>();
+	enemy.addComponent<DetectedRectComponent>();
+	enemy.addComponent<AttackRectComponent>();
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -82,9 +83,16 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		"assets/atackAnimation/8.png",
 		});
 
-	wall.getComponent<HitboxComponent>().setVariables(100, 130, 64, 64);
-	wall.getComponent<DetectedRectComponent>().setVariables(100 - 224, 130 - 224, 512, 512);
-	wall.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	enemy.getComponent<HitboxComponent>().setVariables(100, 130, 64, 64);
+	enemy.getComponent<DetectedRectComponent>().setVariables(100 - 224, 130 - 224, 512, 512);
+	enemy.getComponent<AttackRectComponent>().setVariables(100 - 32, 130 - 32, 128, 128);
+	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+
+	auto& wall(manager.addEntity());
+
+	wall.addComponent<HitboxComponent>();
+
+	wall.getComponent<HitboxComponent>().setVariables(700.f, 700.f, 64.f, 64.f);
 
 }
 

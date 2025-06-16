@@ -299,3 +299,25 @@ public:
 	bool getHasSthDetected() { return hasSthDetected; }
 	bool getLastDetectionTime() { return lastDetectionTime; }
 };
+
+class AttackRectComponent : public HitboxComponent
+{
+private:
+	bool hasAttacked = false;
+	Uint32 lastAttackTime;
+public:
+	AttackRectComponent() : HitboxComponent()
+	{ 
+		lastAttackTime = 0;
+	}
+
+	void setHasAttacked(bool value)
+	{
+		hasAttacked = value;
+	}
+
+	void setLastAttackTime() { lastAttackTime = SDL_GetTicks(); }
+
+	bool getHasAttacked() { return hasAttacked; }
+	Uint32 getLastAttackTime() { return lastAttackTime; }
+};

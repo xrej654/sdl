@@ -78,47 +78,69 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 			}
 		}
 
-		if (!e->getIsPlayer())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>())
 		{
-			for (auto& en : manager.getVectorOfEntities())
+			if (e->getIsEnemy())
 			{
-				if (en->getIsPlayer() && e->hasComponent<DetectedRectComponent>())
+				for (auto& en : manager.getVectorOfEntities())
 				{
-					if (SDL_HasIntersectionF(e->getComponent<DetectedRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
+					if (en->getIsPlayer())
 					{
-						//cout << "Wykryto" << endl;
-						e->getComponent<DetectedRectComponent>().setLastDetectionTime();
-						e->getComponent<DetectedRectComponent>().setHasSthDetected(true);
-					}
-					else 
-					{
-						Uint32 currentTime = SDL_GetTicks();
-						if (e->getComponent<DetectedRectComponent>().getHasSthDetected() && currentTime - e->getComponent<DetectedRectComponent>().getLastDetectionTime() > 10000)
+						//wykrywanie i podarzanie z graczem
+						if (e->hasComponent<DetectedRectComponent>())
 						{
-							e->getComponent<DetectedRectComponent>().setHasSthDetected(false);
+							if (SDL_HasIntersectionF(e->getComponent<DetectedRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
+							{
+								//cout << "Wykryto" << endl;
+								e->getComponent<DetectedRectComponent>().setLastDetectionTime();
+								e->getComponent<DetectedRectComponent>().setHasSthDetected(true);
+							}
+							else
+							{
+								Uint32 currentTime = SDL_GetTicks();
+								if (e->getComponent<DetectedRectComponent>().getHasSthDetected() && currentTime - e->getComponent<DetectedRectComponent>().getLastDetectionTime() > 10000)
+								{
+									e->getComponent<DetectedRectComponent>().setHasSthDetected(false);
+								}
+							}
+						}
+					}
+
+					//poruszanie bota
+					if (e->hasComponent<DetectedRectComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<AttackRectComponent>())
+					{
+						if (e->getComponent<DetectedRectComponent>().getHasSthDetected())
+						{
+							int dx = 0, dy = 0;
+
+							if (e->getComponent<HitboxComponent>().getX() < en->getComponent<HitboxComponent>().getX() - 10) { dx = 1; }
+							else if (e->getComponent<HitboxComponent>().getX() > en->getComponent<HitboxComponent>().getX() + 10) { dx = -1; }
+							else if (e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() + 10 ||
+								e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() - 10
+								) {
+								dx = 0;
+							}
+
+							if (e->getComponent<HitboxComponent>().getY() < en->getComponent<HitboxComponent>().getY() - 10) { dy = 1; }
+							else if (e->getComponent<HitboxComponent>().getY() > en->getComponent<HitboxComponent>().getY() + 10) { dy = -1; }
+							else if (e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() + 10 ||
+								e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() - 10
+								) {
+								dy = 0;
+							}
+
+							e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
+							//zmiana pozycji
+							e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+							e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+							e->getComponent<AttackRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+
 						}
 					}
 				}
-
-				if (e->getComponent<DetectedRectComponent>().getHasSthDetected())
-				{
-					int dx = 0, dy = 0;
-
-					if (e->getComponent<HitboxComponent>().getX() < en->getComponent<HitboxComponent>().getX()) { dx = 1; }
-					else if (e->getComponent<HitboxComponent>().getX() > en->getComponent<HitboxComponent>().getX()) { dx = -1; }
-					else if (e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX()) { dx = 0; }
-
-					if (e->getComponent<HitboxComponent>().getY() < en->getComponent<HitboxComponent>().getY()) { dy = 1; }
-					else if (e->getComponent<HitboxComponent>().getY() > en->getComponent<HitboxComponent>().getY()) { dy = -1; }
-					else if (e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY()) { dy = 0; }
-
-					e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
-					e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-					e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-				}
 			}
 		}
-	}
+}
 }
 
 void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
@@ -128,6 +150,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 		//rysowanie hitboxa jesli nie ma sprite'a
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
+		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
 
 		if (e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
 		{
@@ -193,7 +216,8 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 	{
 		if (e->hasComponent<AttackComponent>() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpriteComponent>())
 		{
-			if (e->getIsPlayer()){
+			if (e->getIsPlayer())
+			{
 				//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
 				Uint32 cooldown = 600;
 
@@ -252,6 +276,34 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 				}
 			}
 		}
+
+		if (e->hasComponent<HitboxComponent>() && e->getIsEnemy())
+		{
+			for (auto& en : manager.getVectorOfEntities())
+			{
+				if (en->getIsPlayer())
+				{
+					//wykrywanie i atakowanie gracza
+					if (e->hasComponent<AttackRectComponent>())
+					{
+						if (SDL_HasIntersectionF(e->getComponent<AttackRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()) && !e->getComponent<AttackRectComponent>().getHasAttacked())
+						{
+							cout << "atak" << endl;
+							e->getComponent<AttackRectComponent>().setLastAttackTime();
+							e->getComponent<AttackRectComponent>().setHasAttacked(true);
+						}
+						else
+						{
+							Uint32 currentTime = SDL_GetTicks();
+							if (e->getComponent<AttackRectComponent>().getHasAttacked() && currentTime - e->getComponent<AttackRectComponent>().getLastAttackTime() > 600)
+							{
+								e->getComponent<AttackRectComponent>().setHasAttacked(false);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -291,7 +343,7 @@ void Systems::collisionSystem(Manager& manager)
 						}
 					}
 
-					if (!e->hasComponent<VelocityComponent>() && en->getIsEnemy())
+					if (e->hasComponent<VelocityComponent>() && !en->getIsEnemy())
 					{
 						//sprawdzanie kolizji dla poruszania sie
 						if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
@@ -299,6 +351,22 @@ void Systems::collisionSystem(Manager& manager)
 							cout << "Sciana" << endl;
 							e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
 						}
+					}
+				}
+			}
+		}
+
+		for (auto& en : manager.getVectorOfEntities())
+		{
+			if (e != en)
+			{
+				if (e->hasComponent<VelocityComponent>() && !en->getIsEnemy())
+				{
+					//sprawdzanie kolizji dla poruszania sie
+					if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
+					{
+						cout << "Sciana" << endl;
+						e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
 					}
 				}
 			}
