@@ -294,10 +294,10 @@ public:
 		hasSthDetected = value;
 	}
 
-	void setLastDetectionTime() { lastDetectionTime = SDL_GetTicks(); }
+	void setLastDetectionTime(Uint32 time) { lastDetectionTime = time; }
 
 	bool getHasSthDetected() { return hasSthDetected; }
-	bool getLastDetectionTime() { return lastDetectionTime; }
+	Uint32 getLastDetectionTime() { return lastDetectionTime; }
 };
 
 class AttackRectComponent : public HitboxComponent
@@ -316,7 +316,7 @@ public:
 		hasAttacked = value;
 	}
 
-	void setLastAttackTime() { lastAttackTime = SDL_GetTicks(); }
+	void setLastAttackTime(Uint32 time) { lastAttackTime = time; }
 
 	bool getHasAttacked() { return hasAttacked; }
 	Uint32 getLastAttackTime() { return lastAttackTime; }

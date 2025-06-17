@@ -92,14 +92,17 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 							if (SDL_HasIntersectionF(e->getComponent<DetectedRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
 							{
 								//cout << "Wykryto" << endl;
-								e->getComponent<DetectedRectComponent>().setLastDetectionTime();
+								cout << (speed / 2) * deltaTime << (speed / 2) * deltaTime << endl;
+								e->getComponent<DetectedRectComponent>().setLastDetectionTime(SDL_GetTicks());
 								e->getComponent<DetectedRectComponent>().setHasSthDetected(true);
 							}
 							else
 							{
 								Uint32 currentTime = SDL_GetTicks();
-								if (e->getComponent<DetectedRectComponent>().getHasSthDetected() && currentTime - e->getComponent<DetectedRectComponent>().getLastDetectionTime() > 10000)
+								int cooldown = 3000;
+								if (e->getComponent<DetectedRectComponent>().getHasSthDetected() && currentTime - e->getComponent<DetectedRectComponent>().getLastDetectionTime() >= cooldown)
 								{
+									//cout << "Koniec \n";
 									e->getComponent<DetectedRectComponent>().setHasSthDetected(false);
 								}
 							}
@@ -140,7 +143,7 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 				}
 			}
 		}
-}
+	}
 }
 
 void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
@@ -289,7 +292,7 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 						if (SDL_HasIntersectionF(e->getComponent<AttackRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()) && !e->getComponent<AttackRectComponent>().getHasAttacked())
 						{
 							cout << "atak" << endl;
-							e->getComponent<AttackRectComponent>().setLastAttackTime();
+							e->getComponent<AttackRectComponent>().setLastAttackTime(SDL_GetTicks());
 							e->getComponent<AttackRectComponent>().setHasAttacked(true);
 						}
 						else
@@ -312,7 +315,7 @@ void Systems::collisionSystem(Manager& manager)
 	Uint32 currentTime = SDL_GetTicks();
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>() && e->getIsPlayer())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
 			Uint32 cooldown = 400;
@@ -322,51 +325,42 @@ void Systems::collisionSystem(Manager& manager)
 			//for na drugi obiekt aby sprawdzac kolizje miedzy dwoma obiektami
 			for (auto& en : manager.getVectorOfEntities())
 			{
-				if (e != en)
+				if (e != en && en->getIsEnemy())
 				{
-					if (e->hasComponent<AttackComponent>())
+					//sprawdzanie kolizji po obrotu strict'e pod atak
+					if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
+						(currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+						e->getComponent<AttackComponent>().getWasAttacking())
 					{
-						//sprawdzanie kolizji po obrotu strict'e pod atak
-						if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
-							(currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
-							e->getComponent<AttackComponent>().getWasAttacking())
-						{
-							currentTime = SDL_GetTicks();
-							cout << "Zadano obrazenia!" << endl;
-							e->getComponent<AttackComponent>().setWasAttacking(false);
-							e->getComponent<AttackComponent>().setLastHitTime(currentTime);
-						}
-						else if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
-								e->getComponent<AttackComponent>().getWasAttacking())
-						{
-							e->getComponent<AttackComponent>().setWasAttacking(false);
-						}
+						currentTime = SDL_GetTicks();
+						cout << "Zadano obrazenia!" << endl;
+						e->getComponent<AttackComponent>().setWasAttacking(false);
+						e->getComponent<AttackComponent>().setLastHitTime(currentTime);
 					}
-
-					if (e->hasComponent<VelocityComponent>() && !en->getIsEnemy())
+					else if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+							e->getComponent<AttackComponent>().getWasAttacking())
 					{
-						//sprawdzanie kolizji dla poruszania sie
-						if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
-						{
-							cout << "Sciana" << endl;
-							e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
-						}
+						e->getComponent<AttackComponent>().setWasAttacking(false);
 					}
 				}
 			}
 		}
 
-		for (auto& en : manager.getVectorOfEntities())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>())
 		{
-			if (e != en)
+			for (auto& en : manager.getVectorOfEntities())
 			{
-				if (e->hasComponent<VelocityComponent>() && !en->getIsEnemy())
+				if (e != en && (!en->getIsEnemy() && !en->getIsPlayer()))
 				{
-					//sprawdzanie kolizji dla poruszania sie
 					if (SDL_HasIntersectionF(e->getComponent<HitboxComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
 					{
-						cout << "Sciana" << endl;
+						cout << "Sciana\n";
 						e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						if(e->hasComponent<DetectedRectComponent>() && e->hasComponent<AttackRectComponent>())
+						{
+							e->getComponent<DetectedRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(),-e->getComponent<VelocityComponent>().getYVel());
+							e->getComponent<AttackRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						}
 					}
 				}
 			}

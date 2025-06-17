@@ -83,9 +83,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		"assets/atackAnimation/8.png",
 		});
 
-	enemy.getComponent<HitboxComponent>().setVariables(100, 130, 64, 64);
-	enemy.getComponent<DetectedRectComponent>().setVariables(100 - 224, 130 - 224, 512, 512);
-	enemy.getComponent<AttackRectComponent>().setVariables(100 - 32, 130 - 32, 128, 128);
+	enemy.getComponent<HitboxComponent>().setVariables(1100, 130, 64, 64);
+	enemy.getComponent<DetectedRectComponent>().setVariables(1100 - 224, 130 - 224, 512, 512);
+	enemy.getComponent<AttackRectComponent>().setVariables(1100 - 32, 130 - 32, 128, 128);
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 
 	auto& wall(manager.addEntity());
