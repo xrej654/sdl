@@ -107,37 +107,38 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 								}
 							}
 						}
-					}
 
-					//poruszanie bota
-					if (e->hasComponent<DetectedRectComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<AttackRectComponent>())
-					{
-						if (e->getComponent<DetectedRectComponent>().getHasSthDetected())
+
+						//poruszanie bota
+						if (e->hasComponent<DetectedRectComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<AttackRectComponent>())
 						{
-							int dx = 0, dy = 0;
+							if (e->getComponent<DetectedRectComponent>().getHasSthDetected())
+							{
+								int dx = 0, dy = 0;
 
-							if (e->getComponent<HitboxComponent>().getX() < en->getComponent<HitboxComponent>().getX() - 10) { dx = 1; }
-							else if (e->getComponent<HitboxComponent>().getX() > en->getComponent<HitboxComponent>().getX() + 10) { dx = -1; }
-							else if (e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() + 10 ||
-								e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() - 10
-								) {
-								dx = 0;
+								if (e->getComponent<HitboxComponent>().getX() < en->getComponent<HitboxComponent>().getX() - 10) { dx = 1; }
+								else if (e->getComponent<HitboxComponent>().getX() > en->getComponent<HitboxComponent>().getX() + 10) { dx = -1; }
+								else if (e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() + 10 ||
+									e->getComponent<HitboxComponent>().getX() == en->getComponent<HitboxComponent>().getX() - 10
+									) {
+									dx = 0;
+								}
+
+								if (e->getComponent<HitboxComponent>().getY() < en->getComponent<HitboxComponent>().getY() - 10) { dy = 1; }
+								else if (e->getComponent<HitboxComponent>().getY() > en->getComponent<HitboxComponent>().getY() + 10) { dy = -1; }
+								else if (e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() + 10 ||
+									e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() - 10
+									) {
+									dy = 0;
+								}
+
+								e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
+								//zmiana pozycji
+								e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+								e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+								e->getComponent<AttackRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+
 							}
-
-							if (e->getComponent<HitboxComponent>().getY() < en->getComponent<HitboxComponent>().getY() - 10) { dy = 1; }
-							else if (e->getComponent<HitboxComponent>().getY() > en->getComponent<HitboxComponent>().getY() + 10) { dy = -1; }
-							else if (e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() + 10 ||
-								e->getComponent<HitboxComponent>().getY() == en->getComponent<HitboxComponent>().getY() - 10
-								) {
-								dy = 0;
-							}
-
-							e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
-							//zmiana pozycji
-							e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-							e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-							e->getComponent<AttackRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-
 						}
 					}
 				}
