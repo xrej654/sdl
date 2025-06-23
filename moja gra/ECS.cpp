@@ -92,7 +92,6 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 							if (SDL_HasIntersectionF(e->getComponent<DetectedRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()))
 							{
 								//cout << "Wykryto" << endl;
-								cout << (speed / 2) * deltaTime << (speed / 2) * deltaTime << endl;
 								e->getComponent<DetectedRectComponent>().setLastDetectionTime(SDL_GetTicks());
 								e->getComponent<DetectedRectComponent>().setHasSthDetected(true);
 							}
@@ -337,6 +336,16 @@ void Systems::collisionSystem(Manager& manager)
 						cout << "Zadano obrazenia!" << endl;
 						e->getComponent<AttackComponent>().setWasAttacking(false);
 						e->getComponent<AttackComponent>().setLastHitTime(currentTime);
+						float valueOfKnonckback = 60;
+
+						float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+
+						float x = cos(angle * M_PI / 180);
+						float y = sin(angle * M_PI / 180);
+						
+						en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+						en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+						en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
 					}
 					else if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
 							e->getComponent<AttackComponent>().getWasAttacking())
