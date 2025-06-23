@@ -2,8 +2,6 @@
 #include "Game.h"
 #include <iostream>
 
-using namespace std;
-
 int main(int argc, char* argv[])
 {
 	//utworzenie obiektu klasy 'Game' w niej sa wszystkie metody odgrywajace w grze

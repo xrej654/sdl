@@ -1,10 +1,7 @@
 #include "Game.h"
-#include "Player.h"
 #include "ECS.h"
 #include "Components.h"
 #include <cmath>
-
-using namespace std;
 
 //tworzenie Obiektu Manager
 Manager manager;
@@ -20,11 +17,11 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	}
 	else
 	{
-		cout << "Initializing..." << endl;
+		std::cout << "Initializing..." << std::endl;
 	}
 
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-		cout << "SDL_image initialization failed: " << IMG_GetError() << endl;
+		std::cout << "SDL_image initialization failed: " << IMG_GetError() << std::endl;
 	}
 
 	window = SDL_CreateWindow(title, xpos, ypos, witdh, height, fullscreen);
@@ -34,7 +31,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	}
 	else
 	{
-		cout << "Window creatred" << endl;
+		std::cout << "Window creatred" << std::endl;
 	}
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -45,7 +42,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	}
 	else
 	{
-		cout << "Renderer creatred" << endl;
+		std::cout << "Renderer creatred" << std::endl;
 	}
 
 	//stworzenie obiektu player i enemy
@@ -66,6 +63,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.addComponent<VelocityComponent>();
 	enemy.addComponent<DetectedRectComponent>();
 	enemy.addComponent<AttackRectComponent>();
+	enemy.addComponent<AttackComponent>();
+	enemy.addComponent<AttackSpriteComponent>();
+	enemy.addComponent<RotatedRectComponent>();
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -87,8 +87,19 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.getComponent<DetectedRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
 	enemy.getComponent<AttackRectComponent>().setVariables(1100 - 32, 500 - 32, 128, 128);
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+	enemy.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
+		"assets/atackAnimation/1.png",
+		"assets/atackAnimation/2.png",
+		"assets/atackAnimation/3.png",
+		"assets/atackAnimation/4.png",
+		"assets/atackAnimation/5.png",
+		"assets/atackAnimation/6.png",
+		"assets/atackAnimation/7.png",
+		"assets/atackAnimation/8.png",
+		});
 
-	auto& wall(manager.addEntity());
+	auto& wall(manager.addObstacle());
 
 	wall.addComponent<HitboxComponent>();
 
@@ -107,7 +118,7 @@ void Game::handleEvents()
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			cout << "Closing window..." << endl;
+			std::cout << "Closing window..." << std::endl;
 			isRunning = false;
 			break;
 		}

@@ -47,12 +47,6 @@ class Component
 {
 public:
     Entity* entity; // Wskaünik do jednostki, do ktÛrej naleøy komponent
-
-    virtual void init() {} // Metoda inicjalizacji komponentu
-    virtual void update() {} // Metoda aktualizacji komponentu w kaødej klatce
-    virtual void draw() {} // Metoda rysowania komponentu
-
-    virtual ~Component() {} // Wirtualny destruktor
 };
 
 // Klasa jednostki (Entity), ktÛra posiada komponenty
@@ -67,12 +61,6 @@ private:
     ComponentArray componentArray; // Tablica wskaünikÛw na komponenty
     ComponentBitSet componentBitSet; // Mapa bitowa okreúlajπca obecnoúÊ komponentÛw
 public:
-    // Aktualizowanie wszystkich komponentÛw jednostki
-    void update()
-    {
-        for (auto& c : components) c->update();
-    }
-
     void setIsPlayer()
     {
         isPlayer = true;
@@ -86,12 +74,6 @@ public:
     }
 
     bool getIsEnemy() { return isEnemy; }
-
-    // Rysowanie wszystkich komponentÛw jednostki
-    void draw()
-    {
-        for (auto& c : components) c->draw();
-    }
 
     // Sprawdzanie aktywnoúci jednostki
     bool isActive() { return active; }
@@ -122,7 +104,6 @@ public:
         componentArray[getComponentTypeID<T>()] = c; // Przechowywanie wskaünika do komponentu
         componentBitSet[getComponentTypeID<T>()] = true; // Oznaczenie komponentu jako obecnego
 
-        c->init(); // Inicjalizacja komponentu
         return *c;
     }
 
@@ -165,19 +146,18 @@ class Manager
 private:
     Systems system;
     vector<unique_ptr<Entity>> entities; // Lista wszystkich jednostek
+    vector<unique_ptr<Entity>> obstacles; // Lista wszystkich jednostek
 public:
     // Aktualizacja jednostek i systemÛw
     void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
         system.update(manager, ren, deltaTime, speed, keys, mouseButtons, mouseX, mouseY);
-        for (auto& e : entities) e->update();
     }
 
     // Rysowanie jednostek i systemÛw
     void draw(Manager& manager, SDL_Renderer* ren)
     {
         system.renderingSystem(manager, ren);
-        for (auto& e : entities) e->draw();
     }
 
     // Usuwanie nieaktywnych jednostek
@@ -189,6 +169,13 @@ public:
                 return !mEntity->isActive();
             }),
             end(entities));
+
+        obstacles.erase(remove_if(begin(obstacles), end(obstacles),
+            [](const unique_ptr<Entity>& mEntity)
+            {
+                return !mEntity->isActive();
+            }),
+            end(obstacles));
     }
 
     // Tworzenie nowej jednostki
@@ -200,7 +187,17 @@ public:
         return *e;
     }
 
+    // Tworzenie nowej przeszkody
+    Entity& addObstacle()
+    {
+        Entity* e = new Entity();
+        unique_ptr<Entity> uPtr{ e };
+        obstacles.emplace_back(move(uPtr));
+        return *e;
+    }
+
     // Pobieranie listy jednostek
     vector<unique_ptr<Entity>>& getVectorOfEntities() { return entities; }
+    vector<unique_ptr<Entity>>& getVectorOfObstacles() { return obstacles; }
 
 };

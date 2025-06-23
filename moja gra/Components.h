@@ -28,14 +28,14 @@ public:
 		yVel = y;
 	}
 
-	float getXVel() { return xVel; }
-	float getYVel() { return yVel; }
+	float getXVel() const { return xVel; }
+	float getYVel() const { return yVel; }
 };
 
 //komponent okreslajacy texture entity
 class SpriteComponent : public Component
 {
-private:
+protected:
 	int widthOfPicture, heightOfPicture;
 
 	SDL_Texture* texture = NULL;
@@ -43,11 +43,6 @@ private:
 
 	SDL_Rect srcRect; //prostokat ktory rysujemy
 	SDL_Rect destRect; //prostokat gdzie rysujemy
-
-	map<string, vector<string>> assets;
-
-	int currentFrame = -1, allFrames = 0, frameTime = 0;
-	Uint32 lastFrameTime = 0;
 public:
 	SpriteComponent()
 	{
@@ -57,11 +52,16 @@ public:
 		destRect = { NULL, NULL, NULL, NULL };
 	}
 
-	void setSurface(SDL_Surface* surface = IMG_Load("assets/blad.png"))
+	~SpriteComponent() {
+		if (texture) SDL_DestroyTexture(texture);
+		if (surface) SDL_FreeSurface(surface);
+	}
+
+	void setSurface(SDL_Surface* surface)
 	{
 		if (!surface)
 		{
-			SDL_SetError("Error loading image with full path: %s\n", IMG_GetError());
+			surface = IMG_Load("assets/blad.png");
 		}
 
 		if (this->surface) SDL_FreeSurface(this->surface);
@@ -94,6 +94,28 @@ public:
 		texture = SDL_CreateTextureFromSurface(ren, surface);
 	}
 
+	SDL_Surface* getSurface() const { return surface; }
+	SDL_Texture* getTexture() const { return texture; }
+	int getWidth() const { return widthOfPicture; }
+	int getHeight() const { return heightOfPicture; }
+	SDL_Rect getSrcRect() const { return srcRect; }
+	SDL_Rect getDestRect() const { return destRect; }
+
+	SDL_Rect* getSrcRectReference() { return &srcRect; }
+	SDL_Rect* getDestRectReference() { return &destRect; }
+};
+
+class AnimationComponent : public SpriteComponent
+{
+private:
+	map<string, vector<string>> assets;
+
+	int currentFrame = -1, allFrames = 0, frameTime = 0;
+	Uint32 lastFrameTime = 0;
+public:
+	AnimationComponent() : SpriteComponent()
+	{ }
+
 	void addElementOfAssets(string key, vector<string> links)
 	{
 		assets[key] = links;
@@ -115,23 +137,13 @@ public:
 			createTexture(ren);
 		}
 	}
-
-	SDL_Surface* getSurface() { return surface; }
-	SDL_Texture* getTexture() { return texture; }
-	int getWidth() { return widthOfPicture; }
-	int getHeight() { return heightOfPicture; }
-	SDL_Rect getSrcRect() { return srcRect; }
-	SDL_Rect getDestRect() { return destRect; }
-
-	SDL_Rect* getSrcRectReference() { return &srcRect; }
-	SDL_Rect* getDestRectReference() { return &destRect; }
 };
 
 //komponnet potrzebny aby obiket mogl miec dwa sprite'y jeden do gracza drugi do ataku
-class AttackSpriteComponent : public SpriteComponent
+class AttackSpriteComponent : public AnimationComponent
 {
 public:
-	AttackSpriteComponent() : SpriteComponent() { }
+	AttackSpriteComponent() : AnimationComponent() { }
 };
 
 //komponent okreslajacy komponent
@@ -186,7 +198,7 @@ public:
 class AttackComponent : public Component
 {
 protected:
-	static Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
+	Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
 	bool wasAttacking, hasBeenPressed; //boole do ataku
 	float dx, dy, angle; //zmienne potrzebne do obrtu
 	SDL_FPoint corners[4]; //rogi ataku
@@ -199,10 +211,10 @@ public:
 		dx = 0;
 		dy = 0;
 		angle = 0;
-		corners[0] = {NULL, NULL};
-		corners[1] = {NULL, NULL};
-		corners[2] = {NULL, NULL};
-		corners[3] = {NULL, NULL};
+		corners[0] = {0.f, 0.f };
+		corners[1] = { 0.f, 0.f };
+		corners[2] = { 0.f, 0.f };
+		corners[3] = { 0.f, 0.f };
 	}
 
 	void setWasAttacking(bool attacking)
@@ -222,9 +234,7 @@ public:
 
 	void setDxAndDy(SDL_FRect obj, float mouseX, float mouseY)
 	{
-		float dx = (obj.x + (obj.w / 2)) - mouseX;
-		float dy = (obj.y + (obj.h / 2)) - mouseY;
-		angle = atan2(dy, dx);
+		angle = atan2((obj.y + (obj.h / 2)) - mouseY, (obj.x + (obj.w / 2)) - mouseX);
 	}
 
 	void setCorners(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4)
@@ -235,10 +245,10 @@ public:
 		corners[3] = p4;
 	}
 
-	bool getWasAttacking() { return wasAttacking; }
-	bool getHasBeenPressed() { return hasBeenPressed; }
-	Uint32 getLastHitTime() { return lastHitTime; }
-	float getAngle() { return angle; }
+	bool getWasAttacking() const { return wasAttacking; }
+	bool getHasBeenPressed() const { return hasBeenPressed; }
+	Uint32 getLastHitTime() const { return lastHitTime; }
+	float getAngle() const { return angle; }
 	SDL_FPoint* getCorners() { return corners; }
 };
 
@@ -251,7 +261,7 @@ private:
 public:
 	RotatedRectComponent()
 	{
-		center = { NULL, NULL };
+		center = { 0, 0 };
 		rad = 0.0f;
 	}
 
@@ -275,7 +285,7 @@ public:
 		this->rad = rad;
 	}
 
-	SDL_Point getCenter() { return center; }
+	SDL_Point getCenter() const { return center; }
 };
 
 class DetectedRectComponent : public HitboxComponent 
@@ -296,28 +306,15 @@ public:
 
 	void setLastDetectionTime(Uint32 time) { lastDetectionTime = time; }
 
-	bool getHasSthDetected() { return hasSthDetected; }
-	Uint32 getLastDetectionTime() { return lastDetectionTime; }
+	bool getHasSthDetected() const { return hasSthDetected; }
+	Uint32 getLastDetectionTime() const { return lastDetectionTime; }
 };
 
 class AttackRectComponent : public HitboxComponent
 {
-private:
-	bool hasAttacked = false;
-	Uint32 lastAttackTime;
 public:
 	AttackRectComponent() : HitboxComponent()
 	{ 
-		lastAttackTime = 0;
+		
 	}
-
-	void setHasAttacked(bool value)
-	{
-		hasAttacked = value;
-	}
-
-	void setLastAttackTime(Uint32 time) { lastAttackTime = time; }
-
-	bool getHasAttacked() { return hasAttacked; }
-	Uint32 getLastAttackTime() { return lastAttackTime; }
 };
