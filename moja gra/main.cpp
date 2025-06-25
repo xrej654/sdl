@@ -13,7 +13,6 @@ int main(int argc, char* argv[])
 
 	//zmienne do deltaTime
 	Uint32 lastTicks = SDL_GetTicks();
-	float speed = 100.f;
 	float deltaTime = 10.f;
 
 	//glowna petla gry
@@ -23,7 +22,7 @@ int main(int argc, char* argv[])
 		int mouseX, mouseY;
 		mouseButtons = SDL_GetMouseState(&mouseX, &mouseY);
 
-		game.update(keys, speed, deltaTime, mouseButtons, mouseX, mouseY);
+		game.update(keys, deltaTime, mouseButtons, mouseX, mouseY);
 
 		//obliczanie deltaTime
 		Uint32 currentTicks = SDL_GetTicks();

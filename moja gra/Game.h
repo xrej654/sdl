@@ -17,7 +17,7 @@ public:
 	Game(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen);
 	~Game();
 
-	void update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY);
+	void update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY);
 	void handleEvents();
 	void renderering(float mouseX, float mouseY);
 

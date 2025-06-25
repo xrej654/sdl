@@ -126,15 +126,15 @@ public:
     Systems() {}
 
     // Aktualizacja systemów
-    void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
+    void update(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
-        movementSystem(manager, deltaTime, speed, keys, ren);
+        movementSystem(manager, deltaTime, keys, ren);
         atackSystem(manager, mouseButtons, mouseX, mouseY);
         collisionSystem(manager);
     }
 
     // Deklaracje systemów obs³uguj¹cych ró¿ne mechaniki gry
-    static void movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren);
+    static void movementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
     static void renderingSystem(Manager& manager, SDL_Renderer* ren);
     static void atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
     static void collisionSystem(Manager& manager);
@@ -149,9 +149,10 @@ private:
     vector<unique_ptr<Entity>> obstacles; // Lista wszystkich jednostek
 public:
     // Aktualizacja jednostek i systemów
-    void update(Manager& manager, SDL_Renderer* ren, float deltaTime, float speed, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
+    void update(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
-        system.update(manager, ren, deltaTime, speed, keys, mouseButtons, mouseX, mouseY);
+        system.update(manager, ren, deltaTime, keys, mouseButtons, mouseX, mouseY);
+        refresh();
     }
 
     // Rysowanie jednostek i systemów

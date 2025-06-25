@@ -69,6 +69,11 @@ public:
 		this->surface = surface;
 	}
 
+	void setTexture(SDL_Texture* texture)
+	{
+		this->texture = texture;
+	}
+
 	void setRects(SDL_FRect rect)
 	{
 		srcRect = { 0, 0, widthOfPicture, heightOfPicture };  // Rozmiar oryginalnej tekstury
@@ -108,7 +113,7 @@ public:
 class AnimationComponent : public SpriteComponent
 {
 private:
-	map<string, vector<string>> assets;
+	map<string, vector<SDL_Texture*>> assets;
 
 	int currentFrame = -1, allFrames = 0, frameTime = 0;
 	Uint32 lastFrameTime = 0;
@@ -116,9 +121,9 @@ public:
 	AnimationComponent() : SpriteComponent()
 	{ }
 
-	void addElementOfAssets(string key, vector<string> links)
+	void addElementOfAssets(string key, vector<SDL_Texture*> textures)
 	{
-		assets[key] = links;
+		assets[key] = textures;
 	}
 
 	void changeAsset(string key, int frames, int frameTime, SDL_Renderer* ren, Uint32 actualFrameTime = SDL_GetTicks())
@@ -133,8 +138,7 @@ public:
 
 			//cout << currentFrame << allFrames <<endl;
 
-			setSurface(IMG_Load(assets[key][currentFrame].c_str()));
-			createTexture(ren);
+			setTexture(assets[key][currentFrame]);
 		}
 	}
 };
@@ -288,6 +292,7 @@ public:
 	SDL_Point getCenter() const { return center; }
 };
 
+//komponenty to hitboxow przeciwnika
 class DetectedRectComponent : public HitboxComponent 
 {
 private:
@@ -317,4 +322,78 @@ public:
 	{ 
 		
 	}
+};
+
+//komponenty statystyk
+class HealthComponent : public Component
+{
+private:
+	float hp, hpBoost, armourHp;
+public:
+	HealthComponent()
+	{
+		hp = 0.f;
+		hpBoost = 0.f;
+		armourHp = 0.f;
+	}
+
+	void setHp(float hp) { this->hp = hp + (hp * (hpBoost / 100)) + armourHp; }
+	void setHpBoost(float hpBoost) { this->hpBoost = hpBoost; }
+	void setArmourHp(float armourHp) { this->armourHp = armourHp; }
+	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
+	void addHp(float addedHp) { hp += addedHp; }
+
+	float getHp() const { return hp; }
+	float getHpBoost() const { return hpBoost; }
+	float getArmourHp() const { return armourHp; }
+};
+
+class DamageComponent : public Component
+{
+private:
+	float dmg, dmgBoost, weaponDmg, knockbackPower, knockbackResistance;
+public:
+	DamageComponent()
+	{
+		dmg = 0.f;
+		dmgBoost = 0.f;
+		weaponDmg = 0.f;
+		knockbackPower = 0.f;
+		knockbackResistance = 0.f;
+	}
+
+	void setDmg(float dmg) { this->dmg = dmg + (dmg * (dmgBoost / 100)) + weaponDmg; }
+	void setDmgBoost(float dmgBoost) { this->dmgBoost = dmgBoost; }
+	void setWeaponDmg(float weaponDmg) { this->weaponDmg = weaponDmg; }
+	void setKnockbackPower(float knockbackPower) { this->knockbackPower = knockbackPower - (knockbackPower * (knockbackResistance / 100)); }
+
+	void setKnockbackResistance(float knockbackResistance) 
+	{
+		if (knockbackResistance <= 100) this->knockbackResistance = knockbackResistance;
+		else this->knockbackResistance = 100;
+	}
+
+	float getDmg() const { return dmg; }
+	float getDmgBoost() const { return dmgBoost; }
+	float getWeaponDmg() const { return weaponDmg; }
+	float getKnockbackPower() const { return knockbackPower; }
+	float getKnockbackResistance() const { return knockbackResistance; }
+};
+
+class SpeedComponent : public Component
+{
+private:
+	float speed, speedBoost;
+public:
+	SpeedComponent()
+	{
+		speed = 0.f;
+		speedBoost = 0.f;
+	}
+
+	void setSpeed(float speed) { this->speed = speed; }
+	void setSpeedBoost(float speedBoost) { this->speedBoost = speedBoost; }
+
+	float getSpeed() const { return speed; }
+	float getSpeedBoost() const { return speedBoost; }
 };

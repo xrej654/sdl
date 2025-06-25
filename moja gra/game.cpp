@@ -58,6 +58,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<AttackComponent>();
 	player.addComponent<RotatedRectComponent>();
 	player.addComponent<AttackSpriteComponent>();
+	player.addComponent<HealthComponent>();
+	player.addComponent<DamageComponent>();
+	player.addComponent<SpeedComponent>();
 
 	enemy.addComponent<HitboxComponent>();
 	enemy.addComponent<VelocityComponent>();
@@ -66,6 +69,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.addComponent<AttackComponent>();
 	enemy.addComponent<AttackSpriteComponent>();
 	enemy.addComponent<RotatedRectComponent>();
+	enemy.addComponent<HealthComponent>();
+	enemy.addComponent<DamageComponent>();
+	enemy.addComponent<SpeedComponent>();
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -73,15 +79,20 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
 	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
-		"assets/atackAnimation/1.png",
-		"assets/atackAnimation/2.png",
-		"assets/atackAnimation/3.png",
-		"assets/atackAnimation/4.png",
-		"assets/atackAnimation/5.png",
-		"assets/atackAnimation/6.png",
-		"assets/atackAnimation/7.png",
-		"assets/atackAnimation/8.png",
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/4.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/5.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/6.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
 		});
+
+	player.getComponent<HealthComponent>().setHp(100.f);
+	player.getComponent<DamageComponent>().setDmg(20.f);
+	player.getComponent<SpeedComponent>().setSpeed(100.f);
+	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
 	enemy.getComponent<HitboxComponent>().setVariables(1100, 500, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
@@ -89,15 +100,20 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
 	enemy.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
-		"assets/atackAnimation/1.png",
-		"assets/atackAnimation/2.png",
-		"assets/atackAnimation/3.png",
-		"assets/atackAnimation/4.png",
-		"assets/atackAnimation/5.png",
-		"assets/atackAnimation/6.png",
-		"assets/atackAnimation/7.png",
-		"assets/atackAnimation/8.png",
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/4.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/5.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/6.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
 		});
+
+	enemy.getComponent<HealthComponent>().setHp(100.f);
+	enemy.getComponent<DamageComponent>().setDmg(10.f);
+	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
+	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
 	auto& wall(manager.addObstacle());
 
@@ -138,9 +154,9 @@ void Game::renderering(float mouseX, float mouseY)
 }
 
 //metoda zawieracjaca inne metody
-void Game::update(const Uint8* keys, float speed, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY)
+void Game::update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY)
 {
-	manager.update(manager, renderer, deltaTime, speed, keys, mouseButtons ,mouseX, mouseY );
+	manager.update(manager, renderer, deltaTime, keys, mouseButtons ,mouseX, mouseY );
 	renderering(mouseX, mouseY);
 	handleEvents();
 }

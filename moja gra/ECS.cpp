@@ -50,7 +50,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 //systemy polegaja na petli we vector'ze z entity'ami
 //po tym sa if'y sprawdzajacy czy sa komponenty aby nie bylo bledu ze wykorzystuje komponenty na obikie ktory nie ma tych komponentow
 
-void Systems::movementSystem(Manager& manager, float deltaTime, float speed, const Uint8* keys, SDL_Renderer* ren)
+void Systems::movementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -73,7 +73,7 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 				}
 
 				//okreslanie szybkosci ruchu
-				e->getComponent<VelocityComponent>().setVels(dx * speed * deltaTime, dy * speed * deltaTime);
+				e->getComponent<VelocityComponent>().setVels(dx * e->getComponent<SpeedComponent>().getSpeed() * deltaTime, dy * e->getComponent<SpeedComponent>().getSpeed() * deltaTime);
 				e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 
 				//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
@@ -175,7 +175,7 @@ void Systems::movementSystem(Manager& manager, float deltaTime, float speed, con
 									dy = 0;
 								}
 
-								e->getComponent<VelocityComponent>().setVels(dx * (speed / 2) * deltaTime, dy * (speed / 2) * deltaTime);
+								e->getComponent<VelocityComponent>().setVels(dx * e->getComponent<SpeedComponent>().getSpeed() * deltaTime, dy * e->getComponent<SpeedComponent>().getSpeed() * deltaTime);
 								//zmiana pozycji
 								e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 								e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
@@ -247,7 +247,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 
 				//obracanie ataku wzgledem myszy
 				if (SDL_RenderCopyEx(ren, e->getComponent<AttackSpriteComponent>().getTexture(), e->getComponent<AttackSpriteComponent>().getSrcRectReference(), e->getComponent<AttackSpriteComponent>().getDestRectReference(), (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
-					//cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
+					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 				}
 
 				//rysowanie rogow ataku (tez debbug)
@@ -312,8 +312,7 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 							e->getComponent<AttackComponent>().setWasAttacking(true);
 						}
 
-						handleCalculationOfAttacking(e, en->getComponent<HitboxComponent>().getX() + (en->getComponent<HitboxComponent>().getWidth() / 2), en->getComponent<HitboxComponent>().getY() + (en->getComponent<HitboxComponent>().getHeight() / 2));
-						
+						handleCalculationOfAttacking(e, en->getComponent<HitboxComponent>().getX() + (en->getComponent<HitboxComponent>().getWidth() / 2), en->getComponent<HitboxComponent>().getY() + (en->getComponent<HitboxComponent>().getHeight() / 2));	
 					}
 				}
 			}
@@ -343,30 +342,48 @@ void Systems::collisionSystem(Manager& manager)
 						(currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
 						e->getComponent<AttackComponent>().getWasAttacking())
 					{
+
 						currentTime = SDL_GetTicks();
-						cout << "Zadano obrazenia!" << endl;
+
 						e->getComponent<AttackComponent>().setWasAttacking(false);
 						e->getComponent<AttackComponent>().setLastHitTime(currentTime);
-						float valueOfKnonckback = 60;
 
-						float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+						cout << "Zadano obrazenia!" << endl;
 
-						float x = cos(angle * M_PI / 180);
-						float y = sin(angle * M_PI / 180);
-						
-						en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+						en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getDmg());
+						cout << en->getComponent<HealthComponent>().getHp() << endl;
 
-						if(en->getIsEnemy())
+						if (en->getComponent<HealthComponent>().getHp() <= 0)
 						{
-							en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
-							en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+							if (en->getIsPlayer()) cout << "Zginales \n";
+							else if (en->getIsEnemy()) cout << "Zabiles \n";
+
+							en->destroy();
+						}
+						else
+						{
+							float valueOfKnonckback = e->getComponent<DamageComponent>().getKnockbackPower();
+
+							float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+
+							float x = cos(angle * M_PI / 180);
+							float y = sin(angle * M_PI / 180);
+
+							en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+
+							if (en->getIsEnemy())
+							{
+								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+								en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+							}
 						}
 					}
-					else if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= 400) &&
-							e->getComponent<AttackComponent>().getWasAttacking())
-					{
-						e->getComponent<AttackComponent>().setWasAttacking(false);
-					}
+				}
+
+				if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= 400) &&
+					e->getComponent<AttackComponent>().getWasAttacking())
+				{
+					e->getComponent<AttackComponent>().setWasAttacking(false);
 				}
 			}
 		}
