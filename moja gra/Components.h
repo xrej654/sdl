@@ -329,6 +329,7 @@ class HealthComponent : public Component
 {
 private:
 	float hp, hpBoost, armourHp;
+	bool getHit = false;
 public:
 	HealthComponent()
 	{
@@ -342,9 +343,11 @@ public:
 	void setArmourHp(float armourHp) { this->armourHp = armourHp; }
 	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
 	void addHp(float addedHp) { hp += addedHp; }
+	void setGetHit(bool getHit) { this->getHit = getHit; }
 
 	float getHp() const { return hp; }
 	float getHpBoost() const { return hpBoost; }
+	bool getGetHit() const { return getHit; }
 	float getArmourHp() const { return armourHp; }
 };
 

@@ -131,6 +131,7 @@ public:
         movementSystem(manager, deltaTime, keys, ren);
         atackSystem(manager, mouseButtons, mouseX, mouseY);
         collisionSystem(manager);
+        knockbackSystem(manager);
     }
 
     // Deklaracje systemów obs³uguj¹cych ró¿ne mechaniki gry
@@ -138,6 +139,7 @@ public:
     static void renderingSystem(Manager& manager, SDL_Renderer* ren);
     static void atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
     static void collisionSystem(Manager& manager);
+    static void knockbackSystem(Manager& manager);
 };
 
 // Klasa zarz¹dzaj¹ca jednostkami i systemami

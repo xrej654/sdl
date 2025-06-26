@@ -323,6 +323,7 @@ void Systems::atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, f
 void Systems::collisionSystem(Manager& manager)
 {
 	Uint32 currentTime = SDL_GetTicks();
+
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
@@ -339,16 +340,15 @@ void Systems::collisionSystem(Manager& manager)
 				{
 					//sprawdzanie kolizji po obrotu strict'e pod atak
 					if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
-						(currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+						(currentTime - e->getComponent<AttackComponent>().getLastHitTime() > cooldown) &&
 						e->getComponent<AttackComponent>().getWasAttacking())
 					{
-
-						currentTime = SDL_GetTicks();
+						cout << "Zadano obrazenia!" << endl;
 
 						e->getComponent<AttackComponent>().setWasAttacking(false);
 						e->getComponent<AttackComponent>().setLastHitTime(currentTime);
 
-						cout << "Zadano obrazenia!" << endl;
+						currentTime = SDL_GetTicks();
 
 						en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getDmg());
 						cout << en->getComponent<HealthComponent>().getHp() << endl;
@@ -362,28 +362,23 @@ void Systems::collisionSystem(Manager& manager)
 						}
 						else
 						{
-							float valueOfKnonckback = e->getComponent<DamageComponent>().getKnockbackPower();
-
-							float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
-
-							float x = cos(angle * M_PI / 180);
-							float y = sin(angle * M_PI / 180);
-
-							en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
-
-							if (en->getIsEnemy())
-							{
-								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
-								en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
-							}
+							en->getComponent<HealthComponent>().setGetHit(true);
 						}
 					}
-				}
 
-				if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= 400) &&
-					e->getComponent<AttackComponent>().getWasAttacking())
+					if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+						e->getComponent<AttackComponent>().getWasAttacking())
+					{
+						e->getComponent<AttackComponent>().setWasAttacking(false);
+					}
+				}
+				else if(manager.getVectorOfEntities().size() == 1)
 				{
-					e->getComponent<AttackComponent>().setWasAttacking(false);
+					if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+						e->getComponent<AttackComponent>().getWasAttacking())
+					{
+						e->getComponent<AttackComponent>().setWasAttacking(false);
+					}
 				}
 			}
 		}
@@ -402,6 +397,43 @@ void Systems::collisionSystem(Manager& manager)
 						e->getComponent<AttackRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
 					}
 				}
+			}
+		}
+	}
+}
+
+void Systems::knockbackSystem(Manager& manager)
+{
+	for (auto& e : manager.getVectorOfEntities())
+	{
+		for (auto& en : manager.getVectorOfEntities())
+		{
+			static int actualCount = 0;
+			int maxCount = 15;
+
+			if(e != en && en->getComponent<HealthComponent>().getGetHit())
+			{
+				float valueOfKnonckback = e->getComponent<DamageComponent>().getKnockbackPower();
+
+				float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+
+				float x = cos(angle * M_PI / 180);
+				float y = sin(angle * M_PI / 180);
+
+				en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+
+				if (en->getIsEnemy())
+				{
+					en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+					en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+				}
+				actualCount++;
+			}
+			
+			if (actualCount >= maxCount)
+			{
+				actualCount = 0;
+				en->getComponent<HealthComponent>().setGetHit(false);
 			}
 		}
 	}
