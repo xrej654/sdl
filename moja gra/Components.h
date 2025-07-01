@@ -89,7 +89,7 @@ public:
 	void createTexture(SDL_Renderer* ren)
 	{
 		if (!surface) {
-			 cout << "Surface is NULL, cannot create texture!" <<  endl;
+			 //cout << "Surface is NULL, cannot create texture!" <<  endl;
 			return;
 		}
 

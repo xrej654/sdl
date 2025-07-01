@@ -95,7 +95,7 @@ void Systems::movementSystem(Manager& manager, float deltaTime, const Uint8* key
 				}
 				else if (direction == "00")
 				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w brak.png"));
+					e->getComponent<AnimationComponent>().changeAsset("no-move", 4, 800, ren);
 				}
 				else if (direction == "01")
 				{
@@ -114,9 +114,9 @@ void Systems::movementSystem(Manager& manager, float deltaTime, const Uint8* key
 					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
 				}
 
-				e->getComponent<SpriteComponent>().createTexture(ren);
+				if(direction != "00") e->getComponent<SpriteComponent>().createTexture(ren);
 
-				if (!e->getComponent<SpriteComponent>().getTexture())
+				if (!e->getComponent<SpriteComponent>().getTexture() && !e->getComponent<AnimationComponent>().getTexture())
 				{
 					cout << "Failed to create texture!" << endl;
 				}
@@ -204,19 +204,19 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
 
-		if (e->hasComponent<SpriteComponent>())
+		if (e->hasComponent<AnimationComponent>())
 		{
 			//ustawianie srcrect'ow i destrect'ow na texture
-			e->getComponent<SpriteComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
+			e->getComponent<AnimationComponent>().setRects(e->getComponent<HitboxComponent>().getHitbox());
 
 			//rysowanie
-			if (!e->getComponent<SpriteComponent>().getTexture())
+			if (!e->getComponent<AnimationComponent>().getTexture())
 			{
 				cout << "Texture is NULL, cannot render!" << endl;
 				return;
 			}
 
-			if (SDL_RenderCopy(ren, e->getComponent<SpriteComponent>().getTexture(), e->getComponent<SpriteComponent>().getSrcRectReference(), e->getComponent<SpriteComponent>().getDestRectReference()) != 0) {
+			if (SDL_RenderCopy(ren, e->getComponent<AnimationComponent>().getTexture(), e->getComponent<AnimationComponent>().getSrcRectReference(), e->getComponent<AnimationComponent>().getDestRectReference()) != 0) {
 				cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 			}
 		}

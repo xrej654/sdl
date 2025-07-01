@@ -61,6 +61,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<HealthComponent>();
 	player.addComponent<DamageComponent>();
 	player.addComponent<SpeedComponent>();
+	player.addComponent<AnimationComponent>();
 
 	enemy.addComponent<HitboxComponent>();
 	enemy.addComponent<VelocityComponent>();
@@ -76,8 +77,10 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
 	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
-	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
+	player.getComponent<SpriteComponent>().setWidthAndHeight(32, 32);
+	player.getComponent<AnimationComponent>().setWidthAndHeight(32, 32);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+
 	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
@@ -87,6 +90,13 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/6.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
+		});
+
+	player.getComponent<AnimationComponent>().addElementOfAssets("no-move", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/0.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/3.png")),
 		});
 
 	player.getComponent<HealthComponent>().setHp(100.f);

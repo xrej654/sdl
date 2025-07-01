@@ -16,6 +16,12 @@
     <Filter Include="Pliki zasobów\atackAnimation">
       <UniqueIdentifier>{aab62c77-1c98-4406-9d9c-e559a340900d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\Player">
+      <UniqueIdentifier>{0391b3c2-0279-4be1-a092-d98ef73dfa39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\no-move">
+      <UniqueIdentifier>{25e80482-aebf-4fa4-a6e4-d7029fca47da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,16 +30,10 @@
     <ClCompile Include="game.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="AlgorithSAT.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="ECS.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Components.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="JBP.cpp">
@@ -42,9 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="AlgorithSAT.h">
@@ -111,6 +108,18 @@
     </Image>
     <Image Include="assets\blad.png">
       <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="assets\Player\no-move\0.png">
+      <Filter>Pliki zasobów\Player\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\no-move\1.png">
+      <Filter>Pliki zasobów\Player\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\no-move\2.png">
+      <Filter>Pliki zasobów\Player\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\no-move\3.png">
+      <Filter>Pliki zasobów\Player\no-move</Filter>
     </Image>
   </ItemGroup>
 </Project>

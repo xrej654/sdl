@@ -153,6 +153,10 @@
     <Image Include="assets\atackAnimation\7.png" />
     <Image Include="assets\atackAnimation\8.png" />
     <Image Include="assets\blad.png" />
+    <Image Include="assets\Player\no-move\0.png" />
+    <Image Include="assets\Player\no-move\1.png" />
+    <Image Include="assets\Player\no-move\2.png" />
+    <Image Include="assets\Player\no-move\3.png" />
     <Image Include="assets\ruch w brak.png" />
     <Image Include="assets\ruch w dol.png" />
     <Image Include="assets\ruch w gore.png" />
