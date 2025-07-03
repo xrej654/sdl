@@ -128,18 +128,23 @@ public:
     // Aktualizacja systemów
     void update(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
-        movementSystem(manager, deltaTime, keys, ren);
-        atackSystem(manager, mouseButtons, mouseX, mouseY);
+        playerMovementSystem(manager, deltaTime, keys, ren);
+        enemyMovementSystem(manager, deltaTime, keys, ren);
+        playerAttackSystem(manager, mouseButtons, mouseX, mouseY);
+        enemyAttackSystem(manager, mouseButtons, mouseX, mouseY);
         collisionSystem(manager);
         knockbackSystem(manager);
     }
 
     // Deklaracje systemów obs³uguj¹cych ró¿ne mechaniki gry
-    static void movementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
     static void renderingSystem(Manager& manager, SDL_Renderer* ren);
-    static void atackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
     static void collisionSystem(Manager& manager);
     static void knockbackSystem(Manager& manager);
+    
+    static void playerMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
+    static void enemyMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
+    static void playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
+    static void enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
 };
 
 // Klasa zarz¹dzaj¹ca jednostkami i systemami
