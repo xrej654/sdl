@@ -270,7 +270,7 @@ public:
 	}
 
 	//funkcja lambdowa
-	SDL_FPoint rotate(float x, float y) {
+	SDL_FPoint rotate(float x, float y) const {
 		float dx = x - center.x;
 		float dy = y - center.y;
 		return {
@@ -424,4 +424,42 @@ public:
 	int getDy() const { return dy; }
 	int getDashCooldown() const { return dashCooldown; }
 	int getLastDashTime() const { return lastDashTime; }
+};
+
+class ShootingComponent : public Component
+{
+private:
+	Uint32 lastShootTime = 0;
+	float range = 200;
+	bool hasShooted, hasBeenPressed;
+	int dx, dy, cooldown;
+public:
+	ShootingComponent() 
+	{
+		hasBeenPressed = false;
+		hasShooted = false;
+		dx = 0;
+		dy = 0;
+		cooldown = 1;
+	}
+
+	void setLastShootTime(Uint32 time) { lastShootTime = time; }
+	void setRange(float range) { this->range = range; }
+	void setHasShooted(bool hasShooted) { this->hasShooted = hasShooted; }
+	void setHasBeenPressed(bool hasBeenPressed) { this->hasBeenPressed = hasBeenPressed; }
+	void setCooldown(int cooldown) { this->cooldown = cooldown; }
+
+	void calculateDirection(int angle)
+	{
+		dx = cos(angle * M_PI / 180);
+		dy = sin(angle * M_PI / 180);
+	}
+
+	Uint32 getLastShootTime() const { return lastShootTime; }
+	float getRange() const { return range; }
+	bool getHasShooted() const { return hasShooted; }
+	bool getHasBeenPressed() const { return hasBeenPressed; }
+	int getDx() const { return dx; }
+	int getDy() const { return dy; }
+	int getCooldown() const { return cooldown; }
 };

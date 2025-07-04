@@ -63,6 +63,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<SpeedComponent>();
 	player.addComponent<AnimationComponent>();
 	player.addComponent<DashComponent>();
+	player.addComponent<ShootingComponent>();
 
 	enemy.addComponent<HitboxComponent>();
 	enemy.addComponent<VelocityComponent>();

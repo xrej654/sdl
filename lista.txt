@@ -1,2 +1,9 @@
-zmienić wygląd obrazka ataku aby był większy lub powiekszyc destRect
-dodac assety gracza 9 kierunkow * 6 klatek (czaszka)
+zrobić asset strzaly
+dodac nowy komponent do sprite'u strzaly
+
+dodac funkcje do strzlelanie (okreslic pozycje dokad strzala bezie leciała) 
+{
+obrot assetu strzaly
+kolizja 
+poruszanie strzaly
+}

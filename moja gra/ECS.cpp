@@ -475,3 +475,26 @@ void Systems::dashSystem(Manager& manager)
 		}
 	}
 }
+
+void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons)
+{
+	for (auto& e : manager.getVectorOfEntities())
+	{
+		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && mouseButtons && SDL_BUTTON(SDL_BUTTON_RIGHT)
+			&& SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= e->getComponent<ShootingComponent>().getCooldown()
+			&& !e->getComponent<ShootingComponent>().getHasBeenPressed())
+		{
+			e->getComponent<ShootingComponent>().setHasBeenPressed(true);
+			e->getComponent<ShootingComponent>().setHasShooted(true);
+			e->getComponent<ShootingComponent>().setLastShootTime(SDL_GetTicks());
+
+			e->getComponent<ShootingComponent>().calculateDirection((e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180);
+
+			cout << "Strzal \n";
+		}
+		else if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && !(mouseButtons && SDL_BUTTON(SDL_BUTTON_RIGHT)))
+		{
+			e->getComponent<ShootingComponent>().setHasBeenPressed(false);
+		}
+	}
+}
