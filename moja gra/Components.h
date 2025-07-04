@@ -400,3 +400,28 @@ public:
 	float getSpeed() const { return speed; }
 	float getSpeedBoost() const { return speedBoost; }
 };
+
+class DashComponent : public Component
+{
+private:
+	bool isDashing = false;
+	float lenghtOfDash = 120.f;
+	int dx = 0, dy = 0;
+	int dashCooldown = 0;
+	Uint32 lastDashTime = 0;
+public:
+	DashComponent() {}
+
+	void setIsDashing(bool value) { isDashing = value; }
+	void setLenghtOfDash(float lenght) { lenghtOfDash = lenght; }
+	void setDirection(int x, int y) { dx = x; dy = y; }
+	void setDashCooldown(int time) { dashCooldown = time; }
+	void setLastDashTime(int time) { lastDashTime = time; }
+
+	bool getIsDashing() const { return isDashing; }
+	float getLenghtOfDash() const { return lenghtOfDash; }
+	int getDx() const { return dx; }
+	int getDy() const { return dy; }
+	int getDashCooldown() const { return dashCooldown; }
+	int getLastDashTime() const { return lastDashTime; }
+};

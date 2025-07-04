@@ -58,69 +58,79 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if(e->hasComponent<VelocityComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpeedComponent>() && e->hasComponent<SpriteComponent>() && e->hasComponent<AnimationComponent>() && e->getIsPlayer())
+		if(e->hasComponent<DashComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpeedComponent>() && e->hasComponent<SpriteComponent>() && e->hasComponent<AnimationComponent>() && e->getIsPlayer())
 		{
 				//okreslnie kierunku poruszania sie
 				float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
 				float dy = (keys[SDL_SCANCODE_S] - keys[SDL_SCANCODE_W]);
 
-				string direction = to_string((int)dx) + to_string((int)dy);
-
-				//obliczanie drogi na klatke (na skosk jest sqrt z 2 a nie 1)
-				float magnitude = sqrt(dx * dx + dy * dy);
-				if (magnitude > 0)
+				if (keys[SDL_SCANCODE_SPACE] && SDL_GetTicks() - e->getComponent<DashComponent>().getLastDashTime() >= e->getComponent<DashComponent>().getDashCooldown())
 				{
-					dx /= magnitude;
-					dy /= magnitude;
+					e->getComponent<DashComponent>().setIsDashing(true);
+					e->getComponent<DashComponent>().setLastDashTime(SDL_GetTicks());
+					e->getComponent<DashComponent>().setDirection(dx, dy);
 				}
 
-				//okreslanie szybkosci ruchu
-				e->getComponent<VelocityComponent>().setVels(dx * e->getComponent<SpeedComponent>().getSpeed() * deltaTime, dy * e->getComponent<SpeedComponent>().getSpeed() * deltaTime);
-				e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+				if(!e->getComponent<DashComponent>().getIsDashing())
+				{
+					string direction = to_string((int)dx) + to_string((int)dy);
 
-				//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
-				if (direction == "-1-1")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
-				}
-				else if (direction == "-10")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
-				}
-				else if (direction == "-11")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
-				}
-				else if (direction == "0-1")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
-				}
-				else if (direction == "00")
-				{
-					e->getComponent<AnimationComponent>().changeAsset("no-move", 4, 800, ren);
-				}
-				else if (direction == "01")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
-				}
-				else if (direction == "1-1")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
-				}
-				else if (direction == "10")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
-				}
-				else if (direction == "11")
-				{
-					e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
-				}
+					//obliczanie drogi na klatke (na skosk jest sqrt z 2 a nie 1)
+					float magnitude = sqrt(dx * dx + dy * dy);
+					if (magnitude > 0)
+					{
+						dx /= magnitude;
+						dy /= magnitude;
+					}
 
-				if (direction != "00") e->getComponent<SpriteComponent>().createTexture(ren);
+					//okreslanie szybkosci ruchu
+					e->getComponent<VelocityComponent>().setVels(dx * e->getComponent<SpeedComponent>().getSpeed() * deltaTime, dy * e->getComponent<SpeedComponent>().getSpeed() * deltaTime);
+					e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 
-				if (!e->getComponent<SpriteComponent>().getTexture() && !e->getComponent<AnimationComponent>().getTexture())
-				{
-					cout << "Failed to create texture!" << endl;
+					//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
+					if (direction == "-1-1")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
+					}
+					else if (direction == "-10")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
+					}
+					else if (direction == "-11")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
+					}
+					else if (direction == "0-1")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
+					}
+					else if (direction == "00")
+					{
+						e->getComponent<AnimationComponent>().changeAsset("no-move", 4, 700, ren);
+					}
+					else if (direction == "01")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
+					}
+					else if (direction == "1-1")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
+					}
+					else if (direction == "10")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
+					}
+					else if (direction == "11")
+					{
+						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
+					}
+
+					if (direction != "00") e->getComponent<SpriteComponent>().createTexture(ren);
+
+					if (!e->getComponent<SpriteComponent>().getTexture() && !e->getComponent<AnimationComponent>().getTexture())
+					{
+						cout << "Failed to create texture!" << endl;
+					}
 				}
 		}
 	}
@@ -438,6 +448,29 @@ void Systems::knockbackSystem(Manager& manager)
 						en->getComponent<HealthComponent>().setGetHit(false);
 					}
 				}
+			}
+		}
+	}
+}
+
+void Systems::dashSystem(Manager& manager)
+{
+	for (auto& e : manager.getVectorOfEntities())
+	{
+		if (e->getIsPlayer() && e->hasComponent<DashComponent>() && e->hasComponent<HitboxComponent>() && e->getComponent<DashComponent>().getIsDashing())
+		{
+			float lenght = e->getComponent<DashComponent>().getLenghtOfDash();
+
+			static int actualCount = 0;
+			int maxCount = 15;
+
+			e->getComponent<HitboxComponent>().setPosition(e->getComponent<DashComponent>().getDx() * lenght / maxCount, e->getComponent<DashComponent>().getDy() * lenght / maxCount);
+			actualCount++;
+
+			if (actualCount >= maxCount)
+			{
+				actualCount = 0;
+				e->getComponent<DashComponent>().setIsDashing(false);
 			}
 		}
 	}

@@ -62,6 +62,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<DamageComponent>();
 	player.addComponent<SpeedComponent>();
 	player.addComponent<AnimationComponent>();
+	player.addComponent<DashComponent>();
 
 	enemy.addComponent<HitboxComponent>();
 	enemy.addComponent<VelocityComponent>();
@@ -80,6 +81,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<SpriteComponent>().setWidthAndHeight(32, 32);
 	player.getComponent<AnimationComponent>().setWidthAndHeight(32, 32);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+	player.getComponent<DashComponent>().setDashCooldown(5000);
 
 	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
