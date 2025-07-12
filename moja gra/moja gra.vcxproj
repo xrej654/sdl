@@ -144,6 +144,7 @@
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\arrow.png" />
     <Image Include="assets\atackAnimation\1.png" />
     <Image Include="assets\atackAnimation\2.png" />
     <Image Include="assets\atackAnimation\3.png" />

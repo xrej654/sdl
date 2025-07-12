@@ -204,7 +204,7 @@ class AttackComponent : public Component
 protected:
 	Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
 	bool wasAttacking, hasBeenPressed; //boole do ataku
-	float dx, dy, angle; //zmienne potrzebne do obrtu
+	float angle; //zmienne potrzebne do obrtu
 	SDL_FPoint corners[4]; //rogi ataku
 public:
 	AttackComponent()
@@ -212,8 +212,6 @@ public:
 		wasAttacking = false;
 		hasBeenPressed = false;
 		lastHitTime = 0;
-		dx = 0;
-		dy = 0;
 		angle = 0;
 		corners[0] = {0.f, 0.f };
 		corners[1] = { 0.f, 0.f };
@@ -432,14 +430,14 @@ private:
 	Uint32 lastShootTime = 0;
 	float range = 200;
 	bool hasShooted, hasBeenPressed;
-	int dx, dy, cooldown;
+	int cooldown;
+	SDL_FPoint corners[4]; //rogi strzaly
+	float angle = 0;
 public:
 	ShootingComponent() 
 	{
 		hasBeenPressed = false;
 		hasShooted = false;
-		dx = 0;
-		dy = 0;
 		cooldown = 1;
 	}
 
@@ -449,17 +447,18 @@ public:
 	void setHasBeenPressed(bool hasBeenPressed) { this->hasBeenPressed = hasBeenPressed; }
 	void setCooldown(int cooldown) { this->cooldown = cooldown; }
 
-	void calculateDirection(int angle)
-	{
-		dx = cos(angle * M_PI / 180);
-		dy = sin(angle * M_PI / 180);
-	}
+	void setAngle(float angle) { this->angle = angle; }
 
 	Uint32 getLastShootTime() const { return lastShootTime; }
 	float getRange() const { return range; }
+	float getAngle() const { return angle; }
 	bool getHasShooted() const { return hasShooted; }
 	bool getHasBeenPressed() const { return hasBeenPressed; }
-	int getDx() const { return dx; }
-	int getDy() const { return dy; }
 	int getCooldown() const { return cooldown; }
+};
+
+class ShootingSpriteComponent : public SpriteComponent
+{
+public:
+	ShootingSpriteComponent() : SpriteComponent() {}
 };

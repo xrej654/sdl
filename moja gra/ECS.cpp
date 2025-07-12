@@ -8,7 +8,7 @@ template<typename E>
 //funkcja opymalizacji kodu (kod se powtarzal)
 static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 {
-	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackSpriteComponent>())
+	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<ShootingComponent>() &&  e->hasComponent<HitboxComponent>() && e->hasComponent<AttackSpriteComponent>() && e->hasComponent<ShootingSpriteComponent>())
 	{
 		if (e->getComponent<AttackComponent>().getWasAttacking())
 		{
@@ -45,6 +45,45 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 				e->getComponent<RotatedRectComponent>().rotate(
 					e->getComponent<AttackSpriteComponent>().getDestRect().x,
 					e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
+				)
+			);
+		}
+
+		if (e->getComponent<ShootingComponent>().getHasShooted())
+		{
+			//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+			e->getComponent<RotatedRectComponent>().setCenter(
+				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
+				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
+			);
+
+			//strona w ktora jest zwrocony atak
+			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+
+			//zmiana kata na radian
+			e->getComponent<RotatedRectComponent>().setRad((((e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180) * M_PI / 180) + M_PI / 2.0);
+
+			//okreslanie rogow
+			e->getComponent<AttackComponent>().setCorners(
+
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<ShootingSpriteComponent>().getDestRect().x,
+					e->getComponent<ShootingSpriteComponent>().getDestRect().y
+				),
+
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
+					e->getComponent<ShootingSpriteComponent>().getDestRect().y
+				),
+
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
+					e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
+				),
+
+				e->getComponent<RotatedRectComponent>().rotate(
+					e->getComponent<ShootingSpriteComponent>().getDestRect().x,
+					e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
 				)
 			);
 		}
@@ -268,6 +307,45 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 					SDL_RenderFillRect(ren, &pointRect);
 				}*/
 			}
+		
+			//rysowanie strzaly
+			if(e->hasComponent<ShootingComponent>())
+			{
+				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
+
+
+				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>())
+				{
+					e->getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
+
+					e->getComponent<ShootingSpriteComponent>().setRects({
+						e->getComponent<HitboxComponent>().getX() + 24,
+						e->getComponent<HitboxComponent>().getY() - 48,
+						16,48
+						});
+
+					SDL_Point centerOfAPlayerWithAttackOffset =
+					{
+						e->getComponent<RotatedRectComponent>().getCenter().x - e->getComponent<ShootingSpriteComponent>().getDestRect().x,
+						e->getComponent<RotatedRectComponent>().getCenter().y - e->getComponent<ShootingSpriteComponent>().getDestRect().y
+					};
+
+					//obracanie ataku wzgledem myszy
+					if (SDL_RenderCopyEx(ren, e->getComponent<ShootingSpriteComponent>().getTexture(), e->getComponent<ShootingSpriteComponent>().getSrcRectReference(), e->getComponent<ShootingSpriteComponent>().getDestRectReference(), (e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) - 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
+						cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
+					}
+
+					/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
+					for (int i = 0; i < 4; i++) {
+						SDL_Rect pointRect = {
+							(int)(attackCorners[i].x - 2),
+							(int)(attackCorners[i].y - 2),
+							4, 4
+						};
+						SDL_RenderFillRect(ren, &pointRect);
+					}*/
+				}
+			}
 		}
 	}
 }
@@ -476,11 +554,11 @@ void Systems::dashSystem(Manager& manager)
 	}
 }
 
-void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons)
+void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && mouseButtons && SDL_BUTTON(SDL_BUTTON_RIGHT)
+		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && (mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT)) && !(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
 			&& SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= e->getComponent<ShootingComponent>().getCooldown()
 			&& !e->getComponent<ShootingComponent>().getHasBeenPressed())
 		{
@@ -488,7 +566,9 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons)
 			e->getComponent<ShootingComponent>().setHasShooted(true);
 			e->getComponent<ShootingComponent>().setLastShootTime(SDL_GetTicks());
 
-			e->getComponent<ShootingComponent>().calculateDirection((e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180);
+			e->getComponent<ShootingComponent>().setAngle(e->getComponent<AttackComponent>().getAngle());
+
+			handleCalculationOfAttacking(e, mouseX, mouseY);
 
 			cout << "Strzal \n";
 		}

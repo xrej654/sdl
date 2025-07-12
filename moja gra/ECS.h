@@ -140,7 +140,7 @@ public:
     {
         playerMovementSystem(manager, deltaTime, keys, ren);
         playerAttackSystem(manager, mouseButtons, mouseX, mouseY);
-        playerShootingSystem(manager, mouseButtons);
+        playerShootingSystem(manager, mouseButtons, mouseX, mouseY);
         dashSystem(manager);
     }
 
@@ -158,7 +158,7 @@ public:
     static void dashSystem(Manager& manager);
     
     static void playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
-    static void playerShootingSystem(Manager& manager, Uint32 mouseButtons);
+    static void playerShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
     static void playerMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
 
     static void enemyMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);

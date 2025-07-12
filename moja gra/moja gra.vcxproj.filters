@@ -121,5 +121,8 @@
     <Image Include="assets\Player\no-move\3.png">
       <Filter>Pliki zasobów\Player\no-move</Filter>
     </Image>
+    <Image Include="assets\arrow.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
 </Project>
