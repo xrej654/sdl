@@ -4,7 +4,6 @@
 
 template<typename E>
 
-
 //funkcja opymalizacji kodu (kod se powtarzal)
 static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 {
@@ -53,8 +52,8 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 		{
 			//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
 			e->getComponent<RotatedRectComponent>().setCenter(
-				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
-				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
+				e->getComponent<ShootingComponent>().getStarterPos().x - 24 + (e->getComponent<HitboxComponent>().getWidth() / 2),
+				e->getComponent<ShootingComponent>().getStarterPos().y + 48 + (e->getComponent<HitboxComponent>().getHeight() / 2)
 			);
 
 			//strona w ktora jest zwrocony atak
@@ -64,7 +63,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 			e->getComponent<RotatedRectComponent>().setRad((((e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180) * M_PI / 180) + M_PI / 2.0);
 
 			//okreslanie rogow
-			e->getComponent<AttackComponent>().setCorners(
+			e->getComponent<ShootingComponent>().setCorners(
 
 				e->getComponent<RotatedRectComponent>().rotate(
 					e->getComponent<ShootingSpriteComponent>().getDestRect().x,
@@ -236,7 +235,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 	}
 }
 
-void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
+void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime)
 {
 	for (auto& e : manager.getVectorOfObstacles())
 	{
@@ -313,14 +312,18 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 			{
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
-
 				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>())
 				{
 					e->getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
 
+					float addedDistance = e->getComponent<ShootingComponent>().getSpeed() * deltaTime * 10;
+
+					static float newY = e->getComponent<ShootingComponent>().getStarterPos().y;
+					newY -= addedDistance;
+
 					e->getComponent<ShootingSpriteComponent>().setRects({
-						e->getComponent<HitboxComponent>().getX() + 24,
-						e->getComponent<HitboxComponent>().getY() - 48,
+						e->getComponent<ShootingComponent>().getStarterPos().x,
+						newY,
 						16,48
 						});
 
@@ -334,6 +337,14 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren)
 					if (SDL_RenderCopyEx(ren, e->getComponent<ShootingSpriteComponent>().getTexture(), e->getComponent<ShootingSpriteComponent>().getSrcRectReference(), e->getComponent<ShootingSpriteComponent>().getDestRectReference(), (e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) - 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
 						cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 					}
+
+					if (e->getComponent<ShootingComponent>().getStarterPos().y - newY>= e->getComponent<ShootingComponent>().getRange())
+					{
+						cout << "Koniec\n";
+						e->getComponent<ShootingComponent>().setHasShooted(false);
+						newY = e->getComponent<ShootingComponent>().getStarterPos().y;
+					}
+
 
 					/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
 					for (int i = 0; i < 4; i++) {
@@ -416,6 +427,7 @@ void Systems::collisionSystem(Manager& manager)
 			Uint32 cooldown = 400;
 
 			SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners(); // 4 rogi po obrocie
+			SDL_FPoint* arrowCorners = 0;
 
 			//for na drugi obiekt aby sprawdzac kolizje miedzy dwoma obiektami
 			for (auto& en : manager.getVectorOfEntities())
@@ -434,8 +446,8 @@ void Systems::collisionSystem(Manager& manager)
 
 						currentTime = SDL_GetTicks();
 
-						en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getDmg());
-						//cout << en->getComponent<HealthComponent>().getHp() << endl;
+						en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getMeleeDmg());
+						cout << en->getComponent<HealthComponent>().getHp() << endl;
 
 						if (en->getComponent<HealthComponent>().getHp() <= 0)
 						{
@@ -447,6 +459,37 @@ void Systems::collisionSystem(Manager& manager)
 						else
 						{
 							en->getComponent<HealthComponent>().setGetHit(true);
+						}
+					}
+					else if (e->hasComponent<ShootingComponent>())
+					{
+						SDL_FPoint* arrowCorners = e->getComponent<ShootingComponent>().getCorners(); // 4 rogi po obrocie
+
+						if (rotatedRectCollides(arrowCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
+							(currentTime - e->getComponent<ShootingComponent>().getLastShootTime() > cooldown) &&
+							e->getComponent<ShootingComponent>().getHasShooted())
+						{
+							cout << "Zadano obrazenia!" << endl;
+
+							e->getComponent<ShootingComponent>().setHasShooted(false);
+							e->getComponent<ShootingComponent>().setLastShootTime(currentTime);
+
+							currentTime = SDL_GetTicks();
+
+							en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getArrowDmg());
+							cout << en->getComponent<HealthComponent>().getHp() << endl;
+
+							if (en->getComponent<HealthComponent>().getHp() <= 0)
+							{
+								if (en->getIsPlayer()) cout << "Zginales \n";
+								else if (en->getIsEnemy()) cout << "Zabiles \n";
+
+								en->destroy();
+							}
+							else
+							{
+								en->getComponent<HealthComponent>().setGetShooted(true);
+							}
 						}
 					}
 
@@ -501,11 +544,16 @@ void Systems::knockbackSystem(Manager& manager)
 					static int actualCount = 0;
 					int maxCount = 15;
 
-					if (e != en && en->getComponent<HealthComponent>().getGetHit())
+					if (e != en && (en->getComponent<HealthComponent>().getGetHit() || en->getComponent<HealthComponent>().getGetShooted()))
 					{
 						float valueOfKnonckback = e->getComponent<DamageComponent>().getKnockbackPower();
 
 						float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+
+						if (en->getComponent<HealthComponent>().getGetShooted())
+						{
+							angle = (e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180;
+						}
 
 						float x = cos(angle * M_PI / 180);
 						float y = sin(angle * M_PI / 180);
@@ -524,6 +572,7 @@ void Systems::knockbackSystem(Manager& manager)
 					{
 						actualCount = 0;
 						en->getComponent<HealthComponent>().setGetHit(false);
+						en->getComponent<HealthComponent>().setGetShooted(false);
 					}
 				}
 			}
@@ -559,9 +608,11 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && (mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT)) && !(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
-			&& SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= e->getComponent<ShootingComponent>().getCooldown()
-			&& !e->getComponent<ShootingComponent>().getHasBeenPressed())
+			&& !e->getComponent<ShootingComponent>().getHasBeenPressed() && !e->getComponent<ShootingComponent>().getHasShooted())
 		{
+
+			e->getComponent<ShootingComponent>().setStarterPos(e->getComponent<HitboxComponent>().getX() + 24, e->getComponent<HitboxComponent>().getY() - 48);
+
 			e->getComponent<ShootingComponent>().setHasBeenPressed(true);
 			e->getComponent<ShootingComponent>().setHasShooted(true);
 			e->getComponent<ShootingComponent>().setLastShootTime(SDL_GetTicks());

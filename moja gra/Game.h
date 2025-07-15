@@ -19,7 +19,7 @@ public:
 
 	void update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY);
 	void handleEvents();
-	void renderering(float mouseX, float mouseY);
+	void renderering(float mouseX, float mouseY, float deltaTime);
 
 	bool running() { return isRunning; }
 	SDL_Renderer* getRenderer() { return renderer; }

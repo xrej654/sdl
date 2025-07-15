@@ -328,6 +328,7 @@ class HealthComponent : public Component
 private:
 	float hp, hpBoost, armourHp;
 	bool getHit = false;
+	bool getShooted = false;
 public:
 	HealthComponent()
 	{
@@ -342,28 +343,32 @@ public:
 	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
 	void addHp(float addedHp) { hp += addedHp; }
 	void setGetHit(bool getHit) { this->getHit = getHit; }
+	void setGetShooted(bool getShooted) { this->getShooted = getShooted; }
 
 	float getHp() const { return hp; }
 	float getHpBoost() const { return hpBoost; }
 	bool getGetHit() const { return getHit; }
+	bool getGetShooted() const { return getShooted; }
 	float getArmourHp() const { return armourHp; }
 };
 
 class DamageComponent : public Component
 {
 private:
-	float dmg, dmgBoost, weaponDmg, knockbackPower, knockbackResistance;
+	float arrowDmg, meleeDmg, dmgBoost, weaponDmg, knockbackPower, knockbackResistance;
 public:
 	DamageComponent()
 	{
-		dmg = 0.f;
+		arrowDmg = 0.f;
+		meleeDmg = 0.f;
 		dmgBoost = 0.f;
 		weaponDmg = 0.f;
 		knockbackPower = 0.f;
 		knockbackResistance = 0.f;
 	}
 
-	void setDmg(float dmg) { this->dmg = dmg + (dmg * (dmgBoost / 100)) + weaponDmg; }
+	void setMeleeDmg(float meleeDmg) { this->meleeDmg = meleeDmg + (meleeDmg * (dmgBoost / 100)) + weaponDmg; }
+	void setArrowDmg(float arrowDmg) { this->arrowDmg = arrowDmg + (arrowDmg * (dmgBoost / 100)) + weaponDmg; }
 	void setDmgBoost(float dmgBoost) { this->dmgBoost = dmgBoost; }
 	void setWeaponDmg(float weaponDmg) { this->weaponDmg = weaponDmg; }
 	void setKnockbackPower(float knockbackPower) { this->knockbackPower = knockbackPower - (knockbackPower * (knockbackResistance / 100)); }
@@ -374,7 +379,8 @@ public:
 		else this->knockbackResistance = 100;
 	}
 
-	float getDmg() const { return dmg; }
+	float getMeleeDmg() const { return meleeDmg; }
+	float getArrowDmg() const { return arrowDmg; }
 	float getDmgBoost() const { return dmgBoost; }
 	float getWeaponDmg() const { return weaponDmg; }
 	float getKnockbackPower() const { return knockbackPower; }
@@ -428,24 +434,44 @@ class ShootingComponent : public Component
 {
 private:
 	Uint32 lastShootTime = 0;
-	float range = 200;
+	float range = 400;
+	float speed = 30;
 	bool hasShooted, hasBeenPressed;
-	int cooldown;
 	SDL_FPoint corners[4]; //rogi strzaly
 	float angle = 0;
+	SDL_FPoint starterPos;
 public:
 	ShootingComponent() 
 	{
 		hasBeenPressed = false;
 		hasShooted = false;
-		cooldown = 1;
+		starterPos.x = 0;
+		starterPos.y = 0;
+		corners[0] = { 0.f, 0.f };
+		corners[1] = { 0.f, 0.f };
+		corners[2] = { 0.f, 0.f };
+		corners[3] = { 0.f, 0.f };
 	}
 
 	void setLastShootTime(Uint32 time) { lastShootTime = time; }
 	void setRange(float range) { this->range = range; }
 	void setHasShooted(bool hasShooted) { this->hasShooted = hasShooted; }
 	void setHasBeenPressed(bool hasBeenPressed) { this->hasBeenPressed = hasBeenPressed; }
-	void setCooldown(int cooldown) { this->cooldown = cooldown; }
+	void setSpeed(float speed) { this->speed = speed; }
+
+	void setStarterPos(float x, float y) 
+	{
+		starterPos.x = x;
+		starterPos.y = y;
+	}
+
+	void setCorners(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4)
+	{
+		corners[0] = p1;
+		corners[1] = p2;
+		corners[2] = p3;
+		corners[3] = p4;
+	}
 
 	void setAngle(float angle) { this->angle = angle; }
 
@@ -454,7 +480,9 @@ public:
 	float getAngle() const { return angle; }
 	bool getHasShooted() const { return hasShooted; }
 	bool getHasBeenPressed() const { return hasBeenPressed; }
-	int getCooldown() const { return cooldown; }
+	SDL_FPoint* getCorners() { return corners; }
+	float getSpeed() const { return speed; }
+	SDL_FPoint getStarterPos() const { return starterPos; }
 };
 
 class ShootingSpriteComponent : public SpriteComponent

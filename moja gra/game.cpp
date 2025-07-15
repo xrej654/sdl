@@ -105,7 +105,8 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		});
 
 	player.getComponent<HealthComponent>().setHp(100.f);
-	player.getComponent<DamageComponent>().setDmg(20.f);
+	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
+	player.getComponent<DamageComponent>().setArrowDmg(15.f);
 	player.getComponent<SpeedComponent>().setSpeed(100.f);
 	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
@@ -126,7 +127,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		});
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
-	enemy.getComponent<DamageComponent>().setDmg(10.f);
+	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
 	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
@@ -157,13 +158,13 @@ void Game::handleEvents()
 }
 
 //renderowanie wszytkiego
-void Game::renderering(float mouseX, float mouseY)
+void Game::renderering(float mouseX, float mouseY, float deltaTime)
 {
 	//okreslanie tla
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	manager.draw(manager, renderer);
+	manager.draw(manager, renderer, deltaTime);
 
 	SDL_RenderPresent(renderer);
 }
@@ -172,6 +173,6 @@ void Game::renderering(float mouseX, float mouseY)
 void Game::update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY)
 {
 	manager.update(manager, renderer, deltaTime, keys, mouseButtons ,mouseX, mouseY );
-	renderering(mouseX, mouseY);
+	renderering(mouseX, mouseY, deltaTime);
 	handleEvents();
 }
