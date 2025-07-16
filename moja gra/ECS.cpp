@@ -7,7 +7,7 @@ template<typename E>
 //funkcja opymalizacji kodu (kod se powtarzal)
 static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 {
-	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<ShootingComponent>() &&  e->hasComponent<HitboxComponent>() && e->hasComponent<AttackSpriteComponent>() && e->hasComponent<ShootingSpriteComponent>())
+	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackSpriteComponent>())
 	{
 		if (e->getComponent<AttackComponent>().getWasAttacking())
 		{
@@ -16,11 +16,11 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
 				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
 			);
-
 			//strona w ktora jest zwrocony atak
-			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
 
+			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
 			//zmiana kata na radian
+
 			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
 
 			//okreslanie rogow
@@ -48,43 +48,46 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 			);
 		}
 
-		if (e->getComponent<ShootingComponent>().getHasShooted())
+		if(e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>())
 		{
-			//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
-			e->getComponent<RotatedRectComponent>().setCenter(
-				e->getComponent<ShootingComponent>().getStarterPos().x - 24 + (e->getComponent<HitboxComponent>().getWidth() / 2),
-				e->getComponent<ShootingComponent>().getStarterPos().y + 48 + (e->getComponent<HitboxComponent>().getHeight() / 2)
-			);
+			if (e->getComponent<ShootingComponent>().getHasShooted())
+			{
+				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+				e->getComponent<RotatedRectComponent>().setCenter(
+					e->getComponent<ShootingComponent>().getStarterPos().x - 24 + (e->getComponent<HitboxComponent>().getWidth() / 2),
+					e->getComponent<ShootingComponent>().getStarterPos().y + 48 + (e->getComponent<HitboxComponent>().getHeight() / 2)
+				);
 
-			//strona w ktora jest zwrocony atak
-			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+				//strona w ktora jest zwrocony atak
+				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
 
-			//zmiana kata na radian
-			e->getComponent<RotatedRectComponent>().setRad((((e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180) * M_PI / 180) + M_PI / 2.0);
+				//zmiana kata na radian
+				e->getComponent<RotatedRectComponent>().setRad((((e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180) * M_PI / 180) + M_PI / 2.0);
 
-			//okreslanie rogow
-			e->getComponent<ShootingComponent>().setCorners(
+				//okreslanie rogow
+				e->getComponent<ShootingComponent>().setCorners(
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-					e->getComponent<ShootingSpriteComponent>().getDestRect().y
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-					e->getComponent<ShootingSpriteComponent>().getDestRect().y
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-					e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-					e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
-				)
-			);
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
+					)
+				);
+			}
 		}
 	}
 }
@@ -128,39 +131,39 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
 					if (direction == "-1-1")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
+						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
 					}
 					else if (direction == "-10")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo.png"));
+						e->getComponent<AnimationComponent>().changeAsset("left", 4, 250, ren);
 					}
 					else if (direction == "-11")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
+						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
 					}
 					else if (direction == "0-1")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w gore.png"));
+						e->getComponent<AnimationComponent>().changeAsset("up", 4, 250, ren);
 					}
 					else if (direction == "00")
 					{
-						e->getComponent<AnimationComponent>().changeAsset("no-move", 4, 700, ren);
+						e->getComponent<AnimationComponent>().changeAsset("no-move", 4, 500, ren);
 					}
 					else if (direction == "01")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w dol.png"));
+						e->getComponent<AnimationComponent>().changeAsset("down", 4, 250, ren);
 					}
 					else if (direction == "1-1")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
+						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
 					}
 					else if (direction == "10")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo.png"));
+						e->getComponent<AnimationComponent>().changeAsset("right", 4, 250, ren);
 					}
 					else if (direction == "11")
 					{
-						e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
+						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
 					}
 
 					if (direction != "00") e->getComponent<SpriteComponent>().createTexture(ren);

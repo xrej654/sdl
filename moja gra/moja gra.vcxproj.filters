@@ -22,6 +22,18 @@
     <Filter Include="Pliki zasobów\Player\no-move">
       <UniqueIdentifier>{25e80482-aebf-4fa4-a6e4-d7029fca47da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\Player\up">
+      <UniqueIdentifier>{9c4726a3-c753-475e-92de-e7e6cc3a867e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\down">
+      <UniqueIdentifier>{1df23269-48fe-402e-b2b2-20e64361bf6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\left">
+      <UniqueIdentifier>{7ab5cf2f-5c7a-420c-86f2-9b996464f491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\right">
+      <UniqueIdentifier>{f2e9451d-1fa3-4dc7-9bcd-f765f0c9c5e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,33 +67,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\ruch w brak.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w dol.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w gore.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w lewo dol.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w lewo gora.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w lewo.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w prawo dol.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w prawo gora.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="assets\ruch w prawo.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
     <Image Include="assets\atackAnimation\1.png">
       <Filter>Pliki zasobów\atackAnimation</Filter>
     </Image>
@@ -109,8 +94,8 @@
     <Image Include="assets\blad.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
-    <Image Include="assets\Player\no-move\0.png">
-      <Filter>Pliki zasobów\Player\no-move</Filter>
+    <Image Include="assets\arrow.png">
+      <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="assets\Player\no-move\1.png">
       <Filter>Pliki zasobów\Player\no-move</Filter>
@@ -121,8 +106,56 @@
     <Image Include="assets\Player\no-move\3.png">
       <Filter>Pliki zasobów\Player\no-move</Filter>
     </Image>
-    <Image Include="assets\arrow.png">
-      <Filter>Pliki zasobów</Filter>
+    <Image Include="assets\Player\no-move\4.png">
+      <Filter>Pliki zasobów\Player\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\up\1.png">
+      <Filter>Pliki zasobów\Player\up</Filter>
+    </Image>
+    <Image Include="assets\Player\up\2.png">
+      <Filter>Pliki zasobów\Player\up</Filter>
+    </Image>
+    <Image Include="assets\Player\up\3.png">
+      <Filter>Pliki zasobów\Player\up</Filter>
+    </Image>
+    <Image Include="assets\Player\up\4.png">
+      <Filter>Pliki zasobów\Player\up</Filter>
+    </Image>
+    <Image Include="assets\Player\down\1.png">
+      <Filter>Pliki zasobów\Player\down</Filter>
+    </Image>
+    <Image Include="assets\Player\down\2.png">
+      <Filter>Pliki zasobów\Player\down</Filter>
+    </Image>
+    <Image Include="assets\Player\down\3.png">
+      <Filter>Pliki zasobów\Player\down</Filter>
+    </Image>
+    <Image Include="assets\Player\down\4.png">
+      <Filter>Pliki zasobów\Player\down</Filter>
+    </Image>
+    <Image Include="assets\Player\left\1.png">
+      <Filter>Pliki zasobów\Player\left</Filter>
+    </Image>
+    <Image Include="assets\Player\left\2.png">
+      <Filter>Pliki zasobów\Player\left</Filter>
+    </Image>
+    <Image Include="assets\Player\left\3.png">
+      <Filter>Pliki zasobów\Player\left</Filter>
+    </Image>
+    <Image Include="assets\Player\left\4.png">
+      <Filter>Pliki zasobów\Player\left</Filter>
+    </Image>
+    <Image Include="assets\Player\right\1.png">
+      <Filter>Pliki zasobów\Player\right</Filter>
+    </Image>
+    <Image Include="assets\Player\right\2.png">
+      <Filter>Pliki zasobów\Player\right</Filter>
+    </Image>
+    <Image Include="assets\Player\right\3.png">
+      <Filter>Pliki zasobów\Player\right</Filter>
+    </Image>
+    <Image Include="assets\Player\right\4.png">
+      <Filter>Pliki zasobów\Player\right</Filter>
     </Image>
   </ItemGroup>
 </Project>
