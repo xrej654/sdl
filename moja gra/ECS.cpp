@@ -19,6 +19,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 			//strona w ktora jest zwrocony atak
 
 			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+
 			//zmiana kata na radian
 
 			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
@@ -319,14 +320,14 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 				{
 					e->getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
 
-					float addedDistance = e->getComponent<ShootingComponent>().getSpeed() * deltaTime * 10;
+					float arrowSpeed = e->getComponent<ShootingComponent>().getSpeed() * deltaTime * 10;
 
-					static float newY = e->getComponent<ShootingComponent>().getStarterPos().y;
-					newY -= addedDistance;
+					e->getComponent<ShootingComponent>().setReducedDistance(e->getComponent<ShootingComponent>().getReducedDistance() - arrowSpeed);
+
 
 					e->getComponent<ShootingSpriteComponent>().setRects({
 						e->getComponent<ShootingComponent>().getStarterPos().x,
-						newY,
+						e->getComponent<ShootingComponent>().getReducedDistance(),
 						16,48
 						});
 
@@ -341,11 +342,10 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 						cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
 					}
 
-					if (e->getComponent<ShootingComponent>().getStarterPos().y - newY>= e->getComponent<ShootingComponent>().getRange())
+					if (e->getComponent<ShootingComponent>().getStarterPos().y - e->getComponent<ShootingComponent>().getReducedDistance() >= e->getComponent<ShootingComponent>().getRange())
 					{
 						cout << "Koniec\n";
 						e->getComponent<ShootingComponent>().setHasShooted(false);
-						newY = e->getComponent<ShootingComponent>().getStarterPos().y;
 					}
 
 
@@ -610,25 +610,32 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && (mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT)) && !(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
-			&& !e->getComponent<ShootingComponent>().getHasBeenPressed() && !e->getComponent<ShootingComponent>().getHasShooted())
+		Uint32 cooldown = 1000;
+		if (e->hasComponent<ShootingComponent>() && e->getIsPlayer())
 		{
+			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT))
+				&& !e->getComponent<ShootingComponent>().getHasBeenPressed()
+				&& (SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= cooldown))
+			{
+				e->getComponent<ShootingComponent>().setStarterPos(e->getComponent<HitboxComponent>().getX() + 24, e->getComponent<HitboxComponent>().getY() - 48);
 
-			e->getComponent<ShootingComponent>().setStarterPos(e->getComponent<HitboxComponent>().getX() + 24, e->getComponent<HitboxComponent>().getY() - 48);
+				e->getComponent<ShootingComponent>().setHasBeenPressed(true);
+				e->getComponent<ShootingComponent>().setHasShooted(true);
+				e->getComponent<ShootingComponent>().setLastShootTime(SDL_GetTicks());
 
-			e->getComponent<ShootingComponent>().setHasBeenPressed(true);
-			e->getComponent<ShootingComponent>().setHasShooted(true);
-			e->getComponent<ShootingComponent>().setLastShootTime(SDL_GetTicks());
+				e->getComponent<ShootingComponent>().setReducedDistance(e->getComponent<ShootingComponent>().getStarterPos().y);
 
-			e->getComponent<ShootingComponent>().setAngle(e->getComponent<AttackComponent>().getAngle());
+				handleCalculationOfAttacking(e, mouseX, mouseY);
 
-			handleCalculationOfAttacking(e, mouseX, mouseY);
+				e->getComponent<ShootingComponent>().setAngle(e->getComponent<AttackComponent>().getAngle());
 
-			cout << "Strzal \n";
-		}
-		else if (e->hasComponent<ShootingComponent>() && e->getIsPlayer() && !(mouseButtons && SDL_BUTTON(SDL_BUTTON_RIGHT)))
-		{
-			e->getComponent<ShootingComponent>().setHasBeenPressed(false);
+
+				cout << "Strzal \n";
+			}
+			else if (!(mouseButtons && SDL_BUTTON(SDL_BUTTON_RIGHT)))
+			{
+				e->getComponent<ShootingComponent>().setHasBeenPressed(false);
+			}
 		}
 	}
 }

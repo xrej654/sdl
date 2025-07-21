@@ -440,6 +440,7 @@ private:
 	SDL_FPoint corners[4]; //rogi strzaly
 	float angle = 0;
 	SDL_FPoint starterPos;
+	float reducedDistance = 0;
 public:
 	ShootingComponent() 
 	{
@@ -458,6 +459,7 @@ public:
 	void setHasShooted(bool hasShooted) { this->hasShooted = hasShooted; }
 	void setHasBeenPressed(bool hasBeenPressed) { this->hasBeenPressed = hasBeenPressed; }
 	void setSpeed(float speed) { this->speed = speed; }
+	void setReducedDistance(float value) { reducedDistance = value; }
 
 	void setStarterPos(float x, float y) 
 	{
@@ -478,6 +480,7 @@ public:
 	Uint32 getLastShootTime() const { return lastShootTime; }
 	float getRange() const { return range; }
 	float getAngle() const { return angle; }
+	float getReducedDistance() const { return reducedDistance; }
 	bool getHasShooted() const { return hasShooted; }
 	bool getHasBeenPressed() const { return hasBeenPressed; }
 	SDL_FPoint* getCorners() { return corners; }
