@@ -322,6 +322,15 @@ public:
 	}
 };
 
+class ShootingRectComponent : public HitboxComponent
+{
+public:
+	ShootingRectComponent() : HitboxComponent()
+	{
+
+	}
+};
+
 //komponenty statystyk
 class HealthComponent : public Component
 {

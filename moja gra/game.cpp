@@ -76,6 +76,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.addComponent<HealthComponent>();
 	enemy.addComponent<DamageComponent>();
 	enemy.addComponent<SpeedComponent>();
+	//enemy.addComponent<ShootingComponent>();
+	enemy.addComponent<ShootingSpriteComponent>();
+	enemy.addComponent<ShootingRectComponent>();
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -83,7 +86,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
-	player.getComponent<DashComponent>().setDashCooldown(5000);
+	player.getComponent<DashComponent>().setDashCooldown(2500);
 	player.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
 
 	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
@@ -137,6 +140,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.getComponent<HitboxComponent>().setVariables(1100, 500, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
 	enemy.getComponent<AttackRectComponent>().setVariables(1100 - 32, 500 - 32, 128, 128);
+	enemy.getComponent<ShootingRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
 	enemy.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
@@ -149,8 +153,10 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
 		});
+	enemy.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
+	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
 	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
 	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
