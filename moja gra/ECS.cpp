@@ -231,8 +231,8 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 						//zmiana pozycji
 						e->getComponent<HitboxComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 						e->getComponent<DetectedRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-						e->getComponent<AttackRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
-						e->getComponent<ShootingRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+						if(e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
+						if(e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().setPosition(e->getComponent<VelocityComponent>().getXVel(), e->getComponent<VelocityComponent>().getYVel());
 					}
 				}
 			}
@@ -368,14 +368,15 @@ void Systems::playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mo
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<AttackComponent>() && e->getIsPlayer())
+		if (e->hasComponent<AttackComponent>() && e->hasComponent<ShootingComponent>() && e->getIsPlayer())
 		{
 			//zmienne potrzebne do limitowania atkow (brak spamienia co klatke)
 			Uint32 cooldown = 700;
 
 			if ((mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
 				&& (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown)
-				&& !e->getComponent<AttackComponent>().getHasBeenPressed()) // Przyciœniêcie przycisku
+				&& !e->getComponent<AttackComponent>().getHasBeenPressed()
+				&& !e->getComponent<ShootingComponent>().getHasShooted()) // Przyciœniêcie przycisku
 			{
 				// Oznaczenie, ¿e gracz zaatakowa³
 				e->getComponent<AttackComponent>().setHasBeenPressed(true);
@@ -566,9 +567,17 @@ void Systems::knockbackSystem(Manager& manager)
 
 						if (en->getIsEnemy() && en->hasComponent<AttackRectComponent>() && en->hasComponent<DetectedRectComponent>())
 						{
-							en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+							if (en->hasComponent<AttackRectComponent>())
+							{
+								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+							}
+
 							en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
-							en->getComponent<ShootingRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+							
+							if(en->hasComponent<ShootingRectComponent>())
+							{
+								en->getComponent<ShootingRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+							}
 						}
 						actualCount++;
 					}
