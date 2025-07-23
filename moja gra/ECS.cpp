@@ -349,7 +349,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 						e->getComponent<ShootingComponent>().setHasShooted(false);
 					}
 
-					SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
+					/*SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
 					for (int i = 0; i < 4; i++) {
 						SDL_Rect pointRect = {
 							(int)(attackCorners[i].x - 2),
@@ -357,7 +357,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 							4, 4
 						};
 						SDL_RenderFillRect(ren, &pointRect);
-					}
+					}*/
 				}
 			}
 		}
