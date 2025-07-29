@@ -34,6 +34,27 @@
     <Filter Include="Pliki zasobów\Player\right">
       <UniqueIdentifier>{f2e9451d-1fa3-4dc7-9bcd-f765f0c9c5e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\bases">
+      <UniqueIdentifier>{5dc3544f-eed2-4b0f-947e-0ee37b4885c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\bases\grass">
+      <UniqueIdentifier>{8e3bf1b5-e564-46f8-b0da-5b881be2143c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\bases\path">
+      <UniqueIdentifier>{c2ef8097-3640-4b24-91c2-46e94bc6b562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\obstacles">
+      <UniqueIdentifier>{528f5c25-8a62-44a7-b455-6b8f4c2d28ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\obstacles\stone">
+      <UniqueIdentifier>{eb4110b5-ab80-4de4-9286-86d954225390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\obstacles\trunk">
+      <UniqueIdentifier>{1a0f7ee1-874b-47c8-9f23-3a23f2c96883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\obstacles\leaves">
+      <UniqueIdentifier>{95201dad-8f94-4d4a-8806-42f33d877388}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -156,6 +177,90 @@
     </Image>
     <Image Include="assets\Player\right\4.png">
       <Filter>Pliki zasobów\Player\right</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\001.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\002.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\003.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\004.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\005.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\006.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\007.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\008.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\009.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\010.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\path\001.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\002.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\003.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\004.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\005.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\006.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\007.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\008.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\001.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\002.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\003.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\obstacles\trunk\001.png">
+      <Filter>Pliki zasobów\obstacles\trunk</Filter>
+    </Image>
+    <Image Include="assets\obstacles\trunk\002.png">
+      <Filter>Pliki zasobów\obstacles\trunk</Filter>
+    </Image>
+    <Image Include="assets\obstacles\trunk\003.png">
+      <Filter>Pliki zasobów\obstacles\trunk</Filter>
+    </Image>
+    <Image Include="assets\obstacles\leaves\001.png">
+      <Filter>Pliki zasobów\obstacles\leaves</Filter>
+    </Image>
+    <Image Include="assets\obstacles\leaves\002.png">
+      <Filter>Pliki zasobów\obstacles\leaves</Filter>
+    </Image>
+    <Image Include="assets\obstacles\leaves\004.png">
+      <Filter>Pliki zasobów\obstacles\leaves</Filter>
+    </Image>
+    <Image Include="assets\obstacles\leaves\005.png">
+      <Filter>Pliki zasobów\obstacles\leaves</Filter>
     </Image>
   </ItemGroup>
 </Project>
