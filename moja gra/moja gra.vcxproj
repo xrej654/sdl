@@ -136,12 +136,14 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="JBP.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlgorithSAT.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="mapy.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\arrow.png" />
@@ -171,6 +173,31 @@
     <Image Include="assets\bases\path\006.png" />
     <Image Include="assets\bases\path\007.png" />
     <Image Include="assets\bases\path\008.png" />
+    <Image Include="assets\bases\stone ruin\001.png" />
+    <Image Include="assets\bases\stone ruin\002.png" />
+    <Image Include="assets\bases\stone ruin\003.png" />
+    <Image Include="assets\bases\stone ruin\004.png" />
+    <Image Include="assets\bases\stone ruin\005.png" />
+    <Image Include="assets\bases\stone ruin\006.png" />
+    <Image Include="assets\bases\stone ruin\007.png" />
+    <Image Include="assets\bases\stone ruin\008.png" />
+    <Image Include="assets\bases\stone ruin\009.png" />
+    <Image Include="assets\bases\stone ruin\010.png" />
+    <Image Include="assets\bases\stone ruin\011.png" />
+    <Image Include="assets\bases\stone ruin\012.png" />
+    <Image Include="assets\bases\stone ruin\013.png" />
+    <Image Include="assets\bases\stone ruin\014.png" />
+    <Image Include="assets\bases\stone ruin\015.png" />
+    <Image Include="assets\bases\stone ruin\016.png" />
+    <Image Include="assets\bases\stone ruin\017.png" />
+    <Image Include="assets\bases\stone ruin\018.png" />
+    <Image Include="assets\bases\stone ruin\019.png" />
+    <Image Include="assets\bases\stone ruin\020.png" />
+    <Image Include="assets\bases\stone ruin\021.png" />
+    <Image Include="assets\bases\stone ruin\022.png" />
+    <Image Include="assets\bases\stone ruin\023.png" />
+    <Image Include="assets\bases\stone ruin\024.png" />
+    <Image Include="assets\bases\stone ruin\025.png" />
     <Image Include="assets\blad.png" />
     <Image Include="assets\obstacles\leaves\001.png" />
     <Image Include="assets\obstacles\leaves\002.png" />

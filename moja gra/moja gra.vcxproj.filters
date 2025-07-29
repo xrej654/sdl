@@ -55,6 +55,9 @@
     <Filter Include="Pliki zasobów\obstacles\leaves">
       <UniqueIdentifier>{95201dad-8f94-4d4a-8806-42f33d877388}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\bases\stone ruin">
+      <UniqueIdentifier>{e2313723-07d4-4209-b1de-38f787c403d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="JBP.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="mapy.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -84,6 +90,9 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="mapy.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,9 +187,6 @@
     <Image Include="assets\Player\right\4.png">
       <Filter>Pliki zasobów\Player\right</Filter>
     </Image>
-    <Image Include="assets\bases\grass\001.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
     <Image Include="assets\bases\grass\002.png">
       <Filter>Pliki zasobów\bases\grass</Filter>
     </Image>
@@ -261,6 +267,84 @@
     </Image>
     <Image Include="assets\obstacles\leaves\005.png">
       <Filter>Pliki zasobów\obstacles\leaves</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\001.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\001.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\002.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\003.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\004.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\005.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\006.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\007.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\008.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\009.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\010.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\011.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\012.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\013.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\014.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\015.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\016.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\017.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\018.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\019.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\020.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\021.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\022.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\023.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\024.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\stone ruin\025.png">
+      <Filter>Pliki zasobów\bases\stone ruin</Filter>
     </Image>
   </ItemGroup>
 </Project>

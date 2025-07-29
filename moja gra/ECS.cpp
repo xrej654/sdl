@@ -1,6 +1,7 @@
 #include "ECS.h"
 #include "Components.h"
 #include <string>
+#include "mapy.h"
 
 template<typename E>
 
@@ -242,6 +243,22 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 
 void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime)
 {
+	/*for (int i = 0; i < 24; i++) 
+	{
+		SDL_Rect mapSrcRect = { 0,0,32,32 };
+		SDL_Rect mapDestRect = { 0,0,64,64 };
+		for (int j = 0; j < 30; j++)
+		{
+			mapDestRect = { i * 64, j * 64,64,64 };
+			switch (mapa1[i][j])
+			{
+			case 26:
+				SDL_RenderCopy(ren, SDL_CreateTextureFromSurface(ren, IMG_Load("assets/bases/grass/001.png")), &mapSrcRect, &mapDestRect);
+				break;
+			}
+		}
+	}*/
+
 	for (auto& e : manager.getVectorOfObstacles())
 	{
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
