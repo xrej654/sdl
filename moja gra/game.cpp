@@ -11,15 +11,6 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	//inicjalizacja okna
 	isRunning = true;
 
-	if (!SDL_Init(SDL_INIT_EVERYTHING))
-	{
-		SDL_SetError("Something gone wrong: %s", SDL_GetError());
-	}
-	else
-	{
-		std::cout << "Initializing..." << std::endl;
-	}
-
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
 		std::cout << "SDL_image initialization failed: " << IMG_GetError() << std::endl;
 	}
@@ -46,6 +37,33 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	}
 
 	//stworzenie obiektu player i enemy
+
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/001.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/002.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/003.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/004.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/005.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/006.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/007.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/008.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/009.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/010.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/011.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/012.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/013.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/014.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/015.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/016.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/017.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/018.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/019.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/020.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/021.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/022.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/023.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/024.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/025.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/026.png")));
 
 	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());

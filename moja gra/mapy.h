@@ -2,4 +2,4 @@
 
 #include <iostream>
 
-extern int mapa1[24][30];
+extern int mapRuinBossFight[24][30];

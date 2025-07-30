@@ -174,6 +174,7 @@ private:
     Systems system;
     vector<unique_ptr<Entity>> entities; // Lista wszystkich obiektow
     vector<unique_ptr<Entity>> obstacles; // Lista wszystkich przeszkod
+    vector<SDL_Texture*> baseTextures;
 public:
     // Aktualizacja jednostek i systemów
     void update(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
@@ -224,8 +225,14 @@ public:
         return *e;
     }
 
+    void addTexture(SDL_Texture* tex)
+    {
+        baseTextures.push_back(tex);
+    }
+
     // Pobieranie listy jednostek
     vector<unique_ptr<Entity>>& getVectorOfEntities() { return entities; }
     vector<unique_ptr<Entity>>& getVectorOfObstacles() { return obstacles; }
+    vector<SDL_Texture*> getVectorOfBaseTextures() { return baseTextures; }
 
 };

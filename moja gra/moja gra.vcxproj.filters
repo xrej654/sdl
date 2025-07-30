@@ -187,57 +187,6 @@
     <Image Include="assets\Player\right\4.png">
       <Filter>Pliki zasobów\Player\right</Filter>
     </Image>
-    <Image Include="assets\bases\grass\002.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\003.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\004.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\005.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\006.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\007.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\008.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\009.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\010.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
-    </Image>
-    <Image Include="assets\bases\path\001.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\002.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\003.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\004.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\005.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\006.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\007.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
-    <Image Include="assets\bases\path\008.png">
-      <Filter>Pliki zasobów\bases\path</Filter>
-    </Image>
     <Image Include="assets\obstacles\stone\001.png">
       <Filter>Pliki zasobów\obstacles\stone</Filter>
     </Image>
@@ -267,9 +216,6 @@
     </Image>
     <Image Include="assets\obstacles\leaves\005.png">
       <Filter>Pliki zasobów\obstacles\leaves</Filter>
-    </Image>
-    <Image Include="assets\bases\grass\001.png">
-      <Filter>Pliki zasobów\bases\grass</Filter>
     </Image>
     <Image Include="assets\bases\stone ruin\001.png">
       <Filter>Pliki zasobów\bases\stone ruin</Filter>
@@ -345,6 +291,60 @@
     </Image>
     <Image Include="assets\bases\stone ruin\025.png">
       <Filter>Pliki zasobów\bases\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\026.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\027.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\028.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\029.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\030.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\031.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\032.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\033.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\034.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\grass\035.png">
+      <Filter>Pliki zasobów\bases\grass</Filter>
+    </Image>
+    <Image Include="assets\bases\path\036.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\037.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\038.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\039.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\040.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\041.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\042.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\bases\path\043.png">
+      <Filter>Pliki zasobów\bases\path</Filter>
     </Image>
   </ItemGroup>
 </Project>

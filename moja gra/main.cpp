@@ -2,10 +2,30 @@
 #include "Game.h"
 #include <iostream>
 
+using namespace std;
+
 int main(int argc, char* argv[])
 {
 	//utworzenie obiektu klasy 'Game' w niej sa wszystkie metody odgrywajace w grze
-	Game game("gra", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 1000, 0);
+
+	if (!SDL_Init(SDL_INIT_EVERYTHING))
+	{
+		SDL_SetError("Something gone wrong: %s", SDL_GetError());
+	}
+	else
+	{
+		std::cout << "Initializing..." << std::endl;
+	}
+
+	SDL_DisplayMode dm;
+	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
+		std::cout << "B³¹d: " << SDL_GetError() << std::endl;
+	}
+
+	int screenWidth = dm.w;
+	int screenHeight = dm.h;
+
+	Game game("gra", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, 0);
 
 	//zmienne potrzebne to klawiszy klawiatury i obsluga myszki
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
