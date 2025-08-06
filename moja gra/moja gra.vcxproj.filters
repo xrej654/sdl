@@ -58,6 +58,12 @@
     <Filter Include="Pliki zasobów\bases\stone ruin">
       <UniqueIdentifier>{e2313723-07d4-4209-b1de-38f787c403d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\obstacles\wall">
+      <UniqueIdentifier>{7d97ad6a-40e2-4238-9dad-34b3be4dd800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\obstacles\wall\stone ruin">
+      <UniqueIdentifier>{3c33da7a-a8cb-4bd3-a5ff-0c980dd61c81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -345,6 +351,30 @@
     </Image>
     <Image Include="assets\bases\path\043.png">
       <Filter>Pliki zasobów\bases\path</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\008.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\009.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\010.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\011.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\012.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\013.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\014.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\015.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
     </Image>
   </ItemGroup>
 </Project>

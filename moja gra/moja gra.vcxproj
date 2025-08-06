@@ -209,6 +209,14 @@
     <Image Include="assets\obstacles\trunk\001.png" />
     <Image Include="assets\obstacles\trunk\002.png" />
     <Image Include="assets\obstacles\trunk\003.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\008.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\009.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\010.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\011.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\012.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\013.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\014.png" />
+    <Image Include="assets\obstacles\wall\stone ruin\015.png" />
     <Image Include="assets\Player\down\1.png" />
     <Image Include="assets\Player\down\2.png" />
     <Image Include="assets\Player\down\3.png" />
