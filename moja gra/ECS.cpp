@@ -247,7 +247,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 	{
 		SDL_Rect mapSrcRect = { 0,0,32,32 };
 		SDL_Rect mapDestRect = { 0,0,64,64 };
-		for (int j = 0; j < 24; j++)
+		for (int j = 0; j < 17; j++)
 		{
 			mapDestRect = { i * 64, j * 64,64,64 };
 			switch (mapRuinBossFight[j][i]) {
@@ -360,6 +360,49 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 		}
 	}
 
+	for (int i = 0; i < 15; i++)
+	{
+		SDL_Rect mapSrcRect = { 0,0,32,32 };
+		SDL_Rect mapDestRect = { 0,0,128,128 };
+		for (int j = 0; j < 8; j++)
+		{
+			mapDestRect = { i * 128 - 32, j * 128 + 32,128,128 };
+
+			switch (mapRuinBossFight2[j][i]) {
+			case 1:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(35), &mapSrcRect, &mapDestRect);
+				break;
+			case 2:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(36), &mapSrcRect, &mapDestRect);
+				break;
+			case 3:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(37), &mapSrcRect, &mapDestRect);
+				break;
+			case 4:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(38), &mapSrcRect, &mapDestRect);
+				break;
+			case 5:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(39), &mapSrcRect, &mapDestRect);
+				break;
+			case 6:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(40), &mapSrcRect, &mapDestRect);
+				break;
+			case 7:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(41), &mapSrcRect, &mapDestRect);
+				break;
+			case 8:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(42), &mapSrcRect, &mapDestRect);
+				break;
+			case 9:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(43), &mapSrcRect, &mapDestRect);
+				break;
+			case 10:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(44), &mapSrcRect, &mapDestRect);
+				break;
+			}
+		}
+	}
+
 	for (auto& e : manager.getVectorOfObstacles())
 	{
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
@@ -368,7 +411,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		//rysowanie hitboxa jesli nie ma sprite'a
-		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
+		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255, 100);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().drawHitbox(ren, e->getComponent<ShootingRectComponent>().getHitbox(), 200, 0, 0, 130);

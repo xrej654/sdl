@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "ECS.h"
 #include "Components.h"
+#include "mapy.h"
 #include <cmath>
 
 //tworzenie Obiektu Manager
@@ -73,6 +74,16 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/033.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/034.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/035.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/008.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/016.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/019.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/022.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/027.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/028.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/041.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/042.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/049.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/053.png")));
 
 	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());
@@ -116,7 +127,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<DashComponent>().setDashCooldown(2500);
 	player.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
 
-	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", { 
+	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/3.png")),
@@ -188,12 +199,23 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
-	auto& wall(manager.addObstacle());
+	for (int i = 0; i < 15; i++)
+	{
+		SDL_Rect mapSrcRect = { 0,0,32,32 };
+		SDL_Rect mapDestRect = { 0,0,128,128 };
+		for (int j = 0; j < 8; j++)
+		{
+			mapDestRect = { i * 128 - 32, j * 128 + 32,128,128 };
+			if (mapRuinBossFight2[j][i] != 0)
+			{
+				auto& wall(manager.addObstacle());
 
-	wall.addComponent<HitboxComponent>();
+				wall.addComponent<HitboxComponent>();
 
-	wall.getComponent<HitboxComponent>().setVariables(700.f, 700.f, 64.f, 64.f);
-
+				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
+			}
+		}
+	}
 }
 
 Game::~Game()
@@ -209,6 +231,14 @@ void Game::handleEvents()
 		case SDL_QUIT:
 			std::cout << "Closing window..." << std::endl;
 			isRunning = false;
+			for (auto& obj : manager.getVectorOfEntities())
+			{
+				obj->destroy();
+			}
+			for(auto& obj : manager.getVectorOfObstacles())
+			{
+				obj->destroy();
+			}
 			break;
 		}
 	}
