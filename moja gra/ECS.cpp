@@ -329,6 +329,33 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			case 26:
 				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(25), &mapSrcRect, &mapDestRect);
 				break;
+			case 27:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(26), &mapSrcRect, &mapDestRect);
+				break;
+			case 28:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(27), &mapSrcRect, &mapDestRect);
+				break;
+			case 29:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(28), &mapSrcRect, &mapDestRect);
+				break;
+			case 30:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(29), &mapSrcRect, &mapDestRect);
+				break;
+			case 31:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(30), &mapSrcRect, &mapDestRect);
+				break;
+			case 32:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(31), &mapSrcRect, &mapDestRect);
+				break;
+			case 33:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(32), &mapSrcRect, &mapDestRect);
+				break;
+			case 34:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(33), &mapSrcRect, &mapDestRect);
+				break;
+			case 35:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(34), &mapSrcRect, &mapDestRect);
+				break;
 			}
 		}
 	}

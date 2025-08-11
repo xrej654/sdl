@@ -451,5 +451,53 @@
     <Image Include="assets\obstacles\wall\stone ruin\040.png">
       <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
     </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\041.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\042.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\043.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\044.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\045.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\046.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\047.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\048.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\049.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\050.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\051.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\052.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\053.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\054.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\055.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\wall\stone ruin\056.png">
+      <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
   </ItemGroup>
 </Project>

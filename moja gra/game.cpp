@@ -64,6 +64,15 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/024.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/025.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/026.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/027.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/028.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/029.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/030.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/031.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/032.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/033.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/034.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/035.png")));
 
 	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());
