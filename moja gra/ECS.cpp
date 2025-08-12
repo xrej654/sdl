@@ -399,13 +399,145 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			case 10:
 				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(44), &mapSrcRect, &mapDestRect);
 				break;
+			case 11:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(45), &mapSrcRect, &mapDestRect);
+				break;
+			case 12:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(46), &mapSrcRect, &mapDestRect);
+				break;
+			case 13:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(47), &mapSrcRect, &mapDestRect);
+				break;
+			case 14:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(48), &mapSrcRect, &mapDestRect);
+				break;
+			case 15:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(49), &mapSrcRect, &mapDestRect);
+				break;
+			case 16:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(50), &mapSrcRect, &mapDestRect);
+				break;
+			case 17:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(51), &mapSrcRect, &mapDestRect);
+				break;
+			case 18:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(52), &mapSrcRect, &mapDestRect);
+				break;
+			case 19:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(53), &mapSrcRect, &mapDestRect);
+				break;
+			case 20:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(54), &mapSrcRect, &mapDestRect);
+				break;
+			case 21:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(55), &mapSrcRect, &mapDestRect);
+				break;
+			case 22:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(56), &mapSrcRect, &mapDestRect);
+				break;
+			case 23:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(57), &mapSrcRect, &mapDestRect);
+				break;
+			case 24:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(58), &mapSrcRect, &mapDestRect);
+				break;
+			case 25:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(59), &mapSrcRect, &mapDestRect);
+				break;
+			case 26:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(60), &mapSrcRect, &mapDestRect);
+				break;
+			case 27:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(61), &mapSrcRect, &mapDestRect);
+				break;
+			case 28:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(62), &mapSrcRect, &mapDestRect);
+				break;
+			case 29:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(63), &mapSrcRect, &mapDestRect);
+				break;
+			case 30:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(64), &mapSrcRect, &mapDestRect);
+				break;
+			case 31:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(65), &mapSrcRect, &mapDestRect);
+				break;
+			case 32:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(66), &mapSrcRect, &mapDestRect);
+				break;
+			case 33:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(67), &mapSrcRect, &mapDestRect);
+				break;
+			case 34:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(68), &mapSrcRect, &mapDestRect);
+				break;
+			case 35:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(69), &mapSrcRect, &mapDestRect);
+				break;
+			case 36:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(70), &mapSrcRect, &mapDestRect);
+				break;
+			case 37:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(71), &mapSrcRect, &mapDestRect);
+				break;
+			case 38:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(72), &mapSrcRect, &mapDestRect);
+				break;
+			case 39:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(73), &mapSrcRect, &mapDestRect);
+				break;
+			case 40:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(74), &mapSrcRect, &mapDestRect);
+				break;
+			case 41:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(75), &mapSrcRect, &mapDestRect);
+				break;
+			case 42:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(76), &mapSrcRect, &mapDestRect);
+				break;
+			case 43:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(77), &mapSrcRect, &mapDestRect);
+				break;
+			case 44:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(78), &mapSrcRect, &mapDestRect);
+				break;
+			case 45:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(79), &mapSrcRect, &mapDestRect);
+				break;
+			case 46:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(80), &mapSrcRect, &mapDestRect);
+				break;
+			case 47:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(81), &mapSrcRect, &mapDestRect);
+				break;
+			case 48:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(82), &mapSrcRect, &mapDestRect);
+				break;
+			case 49:
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(83), &mapSrcRect, &mapDestRect);
+				break;
+			case 50:
+				mapDestRect = { i * 128, j * 128 + 32,64,64 };
+
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(84), &mapSrcRect, &mapDestRect);
+				break;
+			case 51:
+				mapDestRect = { i * 128, j * 128 + 32,64,64 };
+				
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(85), &mapSrcRect, &mapDestRect);
+				break;
+			case 52:
+				mapDestRect = { i * 128, j * 128 + 32,64,64 };
+				
+				SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(86), &mapSrcRect, &mapDestRect);
+				break;
 			}
 		}
 	}
 
 	for (auto& e : manager.getVectorOfObstacles())
 	{
-		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
+		//if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255);
 	}
 
 	for (auto& e : manager.getVectorOfEntities())

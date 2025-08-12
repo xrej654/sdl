@@ -193,15 +193,6 @@
     <Image Include="assets\Player\right\4.png">
       <Filter>Pliki zasobów\Player\right</Filter>
     </Image>
-    <Image Include="assets\obstacles\stone\001.png">
-      <Filter>Pliki zasobów\obstacles\stone</Filter>
-    </Image>
-    <Image Include="assets\obstacles\stone\002.png">
-      <Filter>Pliki zasobów\obstacles\stone</Filter>
-    </Image>
-    <Image Include="assets\obstacles\stone\003.png">
-      <Filter>Pliki zasobów\obstacles\stone</Filter>
-    </Image>
     <Image Include="assets\obstacles\trunk\001.png">
       <Filter>Pliki zasobów\obstacles\trunk</Filter>
     </Image>
@@ -498,6 +489,15 @@
     </Image>
     <Image Include="assets\obstacles\wall\stone ruin\056.png">
       <Filter>Pliki zasobów\obstacles\wall\stone ruin</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\005.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\006.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\obstacles\stone\007.png">
+      <Filter>Pliki zasobów\obstacles\stone</Filter>
     </Image>
   </ItemGroup>
 </Project>

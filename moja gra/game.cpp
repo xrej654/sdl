@@ -75,15 +75,57 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/034.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/grass/035.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/008.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/009.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/010.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/011.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/012.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/013.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/014.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/015.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/016.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/017.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/018.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/019.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/020.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/021.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/022.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/023.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/024.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/025.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/026.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/027.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/028.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/029.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/030.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/031.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/032.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/033.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/034.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/035.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/036.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/037.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/038.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/039.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/040.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/041.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/042.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/043.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/044.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/045.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/046.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/047.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/048.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/049.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/050.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/051.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/052.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/053.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/054.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/055.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/wall/stone ruin/056.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/005.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/006.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/007.png")));
 
 	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());
@@ -206,7 +248,17 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		for (int j = 0; j < 8; j++)
 		{
 			mapDestRect = { i * 128 - 32, j * 128 + 32,128,128 };
-			if (mapRuinBossFight2[j][i] != 0)
+			if (mapRuinBossFight2[j][i] == 50 || mapRuinBossFight2[j][i] == 51 || mapRuinBossFight2[j][i] ==52)
+			{
+				mapDestRect = { i * 128, j * 128 + 32,64,64 };
+
+				auto& wall(manager.addObstacle());
+
+				wall.addComponent<HitboxComponent>();
+
+				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
+			}
+			else if (mapRuinBossFight2[j][i] != 0)
 			{
 				auto& wall(manager.addObstacle());
 

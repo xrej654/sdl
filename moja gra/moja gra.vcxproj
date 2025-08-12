@@ -203,9 +203,9 @@
     <Image Include="assets\obstacles\leaves\002.png" />
     <Image Include="assets\obstacles\leaves\004.png" />
     <Image Include="assets\obstacles\leaves\005.png" />
-    <Image Include="assets\obstacles\stone\001.png" />
-    <Image Include="assets\obstacles\stone\002.png" />
-    <Image Include="assets\obstacles\stone\003.png" />
+    <Image Include="assets\obstacles\stone\005.png" />
+    <Image Include="assets\obstacles\stone\006.png" />
+    <Image Include="assets\obstacles\stone\007.png" />
     <Image Include="assets\obstacles\trunk\001.png" />
     <Image Include="assets\obstacles\trunk\002.png" />
     <Image Include="assets\obstacles\trunk\003.png" />
