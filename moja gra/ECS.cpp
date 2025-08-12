@@ -8,46 +8,49 @@ template<typename E>
 //funkcja opymalizacji kodu (kod se powtarzal)
 static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 {
-	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<AttackSpriteComponent>())
+	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>())
 	{
-		if (e->getComponent<AttackComponent>().getWasAttacking())
+		if(e->hasComponent<AttackComponent>() && e->hasComponent<AttackSpriteComponent>())
 		{
-			//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
-			e->getComponent<RotatedRectComponent>().setCenter(
-				e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
-				e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
-			);
-			//strona w ktora jest zwrocony atak
+			if (e->getComponent<AttackComponent>().getWasAttacking())
+			{
+				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+				e->getComponent<RotatedRectComponent>().setCenter(
+					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
+					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
+				);
+				//strona w ktora jest zwrocony atak
 
-			e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
 
-			//zmiana kata na radian
+				//zmiana kata na radian
 
-			e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
+				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
 
-			//okreslanie rogow
-			e->getComponent<AttackComponent>().setCorners(
+				//okreslanie rogow
+				e->getComponent<AttackComponent>().setCorners(
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<AttackSpriteComponent>().getDestRect().x,
-					e->getComponent<AttackSpriteComponent>().getDestRect().y
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<AttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-					e->getComponent<AttackSpriteComponent>().getDestRect().y
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-					e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-				),
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
+					),
 
-				e->getComponent<RotatedRectComponent>().rotate(
-					e->getComponent<AttackSpriteComponent>().getDestRect().x,
-					e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-				)
-			);
+					e->getComponent<RotatedRectComponent>().rotate(
+						e->getComponent<AttackSpriteComponent>().getDestRect().x,
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
+					)
+				);
+			}
 		}
 
 		if(e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>())
@@ -61,10 +64,10 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 				);
 
 				//strona w ktora jest zwrocony atak
-				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+				e->getComponent<ShootingComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
 
 				//zmiana kata na radian
-				e->getComponent<RotatedRectComponent>().setRad((((e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180) * M_PI / 180) + M_PI / 2.0);
+				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<ShootingComponent>().getAngle() + 3 * M_PI / 2.0);
 
 				//okreslanie rogow
 				e->getComponent<ShootingComponent>().setCorners(
@@ -183,7 +186,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 {
 	for(auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<DetectedRectComponent>() && e->hasComponent<AttackRectComponent>() && e->hasComponent<SpeedComponent>() && e->getIsEnemy())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<DetectedRectComponent>() && e->hasComponent<SpeedComponent>() && e->getIsEnemy())
 		{
 			for (auto& en : manager.getVectorOfEntities())
 			{
@@ -565,45 +568,48 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			}
 		}
 
-		if(e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>())
+		if(e->hasComponent<HitboxComponent>())
 		{
-			e->getComponent<AttackSpriteComponent>().setRects({
-				e->getComponent<HitboxComponent>().getX() - 32.f,
-				e->getComponent<HitboxComponent>().getY() + e->getComponent<HitboxComponent>().getHeight(),
-				128,64
-				});
-
-			//rysowanie ataku
-			if (e->getComponent<AttackComponent>().getWasAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AttackSpriteComponent>())
+			if(e->hasComponent<AttackComponent>())
 			{
-				//kolor okreslajacy rogi (do debbugu)
-				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
+				e->getComponent<AttackSpriteComponent>().setRects({
+					e->getComponent<HitboxComponent>().getX() - 32.f,
+					e->getComponent<HitboxComponent>().getY() + e->getComponent<HitboxComponent>().getHeight(),
+					128,64
+					});
 
-				//robocze okreslenie zdjecia ataku -> animacja
-				e->getComponent<AttackSpriteComponent>().changeAsset("attack", 8, 51 ,ren);
-
-				//dobry punkt obrotu textury (jest dobrze dla rogow ale nie dla textury xd)
-				SDL_Point centerOfAPlayerWithAttackOffset =
+				//rysowanie ataku
+				if (e->getComponent<AttackComponent>().getWasAttacking() && e->hasComponent<RotatedRectComponent>() && e->hasComponent<AttackSpriteComponent>())
 				{
-					e->getComponent<RotatedRectComponent>().getCenter().x - e->getComponent<AttackSpriteComponent>().getDestRect().x,
-					e->getComponent<RotatedRectComponent>().getCenter().y - e->getComponent<AttackSpriteComponent>().getDestRect().y
-				};
+					//kolor okreslajacy rogi (do debbugu)
+					SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
 
-				//obracanie ataku wzgledem myszy
-				if (SDL_RenderCopyEx(ren, e->getComponent<AttackSpriteComponent>().getTexture(), e->getComponent<AttackSpriteComponent>().getSrcRectReference(), e->getComponent<AttackSpriteComponent>().getDestRectReference(), (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
-					cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
-				}
+					//robocze okreslenie zdjecia ataku -> animacja
+					e->getComponent<AttackSpriteComponent>().changeAsset("attack", 8, 51, ren);
 
-				//rysowanie rogow ataku (tez debbug)
-				/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
-				for (int i = 0; i < 4; i++) {
-					SDL_Rect pointRect = {
-						(int)(attackCorners[i].x - 2),
-						(int)(attackCorners[i].y - 2),
-						4, 4
+					//dobry punkt obrotu textury (jest dobrze dla rogow ale nie dla textury xd)
+					SDL_Point centerOfAPlayerWithAttackOffset =
+					{
+						e->getComponent<RotatedRectComponent>().getCenter().x - e->getComponent<AttackSpriteComponent>().getDestRect().x,
+						e->getComponent<RotatedRectComponent>().getCenter().y - e->getComponent<AttackSpriteComponent>().getDestRect().y
 					};
-					SDL_RenderFillRect(ren, &pointRect);
-				}*/
+
+					//obracanie ataku wzgledem myszy
+					if (SDL_RenderCopyEx(ren, e->getComponent<AttackSpriteComponent>().getTexture(), e->getComponent<AttackSpriteComponent>().getSrcRectReference(), e->getComponent<AttackSpriteComponent>().getDestRectReference(), (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 90, &centerOfAPlayerWithAttackOffset, SDL_FLIP_NONE) != 0) {
+						cout << "Error during rendering texture: %s\n" << SDL_GetError() << endl;
+					}
+
+					//rysowanie rogow ataku (tez debbug)
+					/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
+					for (int i = 0; i < 4; i++) {
+						SDL_Rect pointRect = {
+							(int)(attackCorners[i].x - 2),
+							(int)(attackCorners[i].y - 2),
+							4, 4
+						};
+						SDL_RenderFillRect(ren, &pointRect);
+					}*/
+				}
 			}
 		
 			//rysowanie strzaly
@@ -613,8 +619,6 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 
 				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>())
 				{
-					e->getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
-
 					float arrowSpeed = e->getComponent<ShootingComponent>().getSpeed() * deltaTime * 10;
 
 					e->getComponent<ShootingComponent>().setReducedDistance(e->getComponent<ShootingComponent>().getReducedDistance() - arrowSpeed);
@@ -642,15 +646,16 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 						e->getComponent<ShootingComponent>().setHasShooted(false);
 					}
 
-					/*SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
+					SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
 					for (int i = 0; i < 4; i++) {
 						SDL_Rect pointRect = {
 							(int)(attackCorners[i].x - 2),
 							(int)(attackCorners[i].y - 2),
 							4, 4
 						};
+						cout << (int)(attackCorners[i].x - 2) << endl;
 						SDL_RenderFillRect(ren, &pointRect);
-					}*/
+					}
 				}
 			}
 		}
@@ -719,47 +724,56 @@ void Systems::collisionSystem(Manager& manager)
 
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<AttackComponent>() && e->hasComponent<DamageComponent>())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<DamageComponent>())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
 			Uint32 cooldown = 400;
-
-			SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners(); // 4 rogi po obrocie
-			SDL_FPoint* arrowCorners = 0;
 
 			//for na drugi obiekt aby sprawdzac kolizje miedzy dwoma obiektami
 			for (auto& en : manager.getVectorOfEntities())
 			{
 				if (e != en && en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>())
 				{
-					//sprawdzanie kolizji po obrotu strict'e pod atak
-					if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
-						(currentTime - e->getComponent<AttackComponent>().getLastHitTime() > cooldown) &&
-						e->getComponent<AttackComponent>().getWasAttacking())
+					if (e->hasComponent<AttackComponent>())
 					{
-						cout << "Zadano obrazenia!" << endl;
+						SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners(); // 4 rogi po obrocie
 
-						e->getComponent<AttackComponent>().setWasAttacking(false);
-						e->getComponent<AttackComponent>().setLastHitTime(currentTime);
-
-						currentTime = SDL_GetTicks();
-
-						en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getMeleeDmg());
-						cout << en->getComponent<HealthComponent>().getHp() << endl;
-
-						if (en->getComponent<HealthComponent>().getHp() <= 0)
+						//sprawdzanie kolizji po obrotu strict'e pod atak
+						if (rotatedRectCollides(attackCorners, en->getComponent<HitboxComponent>().getHitbox()) &&
+							(currentTime - e->getComponent<AttackComponent>().getLastHitTime() > cooldown) &&
+							e->getComponent<AttackComponent>().getWasAttacking())
 						{
-							if (en->getIsPlayer()) cout << "Zginales \n";
-							else if (en->getIsEnemy()) cout << "Zabiles \n";
+							cout << "Zadano obrazenia!" << endl;
 
-							en->destroy();
+							e->getComponent<AttackComponent>().setWasAttacking(false);
+							e->getComponent<AttackComponent>().setLastHitTime(currentTime);
+
+							currentTime = SDL_GetTicks();
+
+							en->getComponent<HealthComponent>().subtractHp(e->getComponent<DamageComponent>().getMeleeDmg());
+							cout << en->getComponent<HealthComponent>().getHp() << endl;
+
+							if (en->getComponent<HealthComponent>().getHp() <= 0)
+							{
+								if (en->getIsPlayer()) cout << "Zginales \n";
+								else if (en->getIsEnemy()) cout << "Zabiles \n";
+
+								en->destroy();
+							}
+							else
+							{
+								en->getComponent<HealthComponent>().setGetHit(true);
+							}
 						}
-						else
+
+						if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
+							e->getComponent<AttackComponent>().getWasAttacking())
 						{
-							en->getComponent<HealthComponent>().setGetHit(true);
+							e->getComponent<AttackComponent>().setWasAttacking(false);
 						}
 					}
-					else if (e->hasComponent<ShootingComponent>())
+					
+					if (e->hasComponent<ShootingComponent>())
 					{
 						SDL_FPoint* arrowCorners = e->getComponent<ShootingComponent>().getCorners(); // 4 rogi po obrocie
 
@@ -790,17 +804,11 @@ void Systems::collisionSystem(Manager& manager)
 							}
 						}
 					}
-
-					if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
-						e->getComponent<AttackComponent>().getWasAttacking())
-					{
-						e->getComponent<AttackComponent>().setWasAttacking(false);
-					}
 				}
 				else if(manager.getVectorOfEntities().size() == 1)
 				{
 					if ((currentTime - e->getComponent<AttackComponent>().getLastHitTime() >= cooldown) &&
-						e->getComponent<AttackComponent>().getWasAttacking())
+						e->getComponent<AttackComponent>().getWasAttacking() && e->hasComponent<AttackComponent>())
 					{
 						e->getComponent<AttackComponent>().setWasAttacking(false);
 					}
@@ -818,10 +826,11 @@ void Systems::collisionSystem(Manager& manager)
 				{
 					cout << "Sciana\n";
 					e->getComponent<HitboxComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
-					if (e->hasComponent<DetectedRectComponent>() && e->hasComponent<AttackRectComponent>())
+					if (e->hasComponent<DetectedRectComponent>())
 					{
 						e->getComponent<DetectedRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
-						e->getComponent<AttackRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						if(e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
+						if(e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().setPosition(-e->getComponent<VelocityComponent>().getXVel(), -e->getComponent<VelocityComponent>().getYVel());
 					}
 				}
 			}
@@ -833,7 +842,7 @@ void Systems::knockbackSystem(Manager& manager)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if(e->hasComponent<DamageComponent>() && e->hasComponent<AttackComponent>())
+		if(e->hasComponent<DamageComponent>())
 		{
 			for (auto& en : manager.getVectorOfEntities())
 			{
@@ -845,10 +854,14 @@ void Systems::knockbackSystem(Manager& manager)
 					if (e != en && (en->getComponent<HealthComponent>().getGetHit() || en->getComponent<HealthComponent>().getGetShooted()))
 					{
 						float valueOfKnonckback = e->getComponent<DamageComponent>().getKnockbackPower();
+						float angle = 0;
 
-						float angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+						if(en->getComponent<HealthComponent>().getGetHit() && e->hasComponent<AttackComponent>())
+						{
+							angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+						}
 
-						if (en->getComponent<HealthComponent>().getGetShooted())
+						if (en->getComponent<HealthComponent>().getGetShooted() && e->hasComponent<ShootingComponent>())
 						{
 							angle = (e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180;
 						}
@@ -858,7 +871,7 @@ void Systems::knockbackSystem(Manager& manager)
 
 						en->getComponent<HitboxComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
 
-						if (en->getIsEnemy() && en->hasComponent<AttackRectComponent>() && en->hasComponent<DetectedRectComponent>())
+						if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
 						{
 							if (en->hasComponent<AttackRectComponent>())
 							{
@@ -931,8 +944,7 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 
 				handleCalculationOfAttacking(e, mouseX, mouseY);
 
-				e->getComponent<ShootingComponent>().setAngle(e->getComponent<AttackComponent>().getAngle());
-
+				e->getComponent<ShootingComponent>().setAngle();
 
 				cout << "Strzal \n";
 			}
@@ -954,10 +966,14 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 			{
 				if (en->hasComponent<HitboxComponent>() && en->getIsPlayer())
 				{
+					handleCalculationOfAttacking(e, en->getComponent<HitboxComponent>().getX() + (en->getComponent<HitboxComponent>().getWidth() / 2), en->getComponent<HitboxComponent>().getY() + (en->getComponent<HitboxComponent>().getHeight() / 2));
+
 					Uint32 cooldown = 2100;
-					if (SDL_HasIntersectionF(e->getComponent<ShootingRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference()) && !e->getComponent<ShootingComponent>().getHasShooted() && (SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= cooldown))
+					if (SDL_HasIntersectionF(e->getComponent<ShootingRectComponent>().getHitboxReference(), en->getComponent<HitboxComponent>().getHitboxReference())
+						&& !e->getComponent<ShootingComponent>().getHasShooted()
+						&& (SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() >= cooldown))
 					{
-						cout << "fire" << endl; 
+						cout << "fire" << endl;
 						e->getComponent<ShootingComponent>().setStarterPos(e->getComponent<HitboxComponent>().getX() + 24, e->getComponent<HitboxComponent>().getY() - 48);
 
 						e->getComponent<ShootingComponent>().setHasShooted(true);
@@ -965,9 +981,7 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 
 						e->getComponent<ShootingComponent>().setReducedDistance(e->getComponent<ShootingComponent>().getStarterPos().y);
 
-						handleCalculationOfAttacking(e, en->getComponent<HitboxComponent>().getX() + (en->getComponent<HitboxComponent>().getWidth() / 2), en->getComponent<HitboxComponent>().getY() + (en->getComponent<HitboxComponent>().getHeight() / 2));
-
-						e->getComponent<ShootingComponent>().setAngle(e->getComponent<AttackComponent>().getAngle());
+						e->getComponent<ShootingComponent>().setAngle();
 					}
 				}
 			}

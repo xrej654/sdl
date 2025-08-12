@@ -448,6 +448,7 @@ private:
 	bool hasShooted, hasBeenPressed;
 	SDL_FPoint corners[4]; //rogi strzaly
 	float angle = 0;
+	float angleTemp = 0;
 	SDL_FPoint starterPos;
 	float reducedDistance = 0;
 public:
@@ -484,7 +485,12 @@ public:
 		corners[3] = p4;
 	}
 
-	void setAngle(float angle) { this->angle = angle; }
+	void setAngle() { this->angle = angleTemp; }
+
+	void setDxAndDy(SDL_FRect obj, float mouseX, float mouseY)
+	{
+		angleTemp = atan2((obj.y + (obj.h / 2)) - mouseY, (obj.x + (obj.w / 2)) - mouseX);
+	}
 
 	Uint32 getLastShootTime() const { return lastShootTime; }
 	float getRange() const { return range; }

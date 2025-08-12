@@ -7,6 +7,75 @@
 //tworzenie Obiektu Manager
 Manager manager;
 
+void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
+{
+	auto& enemy(manager.addEntity());
+	enemy.setIsEnemy();
+
+	enemy.addComponent<HitboxComponent>();
+	enemy.addComponent<VelocityComponent>();
+	enemy.addComponent<DetectedRectComponent>();
+	enemy.addComponent<AttackRectComponent>();
+	enemy.addComponent<AttackComponent>();
+	enemy.addComponent<AttackSpriteComponent>();
+	enemy.addComponent<RotatedRectComponent>();
+	enemy.addComponent<HealthComponent>();
+	enemy.addComponent<DamageComponent>();
+	enemy.addComponent<SpeedComponent>();
+
+	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
+	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
+	enemy.getComponent<AttackRectComponent>().setVariables(x - 32, y - 32, 128, 128);
+	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+	enemy.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/4.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/5.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/6.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/7.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/8.png")),
+		});
+
+	enemy.getComponent<HealthComponent>().setHp(100.f);
+	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
+	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
+	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
+	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
+}
+
+void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
+{
+	auto& enemy(manager.addEntity());
+	enemy.setIsEnemy();
+
+	enemy.addComponent<HitboxComponent>();
+	enemy.addComponent<VelocityComponent>();
+	enemy.addComponent<RotatedRectComponent>();
+	enemy.addComponent<DetectedRectComponent>();
+	enemy.addComponent<HealthComponent>();
+	enemy.addComponent<DamageComponent>();
+	enemy.addComponent<SpeedComponent>();
+	enemy.addComponent<ShootingComponent>();
+	enemy.addComponent<ShootingSpriteComponent>();
+	enemy.addComponent<ShootingRectComponent>();
+
+	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
+	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
+	enemy.getComponent<ShootingRectComponent>().setVariables(x - 224, y - 224, 512, 512);
+	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	enemy.getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
+	enemy.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
+
+	enemy.getComponent<HealthComponent>().setHp(100.f);
+	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
+	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
+	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
+	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
+}
+
 Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen)
 {
 	//inicjalizacja okna
@@ -127,10 +196,8 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/006.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/007.png")));
 
-	auto& enemy(manager.addEntity());
 	auto& player(manager.addEntity());
 	player.setIsPlayer();
-	enemy.setIsEnemy();
 
 	player.addComponent<HitboxComponent>();
 	player.addComponent<VelocityComponent>();
@@ -144,21 +211,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<AnimationComponent>();
 	player.addComponent<DashComponent>();
 	player.addComponent<ShootingComponent>();
-	player.addComponent<ShootingSpriteComponent>();
-
-	enemy.addComponent<HitboxComponent>();
-	enemy.addComponent<VelocityComponent>();
-	enemy.addComponent<DetectedRectComponent>();
-	enemy.addComponent<AttackRectComponent>();
-	enemy.addComponent<AttackComponent>();
-	enemy.addComponent<AttackSpriteComponent>();
-	enemy.addComponent<RotatedRectComponent>();
-	enemy.addComponent<HealthComponent>();
-	enemy.addComponent<DamageComponent>();
-	enemy.addComponent<SpeedComponent>();
-	//enemy.addComponent<ShootingComponent>();
-	//enemy.addComponent<ShootingSpriteComponent>();
-	//enemy.addComponent<ShootingRectComponent>();
+	player.addComponent<ShootingSpriteComponent>();	
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -167,6 +220,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
 	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
 	player.getComponent<DashComponent>().setDashCooldown(2500);
+	player.getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/arrow.png")));
 	player.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
 
 	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
@@ -217,30 +271,6 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<SpeedComponent>().setSpeed(100.f);
 	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
-	enemy.getComponent<HitboxComponent>().setVariables(1100, 500, 64, 64);
-	enemy.getComponent<DetectedRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
-	enemy.getComponent<AttackRectComponent>().setVariables(1100 - 32, 500 - 32, 128, 128);
-	//enemy.getComponent<ShootingRectComponent>().setVariables(1100 - 224, 500 - 224, 512, 512);
-	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
-	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
-	enemy.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/4.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/5.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/6.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
-		});
-	//enemy.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
-
-	enemy.getComponent<HealthComponent>().setHp(100.f);
-	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
-	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
-	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
-	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
-
 	for (int i = 0; i < 15; i++)
 	{
 		SDL_Rect mapSrcRect = { 0,0,32,32 };
@@ -266,6 +296,22 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
 			}
+		}
+	}
+
+	for (int i = 0; i < 30; i++)
+	{
+		for (int j = 0; j < 17; j++)
+		{
+			if (mapRuinBossFightEntities[j][i] == 1)
+			{
+				addMeleeEnemy(manager, renderer, i * 64, j * 64);
+			}
+			if (mapRuinBossFightEntities[j][i] == 2)
+			{
+				addDistanceEnemy(manager, renderer, i * 64, j * 64);
+
+			 }
 		}
 	}
 }
