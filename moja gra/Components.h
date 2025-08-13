@@ -508,3 +508,17 @@ class ShootingSpriteComponent : public SpriteComponent
 public:
 	ShootingSpriteComponent() : SpriteComponent() {}
 };
+
+class KnockbackComponent : public Component
+{
+private:
+	int actualCount = 0;
+	int maxCount = 15;
+public:
+	KnockbackComponent() { }
+
+	void setActualCount(int value) { actualCount = value; }
+
+	int getActualCount() { return actualCount; }
+	int getMaxCount() { return maxCount; }
+};
