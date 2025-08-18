@@ -147,7 +147,7 @@ public:
     void enemySystems(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
         enemyMovementSystem(manager, deltaTime, keys, ren);
-        enemyAttackSystem(manager, mouseButtons, mouseX, mouseY);
+        //enemyAttackSystem(manager, mouseButtons, mouseX, mouseY);
         enemyShootingSystem(manager, mouseButtons, mouseX, mouseY);
     }
 

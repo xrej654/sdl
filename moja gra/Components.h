@@ -203,13 +203,12 @@ class AttackComponent : public Component
 {
 protected:
 	Uint32 lastHitTime; //zmienna potrzebna do cooldown'u
-	bool wasAttacking, hasBeenPressed; //boole do ataku
+	bool hasBeenPressed; //boole do ataku
 	float angle; //zmienne potrzebne do obrtu
 	SDL_FPoint corners[4]; //rogi ataku
 public:
 	AttackComponent()
 	{
-		wasAttacking = false;
 		hasBeenPressed = false;
 		lastHitTime = 0;
 		angle = 0;
@@ -217,11 +216,6 @@ public:
 		corners[1] = { 0.f, 0.f };
 		corners[2] = { 0.f, 0.f };
 		corners[3] = { 0.f, 0.f };
-	}
-
-	void setWasAttacking(bool attacking)
-	{
-		wasAttacking = attacking;
 	}
 
 	void setHasBeenPressed(bool attacking)
@@ -247,7 +241,6 @@ public:
 		corners[3] = p4;
 	}
 
-	bool getWasAttacking() const { return wasAttacking; }
 	bool getHasBeenPressed() const { return hasBeenPressed; }
 	Uint32 getLastHitTime() const { return lastHitTime; }
 	float getAngle() const { return angle; }
@@ -507,18 +500,4 @@ class ShootingSpriteComponent : public SpriteComponent
 {
 public:
 	ShootingSpriteComponent() : SpriteComponent() {}
-};
-
-class KnockbackComponent : public Component
-{
-private:
-	int actualCount = 0;
-	int maxCount = 15;
-public:
-	KnockbackComponent() { }
-
-	void setActualCount(int value) { actualCount = value; }
-
-	int getActualCount() { return actualCount; }
-	int getMaxCount() { return maxCount; }
 };

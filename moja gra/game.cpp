@@ -21,7 +21,6 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<RotatedRectComponent>();
 	enemy.addComponent<HealthComponent>();
 	enemy.addComponent<DamageComponent>();
-	enemy.addComponent<KnockbackComponent>();
 	enemy.addComponent<SpeedComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
@@ -61,7 +60,6 @@ void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<SpeedComponent>();
 	enemy.addComponent<ShootingComponent>();
 	enemy.addComponent<ShootingSpriteComponent>();
-	enemy.addComponent<KnockbackComponent>();
 	enemy.addComponent<ShootingRectComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
@@ -214,7 +212,6 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<DashComponent>();
 	player.addComponent<ShootingComponent>();
 	player.addComponent<ShootingSpriteComponent>();	
-	player.addComponent<KnockbackComponent>();	
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -272,7 +269,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
 	player.getComponent<DamageComponent>().setArrowDmg(15.f);
 	player.getComponent<SpeedComponent>().setSpeed(100.f);
-	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
+	player.getComponent<DamageComponent>().setKnockbackPower(100.f);
 
 	for (int i = 0; i < 15; i++)
 	{

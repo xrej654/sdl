@@ -12,7 +12,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 	{
 		if(e->hasComponent<AttackComponent>() && e->hasComponent<AttackSpriteComponent>())
 		{
-			if (e->getComponent<AttackComponent>().getWasAttacking())
+			if (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() <= 408)
 			{
 				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
 				e->getComponent<RotatedRectComponent>().setCenter(
@@ -125,7 +125,7 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					dash.setDirection(dx, dy);
 				}
 
-				if(!dash.getIsDashing() && (!hp.getGetHit() || !hp.getGetShooted()))
+				if(!dash.getIsDashing())
 				{
 					string direction = to_string((int)dx) + to_string((int)dy);
 
@@ -138,8 +138,11 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					}
 
 					//okreslanie szybkosci ruchu
-					velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
-					hitbox.setPosition(velo.getXVel(), velo.getYVel());
+					if(!hp.getGetHit() && !hp.getGetShooted())
+					{
+						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
+						hitbox.setPosition(velo.getXVel(), velo.getYVel());
+					}
 
 					//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
 					if (direction == "-1-1")
@@ -206,8 +209,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 				{
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
 					//wykrywanie i podarzanie z graczem
-					if (SDL_HasIntersectionF(detectedRect.getHitboxReference(), hitboxSc.getHitboxReference()) &&
-						(!hp.getGetHit() || !hp.getGetShooted()))
+					if (SDL_HasIntersectionF(detectedRect.getHitboxReference(), hitboxSc.getHitboxReference()))
 					{
 						//cout << "Wykryto" << endl;
 						detectedRect.setLastDetectionTime(SDL_GetTicks());
@@ -245,7 +247,10 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 							dy = 0;
 						}
 
-							velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
+						if(!hp.getGetHit() && !hp.getGetShooted() )
+						{ 
+							velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime); 
+						}
 						//zmiana pozycji
 						hitbox.setPosition(velo.getXVel(), velo.getYVel());
 						detectedRect.setPosition(velo.getXVel(), velo.getYVel());
@@ -601,7 +606,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 					});
 
 				//rysowanie ataku
-				if (attack.getWasAttacking() && e->hasComponent<RotatedRectComponent>())
+				if (SDL_GetTicks() - attack.getLastHitTime() <= 408 && e->hasComponent<RotatedRectComponent>())
 				{
 					auto& rotatedRect = e->getComponent<RotatedRectComponent>();
 					//kolor okreslajacy rogi (do debbugu)
@@ -706,7 +711,6 @@ void Systems::playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mo
 			{
 				// Oznaczenie, ¿e gracz zaatakowa³
 				attack.setHasBeenPressed(true);
-				attack.setWasAttacking(true);
 				cout << "ATAK" << endl;
 				attack.setLastHitTime(SDL_GetTicks());
 			}
@@ -716,6 +720,7 @@ void Systems::playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mo
 			}
 
 			handleCalculationOfAttacking(e, mouseX, mouseY);
+
 		}
 	}
 }
@@ -738,13 +743,11 @@ void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mou
 					Uint32 cooldown = 700;
 					//wykrywanie i atakowanie gracza
 					if (SDL_HasIntersectionF(attackRect.getHitboxReference(), hitboxSc.getHitboxReference())
-						&& !attack.getWasAttacking()
 						&& !e->hasComponent<ShootingComponent>()
 						&& (SDL_GetTicks() - attack.getLastHitTime() >= cooldown))
 					{
 						cout << "atak" << endl;
 						attack.setLastHitTime(SDL_GetTicks());
-						attack.setWasAttacking(true);
 					}
 
 					handleCalculationOfAttacking(e, hitboxSc.getX() + (hitboxSc.getWidth() / 2), hitboxSc.getY() + (hitboxSc.getHeight() / 2));
@@ -773,45 +776,36 @@ void Systems::collisionSystem(Manager& manager)
 			{
 				if (e != en && en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>())
 				{
-						auto& hpSc = en->getComponent<HealthComponent>();
-						auto& hitboxSc = en->getComponent<HitboxComponent>();
+					auto& hpSc = en->getComponent<HealthComponent>();
+					auto& hitboxSc = en->getComponent<HitboxComponent>();
 
-						SDL_FPoint* attackCorners = attack.getCorners(); // 4 rogi po obrocie
+					SDL_FPoint* attackCorners = attack.getCorners(); // 4 rogi po obrocie
 
-						//sprawdzanie kolizji po obrotu strict'e pod atak
-						if (rotatedRectCollides(attackCorners, hitboxSc.getHitbox()) &&
-							(currentTime - attack.getLastHitTime() > cooldown) &&
-							attack.getWasAttacking())
+					//sprawdzanie kolizji po obrotu strict'e pod atak
+					if (rotatedRectCollides(attackCorners, hitboxSc.getHitbox()) &&
+						SDL_GetTicks() - attack.getLastHitTime() <= 408 &&
+						!hpSc.getGetHit())
+					{
+						cout << "Zadano obrazenia!" << endl;
+
+						currentTime = SDL_GetTicks();
+
+						hpSc.subtractHp(dmg.getMeleeDmg());
+						cout << hpSc.getHp() << endl;
+
+						if (hpSc.getHp() <= 0)
 						{
-							cout << "Zadano obrazenia!" << endl;
+							if (en->getIsPlayer()) cout << "Zginales \n";
+							else if (en->getIsEnemy()) cout << "Zabiles \n";
 
-							attack.setWasAttacking(false);
-							attack.setLastHitTime(currentTime);
-
-							currentTime = SDL_GetTicks();
-
-							hpSc.subtractHp(dmg.getMeleeDmg());
-							cout << hpSc.getHp() << endl;
-
-							if (hpSc.getHp() <= 0)
-							{
-								if (en->getIsPlayer()) cout << "Zginales \n";
-								else if (en->getIsEnemy()) cout << "Zabiles \n";
-
-								en->destroy();
-							}
-							else
-							{
-								hpSc.setGetHit(true);
-							}
+							en->destroy();
 						}
-
-						if ((currentTime - attack.getLastHitTime() >= cooldown) &&
-							attack.getWasAttacking())
+						else
 						{
-							attack.setWasAttacking(false);
+							hpSc.setGetHit(true);
 						}
-					
+					}
+
 					if (e->hasComponent<ShootingComponent>())
 					{
 						auto& shoot = e->getComponent<ShootingComponent>();
@@ -821,7 +815,6 @@ void Systems::collisionSystem(Manager& manager)
 						SDL_FPoint* arrowCorners = shoot.getCorners(); // 4 rogi po obrocie
 
 						if (rotatedRectCollides(arrowCorners, hitboxSc.getHitbox()) &&
-							(currentTime - shoot.getLastShootTime() > cooldown) &&
 							shoot.getHasShooted())
 						{
 							cout << "Zadano obrazenia!" << endl;
@@ -848,14 +841,6 @@ void Systems::collisionSystem(Manager& manager)
 						}
 					}
 				}
-				else if(manager.getVectorOfEntities().size() == 1)
-				{
-					if ((currentTime - attack.getLastHitTime() >= cooldown) &&
-						attack.getWasAttacking())
-					{
-						attack.setWasAttacking(false);
-					}
-				}
 			}
 		}
 
@@ -872,7 +857,7 @@ void Systems::collisionSystem(Manager& manager)
 				
 				if (SDL_HasIntersectionF(hitbox.getHitboxReference(), hitboxSc.getHitboxReference()))
 				{
-					cout << "Sciana\n";
+					//cout << "Sciana\n";
 					hitbox.setPosition(-velo.getXVel(), -velo.getYVel());
 					if (e->hasComponent<DetectedRectComponent>())
 					{
@@ -896,22 +881,20 @@ void Systems::knockbackSystem(Manager& manager)
 
 			for (auto& en : manager.getVectorOfEntities())
 			{
-				if(en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>() && e->hasComponent<KnockbackComponent>())
+				if (en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>() && e->hasComponent<AttackComponent>())
 				{
 					auto& hpSc = en->getComponent<HealthComponent>();
-					auto& knock = e->getComponent<KnockbackComponent>();
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
-					int maxCount = knock.getMaxCount();
-
+					auto& attack = e->getComponent<AttackComponent>();
 
 					if (e != en && (hpSc.getGetHit() || hpSc.getGetShooted()))
 					{
 						float valueOfKnonckback = dmg.getKnockbackPower();
 						float angle = 0;
 
-						if(hpSc.getGetHit() && e->hasComponent<AttackComponent>())
+						if (hpSc.getGetHit())
 						{
-							angle = (e->getComponent<AttackComponent>().getAngle() * 180 / M_PI) + 180;
+							angle = (attack.getAngle() * 180 / M_PI) + 180;
 						}
 
 						if (hpSc.getGetShooted() && e->hasComponent<ShootingComponent>())
@@ -922,28 +905,23 @@ void Systems::knockbackSystem(Manager& manager)
 						float x = cos(angle * M_PI / 180);
 						float y = sin(angle * M_PI / 180);
 
-						hitboxSc.setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+						hitboxSc.setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
 
 						if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
 						{
 							if (en->hasComponent<AttackRectComponent>())
 							{
-								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
 							}
 
-							en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
-							
-							if(en->hasComponent<ShootingRectComponent>())
+							en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+
+							if (en->hasComponent<ShootingRectComponent>())
 							{
-								en->getComponent<ShootingRectComponent>().setPosition(x * valueOfKnonckback / maxCount, y * valueOfKnonckback / maxCount);
+								en->getComponent<ShootingRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
 							}
 						}
-						knock.setActualCount(knock.getActualCount() + 1);
-					}
-
-					if (knock.getActualCount() >= maxCount)
-					{
-						knock.setActualCount(0);
+						
 						hpSc.setGetHit(false);
 						hpSc.setGetShooted(false);
 					}
