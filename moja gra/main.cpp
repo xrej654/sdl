@@ -17,6 +17,7 @@ int main(int argc, char* argv[])
 		std::cout << "Initializing..." << std::endl;
 	}
 
+	//okreslanie rozdzielczosci ekranu dopasowanego do kazdego monitora
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
 		std::cout << "B³¹d: " << SDL_GetError() << std::endl;

@@ -252,7 +252,7 @@ class RotatedRectComponent : public Component
 {
 private:
 	SDL_Point center;
-	float rad;
+	float rad; //kat okerslony w radianach
 public:
 	RotatedRectComponent()
 	{
@@ -332,6 +332,8 @@ private:
 	bool getHit = false;
 	bool getShooted = false;
 	bool isInKnockback = false;
+
+	//czas potrzebny do timer'a
 	Uint32 startTime, duration;
 public:
 	HealthComponent()
@@ -432,7 +434,8 @@ class DashComponent : public Component
 private:
 	bool isDashing = false;
 	float lenghtOfDash = 120.f;
-	int dx = 0, dy = 0;
+	int dx = 0, dy = 0; //kierunek dash'u
+	//czas do cooldown'u
 	int dashCooldown = 0;
 	Uint32 lastDashTime = 0;
 public:
@@ -520,4 +523,21 @@ class ShootingSpriteComponent : public SpriteComponent
 {
 public:
 	ShootingSpriteComponent() : SpriteComponent() {}
+};
+
+class KnockbackComponent : public Component
+{
+private:
+	float dx, dy;
+public:
+	KnockbackComponent() : Component() {}
+
+	void setDxAndDy(float angle)
+	{
+		dx = cos(angle * M_PI / 180);
+		dy = sin(angle * M_PI / 180);
+	}
+	
+	float getDx() const { return dx; }
+	float getDy() const { return dy; }
 };

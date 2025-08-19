@@ -7,6 +7,7 @@
 //tworzenie Obiektu Manager
 Manager manager;
 
+//funkcje tworzacze przeciwnkow
 void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 {
 	auto& enemy(manager.addEntity());
@@ -22,6 +23,7 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<HealthComponent>();
 	enemy.addComponent<DamageComponent>();
 	enemy.addComponent<SpeedComponent>();
+	enemy.addComponent<KnockbackComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
@@ -61,6 +63,7 @@ void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<ShootingComponent>();
 	enemy.addComponent<ShootingSpriteComponent>();
 	enemy.addComponent<ShootingRectComponent>();
+	enemy.addComponent<KnockbackComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
@@ -106,7 +109,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		std::cout << "Renderer creatred" << std::endl;
 	}
 
-	//stworzenie obiektu player i enemy
+	//dodawanie zdjec asetow
 
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/001.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/002.png")));
@@ -196,6 +199,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/006.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/007.png")));
 
+	//tworzenie gracza
 	auto& player(manager.addEntity());
 	player.setIsPlayer();
 
@@ -212,6 +216,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.addComponent<DashComponent>();
 	player.addComponent<ShootingComponent>();
 	player.addComponent<ShootingSpriteComponent>();	
+	player.addComponent<KnockbackComponent>();	
 
 	//ustawianie potrzebnych zmiennych
 	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
@@ -271,6 +276,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<SpeedComponent>().setSpeed(100.f);
 	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
+	//tworzenie scian i przeciwnikow
 	for (int i = 0; i < 15; i++)
 	{
 		SDL_Rect mapSrcRect = { 0,0,32,32 };
@@ -309,7 +315,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 			}
 			if (mapRuinBossFightEntities[j][i] == 2)
 			{
-				//addDistanceEnemy(manager, renderer, i * 64, j * 64);
+				addDistanceEnemy(manager, renderer, i * 64, j * 64);
 
 			 }
 		}

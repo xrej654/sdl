@@ -5,59 +5,54 @@
 
 template<typename E>
 
-//funkcja opymalizacji kodu (kod se powtarzal)
-static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
-{
-	if(e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>())
+// Funkcja wspólna dla obliczania rogow (corners) ataku i strzały.
+// Dzięki temu kod się nie powtarza w playerAttackSystem i shootingSystem.
+static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
+	if (e->hasComponent<RotatedRectComponent>() && e->hasComponent<HitboxComponent>())
 	{
-		if(e->hasComponent<AttackComponent>() && e->hasComponent<AttackSpriteComponent>())
+		if (e->hasComponent<AttackComponent>() && e->hasComponent<AttackSpriteComponent>())
 		{
 			if (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() <= 408)
-			{
-				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+			{ 
+				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu 
 				e->getComponent<RotatedRectComponent>().setCenter(
 					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
-					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2)
-				);
-				//strona w ktora jest zwrocony atak
-
+					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2));
+				
+				//strona w ktora jest zwrocony atak 
 				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
-
-				//zmiana kata na radian
-
+				
+				//zmiana kata na radian 
 				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
-
-				//okreslanie rogow
+				
+				//okreslanie rogow 
 				e->getComponent<AttackComponent>().setCorners(
-
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<AttackSpriteComponent>().getDestRect().y),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<AttackSpriteComponent>().getDestRect().y),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-					),
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h
-					)
+						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h)
+
 				);
 			}
 		}
 
-		if(e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>())
+		if (e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>())
 		{
 			if (e->getComponent<ShootingComponent>().getHasShooted())
 			{
-				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu
+				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu 
+
 				e->getComponent<RotatedRectComponent>().setCenter(
 					e->getComponent<ShootingComponent>().getStarterPos().x - 24 + (e->getComponent<HitboxComponent>().getWidth() / 2),
 					e->getComponent<ShootingComponent>().getStarterPos().y + 48 + (e->getComponent<HitboxComponent>().getHeight() / 2)
@@ -65,32 +60,28 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY)
 
 				//strona w ktora jest zwrocony atak
 				e->getComponent<ShootingComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
-
+				
 				//zmiana kata na radian
 				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<ShootingComponent>().getAngle() + 3 * M_PI / 2.0);
-
-				//okreslanie rogow
+				
+				//okreslanie rogow 
 				e->getComponent<ShootingComponent>().setCorners(
-
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y
-					),
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
-					),
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h),
 
 					e->getComponent<RotatedRectComponent>().rotate(
 						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h
-					)
+						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h)
+
 				);
 			}
 		}
@@ -127,9 +118,9 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 
 				if(!dash.getIsDashing())
 				{
-					string direction = to_string((int)dx) + to_string((int)dy);
+					string direction = to_string((int)dx) + to_string((int)dy); //uzywany do okreslenie kierunku
 
-					//obliczanie drogi na klatke (na skosk jest sqrt z 2 a nie 1)
+					//okreslenie ruchu po skosie, unikniecie szybszego ruchu po skosie
 					float magnitude = sqrt(dx * dx + dy * dy);
 					if (magnitude > 0)
 					{
@@ -138,7 +129,7 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					}
 
 					//okreslanie szybkosci ruchu
-					if(!hp.getIsInKnockback())
+					if(!hp.getIsInKnockback()) //blokada podczas knockbacku
 					{
 						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
 						hitbox.setPosition(velo.getXVel(), velo.getYVel());
@@ -217,6 +208,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 					}
 					else
 					{
+						//przeciwnik "pamieta" gracza przez jakis czas
 						Uint32 currentTime = SDL_GetTicks();
 						int cooldown = 3000;
 						if (detectedRect.getHasSthDetected() && currentTime - detectedRect.getLastDetectionTime() >= cooldown)
@@ -231,6 +223,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 					{
 							int dx = 0, dy = 0;
 
+							//okreslenie kierunku poruszania sie
 							if (hitbox.getX() < hitboxSc.getX() - 10) { dx = 1; }
 							else if (hitbox.getX() > hitboxSc.getX() + 10) { dx = -1; }
 							else if (hitbox.getX() == hitboxSc.getX() + 10 ||
@@ -247,7 +240,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 							dy = 0;
 						}
 
-						if (!hp.getIsInKnockback())
+						if (!hp.getIsInKnockback()) //blokada podczas knockbacku
 						{ 
 							velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime); 
 						}
@@ -685,7 +678,8 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 							(int)(attackCorners[i].y - 2),
 							4, 4
 						};
-						SDL_RenderFillRect(ren, &pointRect);*/
+						SDL_RenderFillRect(ren, &pointRect);
+					}*/
 				}
 			}
 		}
@@ -763,10 +757,11 @@ void Systems::collisionSystem(Manager& manager)
 
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<DamageComponent>() && e->hasComponent<AttackComponent>())
+		if (e->hasComponent<DamageComponent>() && e->hasComponent<AttackComponent>() && e->hasComponent<KnockbackComponent>())
 		{
 			//okreslenie cooldown'u i pobranie rogow ataku
 			Uint32 cooldown = 400;
+			float angle = 0;
 
 			auto& dmg = e->getComponent<DamageComponent>();
 			auto& attack = e->getComponent<AttackComponent>();
@@ -777,6 +772,7 @@ void Systems::collisionSystem(Manager& manager)
 				if (e != en && en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>())
 				{
 					auto& hpSc = en->getComponent<HealthComponent>();
+					auto& knock = e->getComponent<KnockbackComponent>();
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
 
 					SDL_FPoint* attackCorners = attack.getCorners(); // 4 rogi po obrocie
@@ -802,10 +798,13 @@ void Systems::collisionSystem(Manager& manager)
 						}
 						else
 						{
+							angle = (attack.getAngle() * 180 / M_PI) + 180;
+
+							hpSc.setGetHit(true); 
 							hpSc.setIsInKnockback(true);
+							knock.setDxAndDy(angle);
 						}
 
-						hpSc.setGetHit(true);
 					}
 
 					if (e->hasComponent<ShootingComponent>())
@@ -838,8 +837,9 @@ void Systems::collisionSystem(Manager& manager)
 							}
 							else
 							{
-								hpSc.setGetShooted(true);
+								angle = (shoot.getAngle() * 180 / M_PI) + 180; hpSc.setGetShooted(true);
 								hpSc.setIsInKnockback(true);
+								knock.setDxAndDy(angle);
 							}
 						}
 					}
@@ -884,44 +884,31 @@ void Systems::knockbackSystem(Manager& manager)
 
 			for (auto& en : manager.getVectorOfEntities())
 			{
-				if (en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>() && e->hasComponent<AttackComponent>())
+				if (en->hasComponent<HitboxComponent>() && en->hasComponent<HealthComponent>() && e->hasComponent<AttackComponent>() && e->hasComponent<KnockbackComponent>())
 				{
 					auto& hpSc = en->getComponent<HealthComponent>();
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
 					auto& attack = e->getComponent<AttackComponent>();
+					auto& knock = e->getComponent<KnockbackComponent>();
 
 					if (e != en && hpSc.getIsInKnockback())
 					{
 						float valueOfKnonckback = dmg.getKnockbackPower();
-						float angle = 0;
 
-						if (hpSc.getGetHit())
-						{
-							angle = (attack.getAngle() * 180 / M_PI) + 180;
-						}
-
-						if (hpSc.getGetShooted() && e->hasComponent<ShootingComponent>())
-						{
-							angle = (e->getComponent<ShootingComponent>().getAngle() * 180 / M_PI) + 180;
-						}
-
-						float x = cos(angle * M_PI / 180);
-						float y = sin(angle * M_PI / 180);
-
-						hitboxSc.setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+						hitboxSc.setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
 
 						if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
 						{
 							if (en->hasComponent<AttackRectComponent>())
 							{
-								en->getComponent<AttackRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+								en->getComponent<AttackRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
 							}
 
-							en->getComponent<DetectedRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+							en->getComponent<DetectedRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
 
 							if (en->hasComponent<ShootingRectComponent>())
 							{
-								en->getComponent<ShootingRectComponent>().setPosition(x * valueOfKnonckback, y * valueOfKnonckback);
+								en->getComponent<ShootingRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
 							}
 						}
 						
@@ -1033,6 +1020,7 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 	}
 }
 
+//system potrzebny do zmiany flagi getHit
 void Systems::healthSystem(Manager& manager)
 {
 	for (auto& e : manager.getVectorOfEntities())
