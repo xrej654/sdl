@@ -8,10 +8,10 @@ C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(121,77): warning C4018: ">=": n
 C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(125,28): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
 C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(125,24): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
 C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(222,97): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(897,49): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(902,79): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(905,15): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(906,15): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(900,49): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(905,79): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(908,15): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(909,15): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
 C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(20,48): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
       C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(20,48):
       kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to

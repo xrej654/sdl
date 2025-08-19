@@ -331,12 +331,16 @@ private:
 	float hp, hpBoost, armourHp;
 	bool getHit = false;
 	bool getShooted = false;
+	bool isInKnockback = false;
+	Uint32 startTime, duration;
 public:
 	HealthComponent()
 	{
 		hp = 0.f;
 		hpBoost = 0.f;
 		armourHp = 0.f;
+		startTime = 0;
+		duration = 1000;
 	}
 
 	void setHp(float hp) { this->hp = hp + (hp * (hpBoost / 100)) + armourHp; }
@@ -344,14 +348,30 @@ public:
 	void setArmourHp(float armourHp) { this->armourHp = armourHp; }
 	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
 	void addHp(float addedHp) { hp += addedHp; }
-	void setGetHit(bool getHit) { this->getHit = getHit; }
+
+	void setGetHit(bool getHit)
+	{
+		this->getHit = getHit;
+		startTime = SDL_GetTicks();
+	}
+
 	void setGetShooted(bool getShooted) { this->getShooted = getShooted; }
+	void setIsInKnockback(bool isInKnockback) { this->isInKnockback = isInKnockback; }
+
+	void timerOfGetHit()
+	{
+		if (getHit && SDL_GetTicks() - startTime >= duration)
+		{
+			getHit = false;
+		}
+	}
 
 	float getHp() const { return hp; }
 	float getHpBoost() const { return hpBoost; }
 	bool getGetHit() const { return getHit; }
 	bool getGetShooted() const { return getShooted; }
 	float getArmourHp() const { return armourHp; }
+	bool getIsInKnockback() const { return isInKnockback; }
 };
 
 class DamageComponent : public Component

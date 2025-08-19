@@ -138,7 +138,7 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					}
 
 					//okreslanie szybkosci ruchu
-					if(!hp.getGetHit() && !hp.getGetShooted())
+					if(!hp.getIsInKnockback())
 					{
 						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
 						hitbox.setPosition(velo.getXVel(), velo.getYVel());
@@ -247,7 +247,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 							dy = 0;
 						}
 
-						if(!hp.getGetHit() && !hp.getGetShooted() )
+						if (!hp.getIsInKnockback())
 						{ 
 							velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime); 
 						}
@@ -802,8 +802,10 @@ void Systems::collisionSystem(Manager& manager)
 						}
 						else
 						{
-							hpSc.setGetHit(true);
+							hpSc.setIsInKnockback(true);
 						}
+
+						hpSc.setGetHit(true);
 					}
 
 					if (e->hasComponent<ShootingComponent>())
@@ -837,6 +839,7 @@ void Systems::collisionSystem(Manager& manager)
 							else
 							{
 								hpSc.setGetShooted(true);
+								hpSc.setIsInKnockback(true);
 							}
 						}
 					}
@@ -887,7 +890,7 @@ void Systems::knockbackSystem(Manager& manager)
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
 					auto& attack = e->getComponent<AttackComponent>();
 
-					if (e != en && (hpSc.getGetHit() || hpSc.getGetShooted()))
+					if (e != en && hpSc.getIsInKnockback())
 					{
 						float valueOfKnonckback = dmg.getKnockbackPower();
 						float angle = 0;
@@ -922,8 +925,7 @@ void Systems::knockbackSystem(Manager& manager)
 							}
 						}
 						
-						hpSc.setGetHit(false);
-						hpSc.setGetShooted(false);
+						hpSc.setIsInKnockback(false);
 					}
 				}
 			}
@@ -1027,6 +1029,17 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 					}
 				}
 			}
+		}
+	}
+}
+
+void Systems::healthSystem(Manager& manager)
+{
+	for (auto& e : manager.getVectorOfEntities())
+	{
+		if (e->hasComponent<HealthComponent>())
+		{
+			e->getComponent<HealthComponent>().timerOfGetHit();
 		}
 	}
 }

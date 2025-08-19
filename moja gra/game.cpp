@@ -269,7 +269,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
 	player.getComponent<DamageComponent>().setArrowDmg(15.f);
 	player.getComponent<SpeedComponent>().setSpeed(100.f);
-	player.getComponent<DamageComponent>().setKnockbackPower(100.f);
+	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
 
 	for (int i = 0; i < 15; i++)
 	{
