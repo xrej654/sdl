@@ -311,7 +311,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		{
 			if (mapRuinBossFightEntities[j][i] == 1)
 			{
-				addMeleeEnemy(manager, renderer, i * 64, j * 64);
+				//addMeleeEnemy(manager, renderer, i * 64, j * 64);
 			}
 			if (mapRuinBossFightEntities[j][i] == 2)
 			{
