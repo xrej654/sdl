@@ -12,36 +12,69 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 	{
 		if (e->hasComponent<AttackComponent>() && e->hasComponent<AttackSpriteComponent>())
 		{
-			if (SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() <= 408)
+			auto& attack = e->getComponent<AttackComponent>();
+
+			if (SDL_GetTicks() - attack.getLastHitTime() <= 408 && attack.getIsAngleGood())
 			{ 
+				auto& rotatedRect = e->getComponent<RotatedRectComponent>();
+				auto& attackSpr = e->getComponent<AttackSpriteComponent>();
+				auto& hitbox = e->getComponent<HitboxComponent>();
+				
 				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu 
-				e->getComponent<RotatedRectComponent>().setCenter(
-					e->getComponent<HitboxComponent>().getX() + (e->getComponent<HitboxComponent>().getWidth() / 2),
-					e->getComponent<HitboxComponent>().getY() + (e->getComponent<HitboxComponent>().getHeight() / 2));
+				rotatedRect.setCenter(
+					hitbox.getX() + (hitbox.getWidth() / 2),
+					hitbox.getY() + (hitbox.getHeight() / 2));
 				
 				//strona w ktora jest zwrocony atak 
-				e->getComponent<AttackComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+				attack.setDxAndDy(hitbox.getHitbox(), targetX, targetY);
+
+				float angleF = attack.getAngleFirst();
+				float angleSc = attack.getAngleSecond();
+				float angleDeg = (attack.getAngle() * 180 / M_PI) + 180;
+
+				if (angleF > angleSc)
+				{
+					if (angleDeg >= angleSc && angleDeg <= angleF)
+					{
+						attack.setIsAngleGood(true);
+					}
+					else
+					{
+						attack.setIsAngleGood(false);
+					}
+				}
+				else
+				{
+					if (angleDeg >= angleSc || angleDeg <= angleF)
+					{
+						attack.setIsAngleGood(true);
+					}
+					else
+					{
+						attack.setIsAngleGood(false);
+					}
+				}
 				
 				//zmiana kata na radian 
-				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<AttackComponent>().getAngle() + M_PI / 2.0);
+				rotatedRect.setRad(attack.getAngle() + M_PI / 2.0);
 				
 				//okreslanie rogow 
-				e->getComponent<AttackComponent>().setCorners(
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y),
+				attack.setCorners(
+					rotatedRect.rotate(
+						attackSpr.getDestRect().x,
+						attackSpr.getDestRect().y),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y),
+					rotatedRect.rotate(
+						attackSpr.getDestRect().x + attackSpr.getDestRect().w,
+						attackSpr.getDestRect().y),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x + e->getComponent<AttackSpriteComponent>().getDestRect().w,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h),
+					rotatedRect.rotate(
+						attackSpr.getDestRect().x + attackSpr.getDestRect().w,
+						attackSpr.getDestRect().y + attackSpr.getDestRect().h),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<AttackSpriteComponent>().getDestRect().x,
-						e->getComponent<AttackSpriteComponent>().getDestRect().y + e->getComponent<AttackSpriteComponent>().getDestRect().h)
+					rotatedRect.rotate(
+						attackSpr.getDestRect().x,
+						attackSpr.getDestRect().y + attackSpr.getDestRect().h)
 
 				);
 			}
@@ -49,38 +82,72 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 
 		if (e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>())
 		{
-			if (e->getComponent<ShootingComponent>().getHasShooted())
+			auto& shoot = e->getComponent<ShootingComponent>();
+			
+			if (e->getComponent<ShootingComponent>().getHasShooted() && shoot.getIsAngleGood())
 			{
+				auto& rotatedRect = e->getComponent<RotatedRectComponent>();
+				auto& shootSpr = e->getComponent<ShootingSpriteComponent>();
+				auto& hitbox = e->getComponent<HitboxComponent>();
 				//okreslenia srodka gracza potrzebne do rogow ataku i obrotu 
 
-				e->getComponent<RotatedRectComponent>().setCenter(
-					e->getComponent<ShootingComponent>().getStarterPos().x - 24 + (e->getComponent<HitboxComponent>().getWidth() / 2),
-					e->getComponent<ShootingComponent>().getStarterPos().y + 48 + (e->getComponent<HitboxComponent>().getHeight() / 2)
+				rotatedRect.setCenter(
+					shoot.getStarterPos().x - 24 + (hitbox.getWidth() / 2),
+					shoot.getStarterPos().y + 48 + (hitbox.getHeight() / 2)
 				);
 
 				//strona w ktora jest zwrocony atak
-				e->getComponent<ShootingComponent>().setDxAndDy(e->getComponent<HitboxComponent>().getHitbox(), targetX, targetY);
+				shoot.setDxAndDy(hitbox.getHitbox(), targetX, targetY);
 				
+				float angleF = shoot.getAngleFirst();
+				float angleSc = shoot.getAngleSecond();
+				float angleDeg = (shoot.getAngle() * 180 / M_PI) + 180;
+
+				if (angleF > angleSc)
+				{
+					if (angleDeg >= angleSc && angleDeg <= angleF)
+					{
+						cout << (shoot.getAngle() * 180 / M_PI) + 180 << " " << angleF << " " << angleSc << endl;
+						shoot.setIsAngleGood(true);
+					}
+					else
+					{
+						shoot.setIsAngleGood(false);
+					}
+				}
+				else
+				{
+					if (angleDeg >= angleSc || angleDeg <= angleF)
+					{
+						cout << (shoot.getAngle() * 180 / M_PI) + 180 << " " << angleF << " " << angleSc << endl;
+						shoot.setIsAngleGood(true);
+					}
+					else
+					{
+						shoot.setIsAngleGood(false);
+					}
+				}
+
 				//zmiana kata na radian
-				e->getComponent<RotatedRectComponent>().setRad(e->getComponent<ShootingComponent>().getAngle() + 3 * M_PI / 2.0);
+				rotatedRect.setRad(shoot.getAngle() + 3 * M_PI / 2.0);
 				
 				//okreslanie rogow 
-				e->getComponent<ShootingComponent>().setCorners(
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y),
+				shoot.setCorners(
+					rotatedRect.rotate(
+						shootSpr.getDestRect().x,
+						shootSpr.getDestRect().y),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y),
+					rotatedRect.rotate(
+						shootSpr.getDestRect().x + shootSpr.getDestRect().w,
+						shootSpr.getDestRect().y),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<ShootingSpriteComponent>().getDestRect().x + e->getComponent<ShootingSpriteComponent>().getDestRect().w,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h),
+					rotatedRect.rotate(
+						shootSpr.getDestRect().x + shootSpr.getDestRect().w,
+						shootSpr.getDestRect().y + shootSpr.getDestRect().h),
 
-					e->getComponent<RotatedRectComponent>().rotate(
-						e->getComponent<ShootingSpriteComponent>().getDestRect().x,
-						e->getComponent<ShootingSpriteComponent>().getDestRect().y + e->getComponent<ShootingSpriteComponent>().getDestRect().h)
+					rotatedRect.rotate(
+						shootSpr.getDestRect().x,
+						shootSpr.getDestRect().y + shootSpr.getDestRect().h)
 
 				);
 			}
@@ -95,7 +162,7 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if(e->hasComponent<HealthComponent>() && e->hasComponent<DashComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpeedComponent>() && e->hasComponent<SpriteComponent>() && e->hasComponent<AnimationComponent>() && e->getIsPlayer())
+		if(e->hasComponent<HealthComponent>() && e->hasComponent<AttackComponent>() && e->hasComponent<ShootingComponent>() && e->hasComponent<DashComponent>() && e->hasComponent<VelocityComponent>() && e->hasComponent<HitboxComponent>() && e->hasComponent<SpeedComponent>() && e->hasComponent<SpriteComponent>() && e->hasComponent<AnimationComponent>() && e->getIsPlayer())
 		{
 			auto& dash = e->getComponent<DashComponent>();
 			auto& velo = e->getComponent<VelocityComponent>();
@@ -104,6 +171,8 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 			auto& sprite = e->getComponent<SpriteComponent>();
 			auto& speed = e->getComponent<SpeedComponent>();
 			auto& hp = e->getComponent<HealthComponent>();
+			auto& attack = e->getComponent<AttackComponent>();
+			auto& shoot = e->getComponent<ShootingComponent>();
 
 				//okreslnie kierunku poruszania sie
 				float dx = (keys[SDL_SCANCODE_D] - keys[SDL_SCANCODE_A]);
@@ -139,38 +208,56 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					if (direction == "-1-1")
 					{
 						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo gora.png"));
+						attack.setBorders(225 + 67.5, 225 - 67.5);
+						shoot.setBorders(225 + 67.5, 225 - 67.5);
 					}
 					else if (direction == "-10")
 					{
 						anim.changeAsset("left", 4, 250, ren);
+						attack.setBorders(180 + 67.5,180 - 67.5);
+						shoot.setBorders(180 + 67.5,180 - 67.5);
 					}
 					else if (direction == "-11")
 					{
 						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w lewo dol.png"));
+						attack.setBorders(135 + 67.5,135 - 67.5);
+						shoot.setBorders(135 + 67.5,135 - 67.5);
 					}
 					else if (direction == "0-1")
 					{
 						anim.changeAsset("up", 4, 250, ren);
+						attack.setBorders(270 + 67.5, 270 - 67.5);
+						shoot.setBorders(270 + 67.5, 270 - 67.5);
 					}
 					else if (direction == "00")
 					{
 						anim.changeAsset("no-move", 4, 500, ren);
+						attack.setBorders(360,0);
+						shoot.setBorders(360,0);
 					}
 					else if (direction == "01")
 					{
 						anim.changeAsset("down", 4, 250, ren);
+						attack.setBorders(90 + 67.5,90 - 67.5);
+						shoot.setBorders(90 + 67.5,90 - 67.5);
 					}
 					else if (direction == "1-1")
 					{
 						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo gora.png"));
+						attack.setBorders(315 + 67.5 - 360,315 - 67.5);
+						shoot.setBorders(315 + 67.5 - 360,315 - 67.5);
 					}
 					else if (direction == "10")
 					{
 						anim.changeAsset("right", 4, 250, ren);
+						attack.setBorders(0 + 67.5, 360 - 67.5);
+						shoot.setBorders(0 + 67.5, 360 - 67.5);
 					}
 					else if (direction == "11")
 					{
 						//e->getComponent<SpriteComponent>().setSurface(IMG_Load("assets/ruch w prawo dol.png"));
+						attack.setBorders(45 + 67.5,45 - 67.5 + 360);
+						shoot.setBorders(45 + 67.5,45 - 67.5 + 360);
 					}
 
 					if (!sprite.getTexture() && !anim.getTexture())
@@ -601,7 +688,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 					});
 
 				//rysowanie ataku
-				if (SDL_GetTicks() - attack.getLastHitTime() <= 408 && e->hasComponent<RotatedRectComponent>())
+				if (SDL_GetTicks() - attack.getLastHitTime() <= 408 && e->hasComponent<RotatedRectComponent>() && attack.getIsAngleGood())
 				{
 					auto& rotatedRect = e->getComponent<RotatedRectComponent>();
 					//kolor okreslajacy rogi (do debbugu)
@@ -639,10 +726,10 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			if (e->hasComponent<ShootingComponent>())
 			{
 				SDL_SetRenderDrawColor(ren, 0, 0, 0, 255); // Czarny kolor
+				auto& shoot = e->getComponent<ShootingComponent>();
 
-				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>())
+				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>() && shoot.getIsAngleGood())
 				{
-					auto& shoot = e->getComponent<ShootingComponent>();
 					auto& shootSpr = e->getComponent<ShootingSpriteComponent>(); 
 					auto& rotatedRect = e->getComponent<RotatedRectComponent>();
 
@@ -709,6 +796,7 @@ void Systems::playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mo
 				attack.setHasBeenPressed(true);
 				cout << "ATAK" << endl;
 				attack.setLastHitTime(SDL_GetTicks());
+				attack.setIsAngleGood(true);
 			}
 			else if (!(mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)))
 			{
@@ -963,6 +1051,8 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 				shoot.setHasBeenPressed(true);
 				shoot.setHasShooted(true);
 				shoot.setLastShootTime(SDL_GetTicks());
+
+				shoot.setIsAngleGood(true);
 
 				shoot.setReducedDistance(shoot.getStarterPos().y);
 

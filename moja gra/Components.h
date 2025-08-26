@@ -206,6 +206,8 @@ protected:
 	bool hasBeenPressed; //boole do ataku
 	float angle; //zmienne potrzebne do obrtu
 	SDL_FPoint corners[4]; //rogi ataku
+	bool isAngleGood = true; //zmienna potrzebna aby gracz nie bil za siebie
+	float angleFirst, angleSecond; //granice do isAngleGood
 public:
 	AttackComponent()
 	{
@@ -221,6 +223,17 @@ public:
 	void setHasBeenPressed(bool attacking)
 	{
 		hasBeenPressed = attacking;
+	}
+	
+	void setIsAngleGood(bool angle)
+	{
+		isAngleGood = angle;
+	}
+
+	void setBorders(float first, float second)
+	{
+		angleFirst = first;
+		angleSecond = second;
 	}
 
 	void setLastHitTime(Uint32 ticks)
@@ -242,8 +255,11 @@ public:
 	}
 
 	bool getHasBeenPressed() const { return hasBeenPressed; }
+	bool getIsAngleGood() const { return isAngleGood; }
 	Uint32 getLastHitTime() const { return lastHitTime; }
 	float getAngle() const { return angle; }
+	float getAngleFirst() const { return angleFirst; }
+	float getAngleSecond() const { return angleSecond; }
 	SDL_FPoint* getCorners() { return corners; }
 };
 
@@ -467,6 +483,8 @@ private:
 	float angleTemp = 0;
 	SDL_FPoint starterPos;
 	float reducedDistance = 0;
+	bool isAngleGood = true; //zmienna potrzebna aby gracz nie bil za siebie
+	float angleFirst, angleSecond; //granice do isAngleGood
 public:
 	ShootingComponent() 
 	{
@@ -503,6 +521,17 @@ public:
 
 	void setAngle() { this->angle = angleTemp; }
 
+	void setIsAngleGood(bool angle)
+	{
+		isAngleGood = angle;
+	}
+
+	void setBorders(float first, float second)
+	{
+		angleFirst = first;
+		angleSecond = second;
+	}
+
 	void setDxAndDy(SDL_FRect obj, float mouseX, float mouseY)
 	{
 		angleTemp = atan2((obj.y + (obj.h / 2)) - mouseY, (obj.x + (obj.w / 2)) - mouseX);
@@ -516,7 +545,10 @@ public:
 	bool getHasBeenPressed() const { return hasBeenPressed; }
 	SDL_FPoint* getCorners() { return corners; }
 	float getSpeed() const { return speed; }
-	SDL_FPoint getStarterPos() const { return starterPos; }
+	SDL_FPoint getStarterPos() const { return starterPos; }	
+	bool getIsAngleGood() const { return isAngleGood; }
+	float getAngleFirst() const { return angleFirst; }
+	float getAngleSecond() const { return angleSecond; }
 };
 
 class ShootingSpriteComponent : public SpriteComponent
