@@ -656,8 +656,6 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 						16,48
 						});
 
-					cout << shoot.getCorners()[0].x << " " << shoot.getCorners()[0].y << endl;
-
 					SDL_Point centerOfAPlayerWithAttackOffset =
 					{
 						rotatedRect.getCenter().x - shootSpr.getDestRect().x,
@@ -938,17 +936,9 @@ void Systems::dashSystem(Manager& manager)
 
 			float lenght = dash.getLenghtOfDash();
 
-			static int actualCount = 0;
-			int maxCount = 15;
+			hitbox.setPosition(dash.getDx() * lenght, dash.getDy() * lenght);
 
-			hitbox.setPosition(dash.getDx() * lenght / maxCount, dash.getDy() * lenght / maxCount);
-			actualCount++;
-
-			if (actualCount >= maxCount)
-			{
-				actualCount = 0;
-				dash.setIsDashing(false);
-			}
+			dash.setIsDashing(false);
 		}
 	}
 }
