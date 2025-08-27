@@ -107,7 +107,6 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 				{
 					if (angleDeg >= angleSc && angleDeg <= angleF)
 					{
-						cout << (shoot.getAngle() * 180 / M_PI) + 180 << " " << angleF << " " << angleSc << endl;
 						shoot.setIsAngleGood(true);
 					}
 					else
@@ -119,7 +118,6 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 				{
 					if (angleDeg >= angleSc || angleDeg <= angleF)
 					{
-						cout << (shoot.getAngle() * 180 / M_PI) + 180 << " " << angleF << " " << angleSc << endl;
 						shoot.setIsAngleGood(true);
 					}
 					else
@@ -183,6 +181,7 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					dash.setIsDashing(true);
 					dash.setLastDashTime(SDL_GetTicks());
 					dash.setDirection(dx, dy);
+					dash.setTimeLeft(1.0f);
 				}
 
 				if(!dash.getIsDashing())
@@ -680,7 +679,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			{
 				auto& attack = e->getComponent<AttackComponent>();
 				auto& attackSpr = e->getComponent<AttackSpriteComponent>();
-				
+
 				attackSpr.setRects({
 					hitbox.getX() - 32.f,
 					hitbox.getY() + hitbox.getHeight(),
@@ -730,7 +729,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 
 				if (e->getComponent<ShootingComponent>().getHasShooted() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<RotatedRectComponent>() && shoot.getIsAngleGood())
 				{
-					auto& shootSpr = e->getComponent<ShootingSpriteComponent>(); 
+					auto& shootSpr = e->getComponent<ShootingSpriteComponent>();
 					auto& rotatedRect = e->getComponent<RotatedRectComponent>();
 
 					float arrowSpeed = shoot.getSpeed() * deltaTime * 10;
@@ -757,10 +756,10 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 					if (shoot.getStarterPos().y - shoot.getReducedDistance() > shoot.getRange())
 					{
 						cout << "Koniec\n";
-						shoot.setHasShooted(false); 
+						shoot.setHasShooted(false);
 					}
 
-					SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
+					/*SDL_FPoint* attackCorners = e->getComponent<ShootingComponent>().getCorners();
 					for (int i = 0; i < 4; i++) {
 						SDL_Rect pointRect = {
 							(int)(attackCorners[i].x - 16),
@@ -768,7 +767,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 							32, 32
 						};
 						SDL_RenderFillRect(ren, &pointRect);
-					}
+					}*/
 				}
 			}
 		}
@@ -893,8 +892,10 @@ void Systems::collisionSystem(Manager& manager)
 								angle = (attack.getAngle() * 180 / M_PI) + 180;
 
 								hpSc.setGetHit(true);
-								hpSc.setIsInKnockback(true);
 								knock.setDxAndDy(angle);
+								knock.setTimeLeft(1.0f);
+								hpSc.setIsInKnockback(true);
+								dmg.setAttacked(true);
 							}
 
 						}
@@ -932,8 +933,10 @@ void Systems::collisionSystem(Manager& manager)
 							else
 							{
 								angle = (shoot.getAngle() * 180 / M_PI) + 180; hpSc.setGetShooted(true);
-								hpSc.setIsInKnockback(true);
 								knock.setDxAndDy(angle);
+								knock.setTimeLeft(1.0f); 
+								hpSc.setIsInKnockback(true);
+								dmg.setAttacked(true);
 							}
 						}
 					}
@@ -968,7 +971,7 @@ void Systems::collisionSystem(Manager& manager)
 	}
 }
 
-void Systems::knockbackSystem(Manager& manager)
+void Systems::knockbackSystem(Manager& manager, float deltaTime)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -984,28 +987,39 @@ void Systems::knockbackSystem(Manager& manager)
 					auto& hitboxSc = en->getComponent<HitboxComponent>();
 					auto& knock = e->getComponent<KnockbackComponent>();
 
-					if (e != en && hpSc.getIsInKnockback())
+					if (e != en && hpSc.getIsInKnockback() && dmg.getAttacked())
 					{
 						float valueOfKnonckback = dmg.getKnockbackPower();
 
-						hitboxSc.setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
+						knock.changeTimeLeft(deltaTime);
+
+						float factor = knock.getFactor();
+
+						if (factor <= 0) 
+						{
+							factor = 0;
+							hpSc.setIsInKnockback(false);
+						}
+
+						float step = valueOfKnonckback * factor * deltaTime;
+
+						hitboxSc.setPosition(knock.getDx() * step, knock.getDy() * step);
 
 						if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
 						{
 							if (en->hasComponent<AttackRectComponent>())
 							{
-								en->getComponent<AttackRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
+								en->getComponent<AttackRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
 							}
 
-							en->getComponent<DetectedRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
+							en->getComponent<DetectedRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
 
 							if (en->hasComponent<ShootingRectComponent>())
 							{
-								en->getComponent<ShootingRectComponent>().setPosition(knock.getDx() * valueOfKnonckback, knock.getDy() * valueOfKnonckback);
+								en->getComponent<ShootingRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
 							}
 						}
-						
-						hpSc.setIsInKnockback(false);
+
 					}
 				}
 			}
@@ -1013,7 +1027,7 @@ void Systems::knockbackSystem(Manager& manager)
 	}
 }
 
-void Systems::dashSystem(Manager& manager)
+void Systems::dashSystem(Manager& manager, float deltaTime)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -1024,9 +1038,19 @@ void Systems::dashSystem(Manager& manager)
 
 			float lenght = dash.getLenghtOfDash();
 
-			hitbox.setPosition(dash.getDx() * lenght, dash.getDy() * lenght);
+			dash.changeTimeLeft(deltaTime);
 
-			dash.setIsDashing(false);
+			float factor = dash.getFactor();
+
+			if (factor <= 0)
+			{
+				factor = 0;
+				dash.setIsDashing(false);
+			}
+
+			float step = lenght * factor * deltaTime;
+
+			hitbox.setPosition(dash.getDx() * step, dash.getDy() * step);
 		}
 	}
 }

@@ -396,6 +396,7 @@ class DamageComponent : public Component
 {
 private:
 	float arrowDmg, meleeDmg, dmgBoost, weaponDmg, knockbackPower, knockbackResistance;
+	bool attacked = false;
 public:
 	DamageComponent()
 	{
@@ -412,6 +413,7 @@ public:
 	void setDmgBoost(float dmgBoost) { this->dmgBoost = dmgBoost; }
 	void setWeaponDmg(float weaponDmg) { this->weaponDmg = weaponDmg; }
 	void setKnockbackPower(float knockbackPower) { this->knockbackPower = knockbackPower - (knockbackPower * (knockbackResistance / 100)); }
+	void setAttacked(bool value) { attacked = value; }
 
 	void setKnockbackResistance(float knockbackResistance) 
 	{
@@ -425,6 +427,7 @@ public:
 	float getWeaponDmg() const { return weaponDmg; }
 	float getKnockbackPower() const { return knockbackPower; }
 	float getKnockbackResistance() const { return knockbackResistance; }
+	bool getAttacked() const { return attacked; }
 };
 
 class SpeedComponent : public Component
@@ -454,6 +457,7 @@ private:
 	//czas do cooldown'u
 	int dashCooldown = 0;
 	Uint32 lastDashTime = 0;
+	float timeLeft; 
 public:
 	DashComponent() {}
 
@@ -462,6 +466,14 @@ public:
 	void setDirection(int x, int y) { dx = x; dy = y; }
 	void setDashCooldown(int time) { dashCooldown = time; }
 	void setLastDashTime(int time) { lastDashTime = time; }
+
+	void setTimeLeft(float time) { timeLeft = time; }
+
+	void changeTimeLeft(float deltaTime) { timeLeft -= deltaTime; }
+
+	float getFactor() const {
+		return timeLeft / 0.3f;
+	}
 
 	bool getIsDashing() const { return isDashing; }
 	float getLenghtOfDash() const { return lenghtOfDash; }
@@ -561,15 +573,25 @@ class KnockbackComponent : public Component
 {
 private:
 	float dx, dy;
+	float timeLeft;
 public:
-	KnockbackComponent() : Component() {}
+	KnockbackComponent() : Component()
+	{
+		timeLeft = 0;
+	}
 
 	void setDxAndDy(float angle)
 	{
 		dx = cos(angle * M_PI / 180);
 		dy = sin(angle * M_PI / 180);
 	}
-	
+	void setTimeLeft(float time) { timeLeft = time; }
+
+	void changeTimeLeft(float deltaTime) { timeLeft -= deltaTime; }
+
+	float getFactor() const {
+		return timeLeft / 0.3f;
+	}
 	float getDx() const { return dx; }
 	float getDy() const { return dy; }
 };
