@@ -345,6 +345,7 @@ class HealthComponent : public Component
 {
 private:
 	float hp, hpBoost, armourHp;
+	float maxHp;
 	bool getHit = false;
 	bool getShooted = false;
 	bool isInKnockback = false;
@@ -366,6 +367,7 @@ public:
 	void setArmourHp(float armourHp) { this->armourHp = armourHp; }
 	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
 	void addHp(float addedHp) { hp += addedHp; }
+	void setMaxHp(float maxHp) { this->maxHp = maxHp; }
 
 	void setGetHit(bool getHit)
 	{
@@ -390,7 +392,8 @@ public:
 	bool getGetShooted() const { return getShooted; }
 	float getArmourHp() const { return armourHp; }
 	bool getIsInKnockback() const { return isInKnockback; }
-};
+	float getMaxHp() const { return maxHp; }
+}; 
 
 class DamageComponent : public Component
 {

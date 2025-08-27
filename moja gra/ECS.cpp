@@ -153,7 +153,6 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 	}
 }
 
-
 template<typename E> bool tryMoveWithCollision(E& e, float dx, float dy, Manager& manager) {
 	auto& hitbox = e->getComponent<HitboxComponent>();
 	SDL_FRect predicted = hitbox.getHitbox();
@@ -667,9 +666,9 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 	{
 		//rysowanie hitboxa jesli nie ma sprite'a
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255, 100);
-		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
+		/*if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
 		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
-		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().drawHitbox(ren, e->getComponent<ShootingRectComponent>().getHitbox(), 200, 0, 0, 130);
+		if (!e->hasComponent<SpriteComponent>() && e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().drawHitbox(ren, e->getComponent<ShootingRectComponent>().getHitbox(), 200, 0, 0, 130);*/
 
 		if (e->hasComponent<AnimationComponent>() && e->hasComponent<HitboxComponent>())
 		{
@@ -790,6 +789,35 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 					}*/
 				}
 			}
+		}
+
+		if (e->getIsPlayer())
+		{
+			SDL_FRect rect = { 20,20,300,20 };
+
+			SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+			SDL_RenderFillRectF(ren, &rect);
+
+			float newWitdh = (e->getComponent<HealthComponent>().getHp() / e->getComponent<HealthComponent>().getMaxHp()) * rect.w;
+
+			rect = { 20,20, newWitdh ,20 };
+
+			SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
+			SDL_RenderFillRectF(ren, &rect);
+		}
+		else if (e->getIsEnemy())
+		{
+			SDL_FRect rect = { e->getComponent<HitboxComponent>().getX() + 8,e->getComponent<HitboxComponent>().getY() - 16,e->getComponent<HitboxComponent>().getWidth() - 16,10 };
+
+			SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+			SDL_RenderFillRectF(ren, &rect);
+
+			float newWitdh = (e->getComponent<HealthComponent>().getHp() / e->getComponent<HealthComponent>().getMaxHp()) * rect.w;
+
+			rect = { e->getComponent<HitboxComponent>().getX() + 8,e->getComponent<HitboxComponent>().getY() - 16,newWitdh,10 };
+
+			SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
+			SDL_RenderFillRectF(ren, &rect);
 		}
 	}
 }
