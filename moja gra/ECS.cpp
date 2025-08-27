@@ -153,6 +153,23 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 	}
 }
 
+
+template<typename E> bool tryMoveWithCollision(E& e, float dx, float dy, Manager& manager) {
+	auto& hitbox = e->getComponent<HitboxComponent>();
+	SDL_FRect predicted = hitbox.getHitbox();
+	predicted.x += dx;
+	predicted.y += dy;
+
+	for (auto& en : manager.getVectorOfObstacles()) {
+		auto& hitboxSc = en->getComponent<HitboxComponent>();
+		if (SDL_HasIntersectionF(&predicted, hitboxSc.getHitboxReference())) {
+			return false; // kolizja
+		}
+	}
+
+	return true;
+}
+
 //systemy polegaja na petli we vector'ze z entity'ami
 //po tym sa if'y sprawdzajacy czy sa komponenty aby nie bylo bledu ze wykorzystuje komponenty na obikie ktory nie ma tych komponentow
 
@@ -200,7 +217,10 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					if(!hp.getIsInKnockback()) //blokada podczas knockbacku
 					{
 						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
-						hitbox.setPosition(velo.getXVel(), velo.getYVel());
+						if(tryMoveWithCollision(e,velo.getXVel(), velo.getYVel(), manager))
+						{
+							hitbox.setPosition(velo.getXVel(), velo.getYVel());
+						}
 					}
 
 					//robocza zmiana textury podczas ruchu -> mapa z vectorami na klatki
@@ -329,7 +349,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 
 						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime); 
 
-						if (!hp.getIsInKnockback()) //blokada podczas knockbacku
+						if (!hp.getIsInKnockback() && tryMoveWithCollision(e, velo.getXVel(), velo.getYVel(), manager)) //blokada podczas knockbacku
 						{
 							//zmiana pozycji
 							hitbox.setPosition(velo.getXVel(), velo.getYVel());
@@ -943,31 +963,6 @@ void Systems::collisionSystem(Manager& manager)
 				}
 			}
 		}
-
-		//jest to odzielone od tamtego warunku poniewaz moga byc obiekty bez ataku, zycia, obrazen lub jednej z tych 
-		//np zwierzeta beda mialy tylko zycie i przez to bede one przechodzic przez sciany jesli nie bylo tego rozdzielenia
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<VelocityComponent>())
-		{
-			auto& hitbox = e->getComponent<HitboxComponent>();
-			auto& velo = e->getComponent<VelocityComponent>();
-
-			for (auto& en : manager.getVectorOfObstacles())
-			{
-				auto& hitboxSc = en->getComponent<HitboxComponent>();
-				
-				if (SDL_HasIntersectionF(hitbox.getHitboxReference(), hitboxSc.getHitboxReference()))
-				{
-					//cout << "Sciana\n";
-					hitbox.setPosition(-velo.getXVel(), -velo.getYVel());
-					if (e->hasComponent<DetectedRectComponent>())
-					{
-						e->getComponent<DetectedRectComponent>().setPosition(-velo.getXVel(), -velo.getYVel());
-						if(e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().setPosition(-velo.getXVel(), -velo.getYVel());
-						if(e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().setPosition(-velo.getXVel(), -velo.getYVel());
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -1003,20 +998,23 @@ void Systems::knockbackSystem(Manager& manager, float deltaTime)
 
 						float step = valueOfKnonckback * factor * deltaTime;
 
-						hitboxSc.setPosition(knock.getDx() * step, knock.getDy() * step);
-
-						if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
+						if (tryMoveWithCollision(en, knock.getDx() * step, knock.getDy() * step, manager))
 						{
-							if (en->hasComponent<AttackRectComponent>())
-							{
-								en->getComponent<AttackRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
-							}
+							hitboxSc.setPosition(knock.getDx() * step, knock.getDy() * step);
 
-							en->getComponent<DetectedRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
-
-							if (en->hasComponent<ShootingRectComponent>())
+							if (en->getIsEnemy() && en->hasComponent<DetectedRectComponent>())
 							{
-								en->getComponent<ShootingRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
+								if (en->hasComponent<AttackRectComponent>())
+								{
+									en->getComponent<AttackRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
+								}
+
+								en->getComponent<DetectedRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
+
+								if (en->hasComponent<ShootingRectComponent>())
+								{
+									en->getComponent<ShootingRectComponent>().setPosition(knock.getDx() * step, knock.getDy() * step);
+								}
 							}
 						}
 
@@ -1049,8 +1047,10 @@ void Systems::dashSystem(Manager& manager, float deltaTime)
 			}
 
 			float step = lenght * factor * deltaTime;
-
-			hitbox.setPosition(dash.getDx() * step, dash.getDy() * step);
+			if(tryMoveWithCollision(e, dash.getDx() * step, dash.getDy() * step, manager))
+			{
+				hitbox.setPosition(dash.getDx() * step, dash.getDy() * step);
+			}
 		}
 	}
 }
