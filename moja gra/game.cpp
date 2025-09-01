@@ -110,6 +110,8 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		std::cout << "Renderer creatred" << std::endl;
 	}
 
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
 	//dodawanie zdjec asetow
 
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/bases/stone ruin/001.png")));
@@ -199,6 +201,12 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/005.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/006.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/obstacles/stone/007.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/heal1.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/heal2.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/dash1.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/dash2.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow1.png")));
+	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow2.png")));
 
 	//tworzenie gracza
 	auto& player(manager.addEntity());
@@ -358,7 +366,7 @@ void Game::renderering(float mouseX, float mouseY, float deltaTime)
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	manager.draw(manager, renderer, deltaTime);
+	manager.draw(manager, renderer, deltaTime, screenWidth, screenHeight);
 
 	SDL_RenderPresent(renderer);
 }

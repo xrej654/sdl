@@ -180,7 +180,6 @@ public:
 
 	void drawHitbox(SDL_Renderer* ren, SDL_FRect obj, int r = 0, int g = 0, int b = 0, int a = 255)
 	{
-		SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderDrawColor(ren, r, g, b, a);
 
 		if (!SDL_RenderFillRectF(ren, &obj))
@@ -465,7 +464,7 @@ private:
 	float lenghtOfDash = 120.f;
 	int dx = 0, dy = 0; //kierunek dash'u
 	//czas do cooldown'u
-	int dashCooldown = 0;
+	Uint32 dashCooldown = 0;
 	Uint32 lastDashTime = 0;
 	float timeLeft; 
 public:
@@ -474,8 +473,8 @@ public:
 	void setIsDashing(bool value) { isDashing = value; }
 	void setLenghtOfDash(float lenght) { lenghtOfDash = lenght; }
 	void setDirection(int x, int y) { dx = x; dy = y; }
-	void setDashCooldown(int time) { dashCooldown = time; }
-	void setLastDashTime(int time) { lastDashTime = time; }
+	void setDashCooldown(Uint32 time) { dashCooldown = time; }
+	void setLastDashTime(Uint32 time) { lastDashTime = time; }
 
 	void setTimeLeft(float time) { timeLeft = time; }
 
@@ -489,8 +488,8 @@ public:
 	float getLenghtOfDash() const { return lenghtOfDash; }
 	int getDx() const { return dx; }
 	int getDy() const { return dy; }
-	int getDashCooldown() const { return dashCooldown; }
-	int getLastDashTime() const { return lastDashTime; }
+	Uint32 getDashCooldown() const { return dashCooldown; }
+	Uint32 getLastDashTime() const { return lastDashTime; }
 };
 
 class ShootingComponent : public Component

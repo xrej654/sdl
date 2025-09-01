@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 	int screenHeight = dm.h;
 
 	Game game("gra", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, 0);
+	game.setWitdhAndHeight(screenWidth, screenHeight);
 
 	//zmienne potrzebne to klawiszy klawiatury i obsluga myszki
 	const Uint8* keys = SDL_GetKeyboardState(NULL);

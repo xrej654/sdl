@@ -363,8 +363,9 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 	}
 }
 
-void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime)
+void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight)
 {
+
 	for (int i = 0; i < 30; i++)
 	{
 		SDL_Rect mapSrcRect = { 0,0,32,32 };
@@ -798,12 +799,66 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
 			SDL_RenderFillRectF(ren, &rect);
 
-			float newWitdh = (e->getComponent<HealthComponent>().getHp() / e->getComponent<HealthComponent>().getMaxHp()) * rect.w;
+			float newWitdh = 0;
+			if (e->hasComponent<HealthComponent>())
+			{
+				auto& hp = e->getComponent<HealthComponent>();
+				newWitdh = (hp.getHp() / hp.getMaxHp()) * rect.w;
+			}
 
 			rect = { 20,20, newWitdh ,20 };
 
 			SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
 			SDL_RenderFillRectF(ren, &rect);
+
+			SDL_Rect srcRect = { 0,0,16,16 };
+			SDL_Rect destRect = {screenWitdh - 160, screenHeight - 112,80,80};
+
+			if (e->hasComponent<HealthComponent>())
+			{
+				auto& hp = e->getComponent<HealthComponent>();
+
+				if(SDL_GetTicks() - hp.getHealTime() <= hp.getPotionCooldown())
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(88), &srcRect, &destRect);
+				}
+				else
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(87), &srcRect, &destRect);
+				}
+			}
+
+			destRect = { screenWitdh - 160, screenHeight - 208,80,80 };
+			if(e->hasComponent<DashComponent>())
+			{
+				auto& dash = e->getComponent<DashComponent>();
+				
+				if(dash.getIsDashing())
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(90), &srcRect, &destRect);
+				}
+				else
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(89), &srcRect, &destRect);
+				}
+			}
+
+			srcRect = { 0,0,32,48 };
+			destRect = { 64, screenHeight - 192,128,128 };
+			if(e->hasComponent<ShootingComponent>())
+			{
+				auto& shoot = e->getComponent<ShootingComponent>();
+
+				if(shoot.getHasShooted())
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(92), &srcRect, &destRect);
+				}
+				else
+				{
+					SDL_RenderCopy(ren, manager.getVectorOfBaseTextures().at(91), &srcRect, &destRect);
+
+				}
+			}
 		}
 		else if (e->getIsEnemy())
 		{
@@ -819,6 +874,8 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
 			SDL_RenderFillRectF(ren, &rect);
 		}
+
+
 	}
 }
 

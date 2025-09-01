@@ -64,6 +64,9 @@
     <Filter Include="Pliki zasobów\obstacles\wall\stone ruin">
       <UniqueIdentifier>{3c33da7a-a8cb-4bd3-a5ff-0c980dd61c81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\HUD icons">
+      <UniqueIdentifier>{8ad5de2f-c7e5-4b8c-9b0b-07f5c2b63c75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -498,6 +501,24 @@
     </Image>
     <Image Include="assets\obstacles\stone\007.png">
       <Filter>Pliki zasobów\obstacles\stone</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\arrow1.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\arrow2.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\dash1.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\dash2.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\heal1.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\HUD icons\heal2.png">
+      <Filter>Pliki zasobów\HUD icons</Filter>
     </Image>
   </ItemGroup>
 </Project>

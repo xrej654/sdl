@@ -199,6 +199,12 @@
     <Image Include="assets\bases\stone ruin\024.png" />
     <Image Include="assets\bases\stone ruin\025.png" />
     <Image Include="assets\blad.png" />
+    <Image Include="assets\HUD icons\arrow1.png" />
+    <Image Include="assets\HUD icons\arrow2.png" />
+    <Image Include="assets\HUD icons\dash1.png" />
+    <Image Include="assets\HUD icons\dash2.png" />
+    <Image Include="assets\HUD icons\heal1.png" />
+    <Image Include="assets\HUD icons\heal2.png" />
     <Image Include="assets\obstacles\leaves\001.png" />
     <Image Include="assets\obstacles\leaves\002.png" />
     <Image Include="assets\obstacles\leaves\004.png" />
