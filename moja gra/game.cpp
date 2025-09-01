@@ -76,7 +76,6 @@ void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.getComponent<HealthComponent>().setHp(100.f);
 	enemy.getComponent<HealthComponent>().setMaxHp(100.f);
 	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
-	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
 	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 }
@@ -274,6 +273,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 	player.getComponent<HealthComponent>().setHp(100.f);
 	player.getComponent<HealthComponent>().setMaxHp(100.f);
+	player.getComponent<HealthComponent>().setPotionCooldown(10000);
 	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
 	player.getComponent<DamageComponent>().setArrowDmg(15.f);
 	player.getComponent<SpeedComponent>().setSpeed(100.f);

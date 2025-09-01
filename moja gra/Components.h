@@ -349,9 +349,10 @@ private:
 	bool getHit = false;
 	bool getShooted = false;
 	bool isInKnockback = false;
+	bool hasUsedPotion = false;
 
 	//czas potrzebny do timer'a
-	Uint32 startTime, duration;
+	Uint32 startTime, duration, healTime, potionCooldown;
 public:
 	HealthComponent()
 	{
@@ -366,8 +367,9 @@ public:
 	void setHpBoost(float hpBoost) { this->hpBoost = hpBoost; }
 	void setArmourHp(float armourHp) { this->armourHp = armourHp; }
 	void subtractHp(float subtractedHp) { hp -= subtractedHp; }
-	void addHp(float addedHp) { hp += addedHp; }
+	void addHp(float addedHp) { hp += addedHp; if (hp > maxHp) hp = maxHp; }
 	void setMaxHp(float maxHp) { this->maxHp = maxHp; }
+	void setHasUsedPotion(bool value) { hasUsedPotion = value; }
 
 	void setGetHit(bool getHit)
 	{
@@ -377,6 +379,8 @@ public:
 
 	void setGetShooted(bool getShooted) { this->getShooted = getShooted; }
 	void setIsInKnockback(bool isInKnockback) { this->isInKnockback = isInKnockback; }
+	void setHealTime() { healTime = SDL_GetTicks(); }
+	void setPotionCooldown(Uint32 time) { potionCooldown = time; }
 
 	void timerOfGetHit()
 	{
@@ -393,6 +397,9 @@ public:
 	float getArmourHp() const { return armourHp; }
 	bool getIsInKnockback() const { return isInKnockback; }
 	float getMaxHp() const { return maxHp; }
+	float getHasUsedPotion() const { return hasUsedPotion; }
+	Uint32 getHealTime() const { return healTime; }
+	Uint32 getPotionCooldown() const { return potionCooldown; }
 }; 
 
 class DamageComponent : public Component

@@ -1175,13 +1175,27 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 }
 
 //system potrzebny do zmiany flagi getHit
-void Systems::healthSystem(Manager& manager)
+void Systems::healthSystem(Manager& manager,const Uint8* keys)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		if (e->hasComponent<HealthComponent>())
 		{
-			e->getComponent<HealthComponent>().timerOfGetHit();
+			auto& hp = e->getComponent<HealthComponent>();
+			hp.timerOfGetHit();
+
+			if (SDL_GetTicks() - hp.getHealTime() >= hp.getPotionCooldown())
+			{
+				hp.setHasUsedPotion(false);
+			}
+
+
+			if (e->getIsPlayer() && keys[SDL_SCANCODE_H] && !hp.getHasUsedPotion())
+			{
+				hp.addHp(50.f);
+				hp.setHasUsedPotion(true);
+				hp.setHealTime();
+			}
 		}
 	}
 }

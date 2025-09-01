@@ -134,7 +134,7 @@ public:
 
         collisionSystem(manager);
         knockbackSystem(manager, deltaTime);
-        healthSystem(manager);
+        healthSystem(manager, keys);
     }
 
     void playerSystems(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
@@ -158,7 +158,7 @@ public:
     static void collisionSystem(Manager& manager);
     static void knockbackSystem(Manager& manager, float detlaTime);
     static void dashSystem(Manager& manager, float detlaTime);
-    static void healthSystem(Manager& manager);
+    static void healthSystem(Manager& manager,const Uint8* keys);
     
     static void playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
     static void playerShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
