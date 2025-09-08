@@ -112,6 +112,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 					else
 					{
 						shoot.setIsAngleGood(false);
+						shoot.setHasShooted(false);
 					}
 				}
 				else
@@ -123,6 +124,7 @@ static void handleCalculationOfAttacking(E& e, float targetX, float targetY) {
 					else
 					{
 						shoot.setIsAngleGood(false);
+						shoot.setHasShooted(false);
 					}
 				}
 
