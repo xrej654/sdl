@@ -210,6 +210,9 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 
 	//tworzenie gracza
 	auto& player(manager.addEntity());
+
+	manager.setPlayer(&player);
+
 	player.setIsPlayer();
 
 	player.addComponent<HitboxComponent>();
@@ -278,6 +281,68 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/3.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/4.png")),
 		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-no-move", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-left", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-right", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-up", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-down", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/4.png"))
+		});
+	
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-no-move", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-left", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-right", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-up", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-down", {
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/1.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/2.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/3.png")),
+		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/4.png"))
+		});
+
 
 	player.getComponent<HealthComponent>().setHp(100.f);
 	player.getComponent<HealthComponent>().setMaxHp(100.f);

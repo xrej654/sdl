@@ -1,24 +1,18 @@
-﻿  ECS.cpp
-C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(133,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
-  (kompilowanie pliku źródłowego „ECS.cpp”)
+﻿  AttackSystems.cpp
+  ECS.cpp
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(142,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „AttackSystems.cpp”)
   
-C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(594,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „ECS.cpp”)
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(603,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „AttackSystems.cpp”)
   
-C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(595,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „ECS.cpp”)
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(604,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „AttackSystems.cpp”)
   
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(192,14): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(193,14): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(199,28): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(199,24): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(319,97): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(997,50): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(1040,49): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(26,20): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-      C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(26,20):
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(24,20): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+      C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(24,20):
       kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to
-          C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(910,4):
+          C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(186,4):
           zobacz odwołanie do kompilowanego tworzenia wystąpienia „void handleCalculationOfAttacking<_Ty>(E &,float,float)” funkcji szablon
           with
           [
@@ -26,27 +20,94 @@ C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(26,20): warning C4244: "argumen
               E=std::unique_ptr<Entity,std::default_delete<Entity>>
           ]
   
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(25,20): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(33,20): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(59,42): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(65,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(64,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(69,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(68,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(73,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(72,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(77,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(76,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(96,35): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(95,35): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(104,20): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(130,41): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(136,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(135,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(140,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(139,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(144,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(143,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(148,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(147,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(23,20): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(31,20): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(57,42): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(63,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(62,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(67,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(66,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(71,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(70,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(75,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(74,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(94,35): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(93,35): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(102,20): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(130,41): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(136,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(135,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(140,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(139,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(144,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(143,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(148,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\AttackSystems.cpp(147,29): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(142,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „ECS.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(603,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „ECS.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(604,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „ECS.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(58,50): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\ECS.cpp(101,49): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  MovementSystems.cpp
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(142,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „MovementSystems.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(603,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „MovementSystems.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(604,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „MovementSystems.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\MovementSystems.cpp(39,13): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\MovementSystems.cpp(40,13): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\MovementSystems.cpp(46,27): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\MovementSystems.cpp(46,23): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\MovementSystems.cpp(171,97): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  RenderingSystem.cpp
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(142,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „RenderingSystem.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(603,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „RenderingSystem.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(604,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „RenderingSystem.cpp”)
+  
+  game.cpp
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(142,39): warning C4018: ">=": niezgodność typu ze znakiem/bez znaku
+  (kompilowanie pliku źródłowego „game.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(603,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „game.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\Components.h(604,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „game.cpp”)
+  
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(28,56): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(28,53): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(29,70): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(29,61): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(30,67): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(30,59): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(69,56): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(69,53): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(70,70): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(70,61): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(71,70): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(71,61): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(371,111): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(371,96): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(371,81): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(371,66): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(379,111): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(379,96): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(379,81): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Xrejg\Desktop\moja gra\moja gra\game.cpp(379,66): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  Generowanie kodu...
   moja gra.vcxproj -> C:\Users\Xrejg\Desktop\moja gra\x64\Debug\moja gra.exe

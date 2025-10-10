@@ -15,6 +15,7 @@ class VelocityComponent : public Component
 {
 private:
 	float xVel, yVel;
+	string direction;
 public:
 	VelocityComponent()
 	{
@@ -28,8 +29,14 @@ public:
 		yVel = y;
 	}
 
+	void setDirection(string direction)
+	{
+		this->direction = direction;
+	}
+
 	float getXVel() const { return xVel; }
 	float getYVel() const { return yVel; }
+	string getDirection() const{ return direction; }
 };
 
 //komponent okreslajacy texture entity
@@ -126,6 +133,8 @@ public:
 		assets[key] = textures;
 	}
 
+	void resetCurrentFrame() { currentFrame = -1; }
+
 	void changeAsset(string key, int frames, int frameTime, SDL_Renderer* ren, Uint32 actualFrameTime = SDL_GetTicks())
 	{
 		allFrames = frames;
@@ -136,7 +145,7 @@ public:
 			if (currentFrame >= allFrames) currentFrame = 0;
 			lastFrameTime = actualFrameTime;
 
-			//cout << currentFrame << allFrames <<endl;
+			// cout << currentFrame << allFrames << endl;
 
 			setTexture(assets[key][currentFrame]);
 		}

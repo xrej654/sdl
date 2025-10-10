@@ -67,6 +67,42 @@
     <Filter Include="Pliki zasobów\HUD icons">
       <UniqueIdentifier>{8ad5de2f-c7e5-4b8c-9b0b-07f5c2b63c75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\Player\attack">
+      <UniqueIdentifier>{6e680f0e-213a-42d9-a1e0-656b84ffb331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\attack\up">
+      <UniqueIdentifier>{46f58c9d-e713-49a3-9149-60b5d1dc7c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\attack\down">
+      <UniqueIdentifier>{f0106145-574f-4e1c-a414-4c7a473d2b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\attack\no-move">
+      <UniqueIdentifier>{506e216d-cbba-4849-9d94-569d950cf637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\attack\right">
+      <UniqueIdentifier>{596830e2-7b09-4085-9378-667bbfefe7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\attack\left">
+      <UniqueIdentifier>{600c221c-86d8-4a39-9c9f-42591593d529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot">
+      <UniqueIdentifier>{b4aefc5a-e43c-423b-ab02-ce061171b5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot\down">
+      <UniqueIdentifier>{9d6a550c-cda1-4fe4-b424-fed7e40c11d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot\up">
+      <UniqueIdentifier>{aa80da62-aed1-456d-a7cd-4fd777a1f5ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot\no-move">
+      <UniqueIdentifier>{944dbaa0-e18a-47e5-bebb-3176f4b7be95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot\left">
+      <UniqueIdentifier>{392b6641-454a-4407-84d2-2356eb4f8fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Player\shoot\right">
+      <UniqueIdentifier>{19d29c08-6417-4b2d-8ef6-a5d5c667dc77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,6 +121,15 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="mapy.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementSystems.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackSystems.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -519,6 +564,126 @@
     </Image>
     <Image Include="assets\HUD icons\heal2.png">
       <Filter>Pliki zasobów\HUD icons</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\down\1.png">
+      <Filter>Pliki zasobów\Player\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\down\2.png">
+      <Filter>Pliki zasobów\Player\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\down\3.png">
+      <Filter>Pliki zasobów\Player\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\down\4.png">
+      <Filter>Pliki zasobów\Player\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\left\1.png">
+      <Filter>Pliki zasobów\Player\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\left\2.png">
+      <Filter>Pliki zasobów\Player\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\left\3.png">
+      <Filter>Pliki zasobów\Player\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\left\4.png">
+      <Filter>Pliki zasobów\Player\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\right\1.png">
+      <Filter>Pliki zasobów\Player\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\right\2.png">
+      <Filter>Pliki zasobów\Player\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\right\3.png">
+      <Filter>Pliki zasobów\Player\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\right\4.png">
+      <Filter>Pliki zasobów\Player\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\no-move\1.png">
+      <Filter>Pliki zasobów\Player\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\no-move\2.png">
+      <Filter>Pliki zasobów\Player\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\no-move\3.png">
+      <Filter>Pliki zasobów\Player\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\no-move\4.png">
+      <Filter>Pliki zasobów\Player\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\up\1.png">
+      <Filter>Pliki zasobów\Player\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\up\2.png">
+      <Filter>Pliki zasobów\Player\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\up\3.png">
+      <Filter>Pliki zasobów\Player\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Player\attack\up\4.png">
+      <Filter>Pliki zasobów\Player\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\down\1.png">
+      <Filter>Pliki zasobów\Player\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\down\2.png">
+      <Filter>Pliki zasobów\Player\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\down\3.png">
+      <Filter>Pliki zasobów\Player\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\down\4.png">
+      <Filter>Pliki zasobów\Player\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\left\1.png">
+      <Filter>Pliki zasobów\Player\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\left\2.png">
+      <Filter>Pliki zasobów\Player\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\left\3.png">
+      <Filter>Pliki zasobów\Player\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\left\4.png">
+      <Filter>Pliki zasobów\Player\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\right\1.png">
+      <Filter>Pliki zasobów\Player\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\right\2.png">
+      <Filter>Pliki zasobów\Player\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\right\3.png">
+      <Filter>Pliki zasobów\Player\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\right\4.png">
+      <Filter>Pliki zasobów\Player\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\no-move\1.png">
+      <Filter>Pliki zasobów\Player\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\no-move\2.png">
+      <Filter>Pliki zasobów\Player\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\no-move\3.png">
+      <Filter>Pliki zasobów\Player\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\no-move\4.png">
+      <Filter>Pliki zasobów\Player\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\up\1.png">
+      <Filter>Pliki zasobów\Player\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\up\2.png">
+      <Filter>Pliki zasobów\Player\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\up\3.png">
+      <Filter>Pliki zasobów\Player\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Player\shoot\up\4.png">
+      <Filter>Pliki zasobów\Player\shoot\up</Filter>
     </Image>
   </ItemGroup>
 </Project>

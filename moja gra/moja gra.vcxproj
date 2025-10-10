@@ -132,11 +132,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithSAT.cpp" />
+    <ClCompile Include="AttackSystems.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="JBP.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapy.cpp" />
+    <ClCompile Include="MovementSystems.cpp" />
+    <ClCompile Include="RenderingSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlgorithSAT.h" />
@@ -264,6 +267,26 @@
     <Image Include="assets\obstacles\wall\stone ruin\054.png" />
     <Image Include="assets\obstacles\wall\stone ruin\055.png" />
     <Image Include="assets\obstacles\wall\stone ruin\056.png" />
+    <Image Include="assets\Player\attack\down\1.png" />
+    <Image Include="assets\Player\attack\down\2.png" />
+    <Image Include="assets\Player\attack\down\3.png" />
+    <Image Include="assets\Player\attack\down\4.png" />
+    <Image Include="assets\Player\attack\left\1.png" />
+    <Image Include="assets\Player\attack\left\2.png" />
+    <Image Include="assets\Player\attack\left\3.png" />
+    <Image Include="assets\Player\attack\left\4.png" />
+    <Image Include="assets\Player\attack\no-move\1.png" />
+    <Image Include="assets\Player\attack\no-move\2.png" />
+    <Image Include="assets\Player\attack\no-move\3.png" />
+    <Image Include="assets\Player\attack\no-move\4.png" />
+    <Image Include="assets\Player\attack\right\1.png" />
+    <Image Include="assets\Player\attack\right\2.png" />
+    <Image Include="assets\Player\attack\right\3.png" />
+    <Image Include="assets\Player\attack\right\4.png" />
+    <Image Include="assets\Player\attack\up\1.png" />
+    <Image Include="assets\Player\attack\up\2.png" />
+    <Image Include="assets\Player\attack\up\3.png" />
+    <Image Include="assets\Player\attack\up\4.png" />
     <Image Include="assets\Player\down\1.png" />
     <Image Include="assets\Player\down\2.png" />
     <Image Include="assets\Player\down\3.png" />
@@ -280,6 +303,26 @@
     <Image Include="assets\Player\right\2.png" />
     <Image Include="assets\Player\right\3.png" />
     <Image Include="assets\Player\right\4.png" />
+    <Image Include="assets\Player\shoot\down\1.png" />
+    <Image Include="assets\Player\shoot\down\2.png" />
+    <Image Include="assets\Player\shoot\down\3.png" />
+    <Image Include="assets\Player\shoot\down\4.png" />
+    <Image Include="assets\Player\shoot\left\1.png" />
+    <Image Include="assets\Player\shoot\left\2.png" />
+    <Image Include="assets\Player\shoot\left\3.png" />
+    <Image Include="assets\Player\shoot\left\4.png" />
+    <Image Include="assets\Player\shoot\no-move\1.png" />
+    <Image Include="assets\Player\shoot\no-move\2.png" />
+    <Image Include="assets\Player\shoot\no-move\3.png" />
+    <Image Include="assets\Player\shoot\no-move\4.png" />
+    <Image Include="assets\Player\shoot\right\1.png" />
+    <Image Include="assets\Player\shoot\right\2.png" />
+    <Image Include="assets\Player\shoot\right\3.png" />
+    <Image Include="assets\Player\shoot\right\4.png" />
+    <Image Include="assets\Player\shoot\up\1.png" />
+    <Image Include="assets\Player\shoot\up\2.png" />
+    <Image Include="assets\Player\shoot\up\3.png" />
+    <Image Include="assets\Player\shoot\up\4.png" />
     <Image Include="assets\Player\up\1.png" />
     <Image Include="assets\Player\up\2.png" />
     <Image Include="assets\Player\up\3.png" />

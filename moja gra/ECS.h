@@ -140,8 +140,8 @@ public:
     void playerSystems(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
         playerMovementSystem(manager, deltaTime, keys, ren);
-        playerAttackSystem(manager, mouseButtons, mouseX, mouseY);
-        playerShootingSystem(manager, mouseButtons, mouseX, mouseY);
+        playerAttackSystem(manager, mouseButtons, mouseX, mouseY, ren);
+        playerShootingSystem(manager, mouseButtons, mouseX, mouseY, ren);
         dashSystem(manager,deltaTime);
     }
 
@@ -160,8 +160,8 @@ public:
     static void dashSystem(Manager& manager, float detlaTime);
     static void healthSystem(Manager& manager,const Uint8* keys);
     
-    static void playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
-    static void playerShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
+    static void playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren);
+    static void playerShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren);
     static void playerMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
 
     static void enemyMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
@@ -175,6 +175,7 @@ class Manager
 private:
     Systems system;
     vector<unique_ptr<Entity>> entities; // Lista wszystkich obiektow
+    Entity* player;
     vector<unique_ptr<Entity>> obstacles; // Lista wszystkich przeszkod
     vector<SDL_Texture*> baseTextures;
 public:
@@ -226,6 +227,10 @@ public:
         obstacles.emplace_back(move(uPtr));
         return *e;
     }
+
+    void setPlayer(Entity* player) { this->player = player; }
+
+    Entity* getPlayer() { return player; }
 
     void addTexture(SDL_Texture* tex)
     {
