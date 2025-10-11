@@ -103,6 +103,45 @@
     <Filter Include="Pliki zasobów\Player\shoot\right">
       <UniqueIdentifier>{19d29c08-6417-4b2d-8ef6-a5d5c667dc77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\Enemy">
+      <UniqueIdentifier>{aae2b117-e036-4dc0-993e-9d1b90cd2f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele">
+      <UniqueIdentifier>{e7b9868e-ee5f-4c98-aea8-e9ed845a7fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\down">
+      <UniqueIdentifier>{04205eb2-7782-4bf3-ad96-44cb167d8145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\left">
+      <UniqueIdentifier>{0041090c-fa4a-4533-8d0b-521df723fb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack">
+      <UniqueIdentifier>{0236616c-a88d-41cc-98e6-1fe12d06eea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack\down">
+      <UniqueIdentifier>{c18c5f5b-d024-454c-b652-07dc2b273ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack\up">
+      <UniqueIdentifier>{cd28ac3a-bf43-499e-85b1-afc357bd622b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack\no-move">
+      <UniqueIdentifier>{4639c2c9-5549-4f52-95ec-86648b58f9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack\left">
+      <UniqueIdentifier>{c6d73e45-ac8c-48de-b990-b6d7e98d9669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\attack\right">
+      <UniqueIdentifier>{0fed4b4c-eacc-4fb7-bbf2-e878d85f06fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\no-move">
+      <UniqueIdentifier>{51f1d976-3ded-4de3-80f1-234ff8708ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\up">
+      <UniqueIdentifier>{dd583e89-fa0a-4741-a33b-6c280be27e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Meele\right">
+      <UniqueIdentifier>{ae91be33-1c90-4a3f-8d9a-9be6300cf1ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -684,6 +723,126 @@
     </Image>
     <Image Include="assets\Player\shoot\up\4.png">
       <Filter>Pliki zasobów\Player\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\up\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\up\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\up\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\up\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\right\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\right\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\right\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\right\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\no-move\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\no-move\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\no-move\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\no-move\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\left\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\left\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\left\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\left\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\down\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\down\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\down\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\down\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\up\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\up\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\up\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\up\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\no-move\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\no-move\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\no-move\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\no-move\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\right\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\right\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\right\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\right\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\left\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\left\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\left\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\left\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\down\1.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\down\2.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\down\3.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Meele\attack\down\4.png">
+      <Filter>Pliki zasobów\Enemy\Meele\attack\down</Filter>
     </Image>
   </ItemGroup>
 </Project>

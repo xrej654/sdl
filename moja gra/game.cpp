@@ -24,6 +24,7 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<DamageComponent>();
 	enemy.addComponent<SpeedComponent>();
 	enemy.addComponent<KnockbackComponent>();
+	enemy.addComponent<AnimationComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
@@ -39,6 +40,67 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/6.png")),
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/7.png")),
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/8.png")),
+		});
+
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("no-move", {
+	SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/no-move/1.png")),
+	SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/no-move/2.png")),
+	SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/no-move/3.png")),
+	SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/no-move/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/up/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/down/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/left/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/right/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("attack-no-move", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/no-move/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/no-move/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/no-move/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/no-move/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("attack-left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/left/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("attack-right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/right/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("attack-up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/up/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("attack-down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/down/4.png"))
 		});
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
@@ -311,7 +373,6 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/3.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/4.png"))
 		});
-	
 	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-no-move", {
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/1.png")),
 		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/2.png")),
