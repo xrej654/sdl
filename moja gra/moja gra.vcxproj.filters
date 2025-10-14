@@ -142,6 +142,42 @@
     <Filter Include="Pliki zasobów\Enemy\Meele\right">
       <UniqueIdentifier>{ae91be33-1c90-4a3f-8d9a-9be6300cf1ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range">
+      <UniqueIdentifier>{86e41ac3-f328-4de5-83c0-9e4a00f76221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\no-move">
+      <UniqueIdentifier>{6a490405-0f4f-4f0f-8dde-ac50c73fda35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\up">
+      <UniqueIdentifier>{96e3ca78-ba5e-4c12-8b2f-a3d1fc5c96b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\down">
+      <UniqueIdentifier>{e4e8a4bd-6597-4fdc-925a-8c9797ba1336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\left">
+      <UniqueIdentifier>{99e0e061-a4fe-48b5-92bf-51d9f370f0dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\right">
+      <UniqueIdentifier>{3d639beb-822b-474a-abfd-0ccb866dcdde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot">
+      <UniqueIdentifier>{9efef359-2ab2-48f7-89fc-f403f5f75ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot\up">
+      <UniqueIdentifier>{3f0f7ead-12e2-402a-aca8-e0e7480231de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot\down">
+      <UniqueIdentifier>{175780f4-14a0-4d13-95e3-486d20c89b5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot\left">
+      <UniqueIdentifier>{4fdb6b5a-62b9-4b6e-9864-c54e5951b2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot\right">
+      <UniqueIdentifier>{a8219244-f43d-4974-b1be-2108f16aa6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Enemy\Range\shoot\no-move">
+      <UniqueIdentifier>{e1cc99af-fd45-489d-8fca-1bcee2088d35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -843,6 +879,126 @@
     </Image>
     <Image Include="assets\Enemy\Meele\attack\down\4.png">
       <Filter>Pliki zasobów\Enemy\Meele\attack\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\down\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\down\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\down\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\down\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\left\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\left\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\left\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\left\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\right\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\right\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\right\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\right\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\up\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\up\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\up\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\up\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\no-move\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\no-move\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\no-move\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\no-move\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\down\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\down\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\down\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\down\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\down</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\left\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\left\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\left\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\left\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\left</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\no-move\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\no-move\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\no-move\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\no-move\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\no-move</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\right\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\right\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\right\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\right\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\right</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\up\1.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\up\2.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\up\3.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\up</Filter>
+    </Image>
+    <Image Include="assets\Enemy\Range\shoot\up\4.png">
+      <Filter>Pliki zasobów\Enemy\Range\shoot\up</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -233,7 +233,7 @@ void Systems::playerAttackSystem(Manager& manager, Uint32 mouseButtons, float mo
 	}
 }
 
-void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY)
+void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -258,6 +258,52 @@ void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mou
 				}
 
 				handleCalculationOfAttacking(e, hitboxSc.getX() + (hitboxSc.getWidth() / 2), hitboxSc.getY() + (hitboxSc.getHeight() / 2));
+			}
+
+			if (e->hasComponent<VelocityComponent>() && e->hasComponent<AnimationComponent>())
+			{
+				auto& velo = e->getComponent<VelocityComponent>();
+				auto& anim = e->getComponent<AnimationComponent>();
+
+				if (SDL_GetTicks() - attack.getLastHitTime() <= 408 && SDL_GetTicks() > 408)
+				{
+					if (velo.getDirection() == "-1-1")
+					{
+						anim.changeAsset("attack-up", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "-10")
+					{
+						anim.changeAsset("attack-left", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "-11")
+					{
+						anim.changeAsset("attack-down", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "0-1")
+					{
+						anim.changeAsset("attack-up", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "00")
+					{
+						anim.changeAsset("attack-no-move", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "01")
+					{
+						anim.changeAsset("attack-down", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "1-1")
+					{
+						anim.changeAsset("attack-up", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "10")
+					{
+						anim.changeAsset("attack-right", 4, 104, ren);
+					}
+					else if (velo.getDirection() == "11")
+					{
+						anim.changeAsset("attack-down", 4, 104, ren);
+					}
+				}
 			}
 
 		}
@@ -358,7 +404,7 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 	}
 }
 
-void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY)
+void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren)
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
@@ -397,6 +443,52 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 				}
 
 				handleCalculationOfAttacking(e, hitboxSc.getX() + (hitboxSc.getWidth() / 2), hitboxSc.getY() + (hitboxSc.getHeight() / 2));
+
+				if (e->hasComponent<VelocityComponent>() && e->hasComponent<AnimationComponent>())
+				{
+					auto& velo = e->getComponent<VelocityComponent>();
+					auto& anim = e->getComponent<AnimationComponent>();
+
+					if (SDL_GetTicks() - shoot.getLastShootTime() <= 601 && SDL_GetTicks() > 601)
+					{
+						if (velo.getDirection() == "-1-1")
+						{
+							anim.changeAsset("shoot-up", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "-10")
+						{
+							anim.changeAsset("shoot-left", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "-11")
+						{
+							anim.changeAsset("shoot-down", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "0-1")
+						{
+							anim.changeAsset("shoot-up", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "00")
+						{
+							anim.changeAsset("shoot-no-move", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "01")
+						{
+							anim.changeAsset("shoot-down", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "1-1")
+						{
+							anim.changeAsset("shoot-up", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "10")
+						{
+							anim.changeAsset("shoot-right", 4, 150, ren);
+						}
+						else if (velo.getDirection() == "11")
+						{
+							anim.changeAsset("shoot-down", 4, 150, ren);
+						}
+					}
+				}
 			}
 		}
 	}

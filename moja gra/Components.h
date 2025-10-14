@@ -15,7 +15,7 @@ class VelocityComponent : public Component
 {
 private:
 	float xVel, yVel;
-	string direction;
+	string direction = "00";
 public:
 	VelocityComponent()
 	{

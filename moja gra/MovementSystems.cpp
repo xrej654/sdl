@@ -197,6 +197,7 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 							dy = 0;
 						}
 
+						velo.setDirection(to_string(dx)  + to_string(dy));
 
 						velo.setVels(dx * speed.getSpeed() * deltaTime, dy * speed.getSpeed() * deltaTime);
 
@@ -207,6 +208,91 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 							detectedRect.setPosition(velo.getXVel(), velo.getYVel());
 							if (e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().setPosition(velo.getXVel(), velo.getYVel());
 							if (e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().setPosition(velo.getXVel(), velo.getYVel());
+						}
+					}
+
+					if (e->hasComponent<AnimationComponent>())
+					{
+						cout << velo.getDirection() << endl;
+
+						auto& anim = e->getComponent<AnimationComponent>();
+						if (e->hasComponent<ShootingComponent>() && SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() <= 601)
+						{
+							if (velo.getDirection() == "-1-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "-10")
+							{
+								anim.changeAsset("left", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "-11")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "0-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "00")
+							{
+								anim.changeAsset("no-move", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "01")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "1-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "10")
+							{
+								anim.changeAsset("right", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "11")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
+						}
+						else if (e->hasComponent<AttackComponent>() && SDL_GetTicks() - e->getComponent<AttackComponent>().getLastHitTime() > 408)
+						{
+							if (velo.getDirection() == "-1-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "-10")
+							{
+								anim.changeAsset("left", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "-11")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "0-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "00")
+							{
+								anim.changeAsset("no-move", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "01")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "1-1")
+							{
+								anim.changeAsset("up", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "10")
+							{
+								anim.changeAsset("right", 4, 104, ren);
+							}
+							else if (velo.getDirection() == "11")
+							{
+								anim.changeAsset("down", 4, 104, ren);
+							}
 						}
 					}
 				}

@@ -24,10 +24,13 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<DamageComponent>();
 	enemy.addComponent<SpeedComponent>();
 	enemy.addComponent<KnockbackComponent>();
+	enemy.addComponent<SpriteComponent>();
 	enemy.addComponent<AnimationComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
+	enemy.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
+	enemy.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
 	enemy.getComponent<AttackRectComponent>().setVariables(x - 32, y - 32, 128, 128);
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	enemy.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
@@ -127,13 +130,78 @@ void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.addComponent<ShootingSpriteComponent>();
 	enemy.addComponent<ShootingRectComponent>();
 	enemy.addComponent<KnockbackComponent>();
+	enemy.addComponent<SpriteComponent>();
+	enemy.addComponent<AnimationComponent>();
 
 	enemy.getComponent<HitboxComponent>().setVariables(x, y, 64, 64);
 	enemy.getComponent<DetectedRectComponent>().setVariables(x - 224, y - 224, 512, 512);
 	enemy.getComponent<ShootingRectComponent>().setVariables(x - 224, y - 224, 512, 512);
+	enemy.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);	
+	enemy.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
 	enemy.getComponent<VelocityComponent>().setVels(100.f, 100.f);
 	enemy.getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
 	enemy.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
+
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("no-move", {
+SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/1.png")),
+SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/2.png")),
+SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/3.png")),
+SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/up/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/down/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/left/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/right/4.png")),
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("shoot-no-move", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/no-move/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/no-move/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/no-move/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/no-move/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("shoot-left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/left/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("shoot-right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/right/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("shoot-up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/up/4.png"))
+		});
+	enemy.getComponent<AnimationComponent>().addElementOfAssets("shoot-down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/4.png"))
+		});
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
 	enemy.getComponent<HealthComponent>().setMaxHp(100.f);
@@ -448,12 +516,11 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 		{
 			if (mapRuinBossFightEntities[j][i] == 1)
 			{
-				//addMeleeEnemy(manager, renderer, i * 64, j * 64);
+				addMeleeEnemy(manager, renderer, i * 64, j * 64);
 			}
 			if (mapRuinBossFightEntities[j][i] == 2)
 			{
 				addDistanceEnemy(manager, renderer, i * 64, j * 64);
-
 			 }
 		}
 	}

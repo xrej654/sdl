@@ -148,8 +148,8 @@ public:
     void enemySystems(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
         enemyMovementSystem(manager, deltaTime, keys, ren);
-        enemyAttackSystem(manager, mouseButtons, mouseX, mouseY);
-        enemyShootingSystem(manager, mouseButtons, mouseX, mouseY);
+        enemyAttackSystem(manager, mouseButtons, mouseX, mouseY, ren);
+        enemyShootingSystem(manager, mouseButtons, mouseX, mouseY, ren);
     }
 
     // Deklaracje systemów obs³uguj¹cych ró¿ne mechaniki gry
@@ -165,8 +165,8 @@ public:
     static void playerMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
 
     static void enemyMovementSystem(Manager& manager, float deltaTime, const Uint8* keys, SDL_Renderer* ren);
-    static void enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
-    static void enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY);
+    static void enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren);
+    static void enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float mouseX, float mouseY, SDL_Renderer* ren);
 };
 
 // Klasa zarz¹dzaj¹ca jednostkami i systemami
