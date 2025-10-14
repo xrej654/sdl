@@ -178,11 +178,15 @@ private:
     Entity* player;
     vector<unique_ptr<Entity>> obstacles; // Lista wszystkich przeszkod
     vector<SDL_Texture*> baseTextures;
+
+    bool endScreen = false;
 public:
     // Aktualizacja jednostek i systemów
+    bool playerAlive = true;
+    
     void update(Manager& manager, SDL_Renderer* ren, float deltaTime, const Uint8* keys, Uint32 mouseButtons, float mouseX, float mouseY)
     {
-        system.update(manager, ren, deltaTime, keys, mouseButtons, mouseX, mouseY);
+        if(playerAlive) system.update(manager, ren, deltaTime, keys, mouseButtons, mouseX, mouseY);
         refresh();
     }
 
@@ -237,9 +241,12 @@ public:
         baseTextures.push_back(tex);
     }
 
+    void setEndScreen(bool value) { endScreen = value; }
+
     // Pobieranie listy jednostek
     vector<unique_ptr<Entity>>& getVectorOfEntities() { return entities; }
     vector<unique_ptr<Entity>>& getVectorOfObstacles() { return obstacles; }
     vector<SDL_Texture*> getVectorOfBaseTextures() { return baseTextures; }
+    bool getEndScreen() { return endScreen; }
 
 };

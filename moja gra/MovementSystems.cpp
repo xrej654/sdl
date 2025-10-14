@@ -213,8 +213,6 @@ void Systems::enemyMovementSystem(Manager& manager, float deltaTime, const Uint8
 
 					if (e->hasComponent<AnimationComponent>())
 					{
-						cout << velo.getDirection() << endl;
-
 						auto& anim = e->getComponent<AnimationComponent>();
 						if (e->hasComponent<ShootingComponent>() && SDL_GetTicks() - e->getComponent<ShootingComponent>().getLastShootTime() <= 601)
 						{

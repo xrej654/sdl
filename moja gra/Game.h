@@ -9,6 +9,7 @@
 class Game {
 private:
 	bool isRunning;
+	bool startScreen = true;
 
 	SDL_Renderer* renderer;
 	SDL_Window* window;
@@ -25,6 +26,8 @@ public:
 	void renderering(float mouseX, float mouseY, float deltaTime);
 
 	void setWitdhAndHeight(int w, int h) { screenWidth = w; screenHeight = h; }
+
+	void StartScreen(const Uint8* keys);
 
 	bool running() { return isRunning; }
 	SDL_Renderer* getRenderer() { return renderer; }

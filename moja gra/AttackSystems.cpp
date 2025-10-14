@@ -237,7 +237,7 @@ void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mou
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<AttackRectComponent>() && e->hasComponent<AttackComponent>() && e->getIsEnemy())
+		if (e->hasComponent<AttackRectComponent>() && e->hasComponent<AttackComponent>() && e->getIsEnemy() && manager.getPlayer() != NULL)
 		{
 			auto& attack = e->getComponent<AttackComponent>();
 			auto& attackRect = e->getComponent<AttackRectComponent>();
@@ -248,6 +248,7 @@ void Systems::enemyAttackSystem(Manager& manager, Uint32 mouseButtons, float mou
 				auto& hitboxSc = en->getComponent<HitboxComponent>();
 
 				Uint32 cooldown = 700;
+
 				//wykrywanie i atakowanie gracza
 				if (SDL_HasIntersectionF(attackRect.getHitboxReference(), hitboxSc.getHitboxReference())
 					&& !e->hasComponent<ShootingComponent>()
@@ -361,7 +362,6 @@ void Systems::playerShootingSystem(Manager& manager, Uint32 mouseButtons, float 
 
 				if (SDL_GetTicks() - shoot.getLastShootTime() <= 601 && SDL_GetTicks() > 601)
 				{
-					cout << "s\n";
 					if (velo.getDirection() == "-1-1")
 					{
 						anim.changeAsset("shoot-up", 4, 150, ren);
@@ -408,7 +408,7 @@ void Systems::enemyShootingSystem(Manager& manager, Uint32 mouseButtons, float m
 {
 	for (auto& e : manager.getVectorOfEntities())
 	{
-		if (e->hasComponent<HitboxComponent>() && e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<ShootingRectComponent>() && e->getIsEnemy())
+		if (e->hasComponent<HitboxComponent>() && e->hasComponent<ShootingComponent>() && e->hasComponent<ShootingSpriteComponent>() && e->hasComponent<ShootingRectComponent>() && e->getIsEnemy() && manager.getPlayer() != NULL)
 		{
 			auto en = manager.getPlayer();
 			if (en->hasComponent<HitboxComponent>() && en->getIsPlayer())

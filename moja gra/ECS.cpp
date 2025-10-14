@@ -10,6 +10,11 @@ void Systems::collisionSystem(Manager& manager)
 {
 	Uint32 currentTime = SDL_GetTicks();
 
+	if (manager.getVectorOfEntities().size() == 1)
+	{
+		manager.setEndScreen(true);
+	}
+
 	for (auto& e : manager.getVectorOfEntities())
 	{
 		if (e->hasComponent<DamageComponent>() && e->hasComponent<KnockbackComponent>())
@@ -48,7 +53,7 @@ void Systems::collisionSystem(Manager& manager)
 
 							if (hpSc.getHp() <= 0)
 							{
-								if (en->getIsPlayer()) cout << "Zginales \n";
+								if (en->getIsPlayer()) { cout << "Zginales \n"; manager.setEndScreen(true); manager.playerAlive = false; }
 								else if (en->getIsEnemy()) cout << "Zabiles \n";
 
 								en->destroy();
@@ -91,7 +96,7 @@ void Systems::collisionSystem(Manager& manager)
 
 							if (hpSc.getHp() <= 0)
 							{
-								if (en->getIsPlayer()) cout << "Zginales \n";
+								if (en->getIsPlayer()) { cout << "Zginales \n"; manager.setEndScreen(true); }
 								else if (en->getIsEnemy()) cout << "Zabiles \n";
 
 								en->destroy();

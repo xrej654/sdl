@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "mapy.h"
 #include <cmath>
+#include "SDL_ttf.h"
 
 //tworzenie Obiektu Manager
 Manager manager;
@@ -106,6 +107,8 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Meele/attack/down/4.png"))
 		});
 
+	enemy.getComponent<AnimationComponent>().changeAsset("no-move", 4, 104, ren);
+
 	enemy.getComponent<HealthComponent>().setHp(100.f);
 	enemy.getComponent<HealthComponent>().setMaxHp(100.f);
 	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
@@ -202,6 +205,8 @@ SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/4.png")),
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/3.png")),
 		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/shoot/down/4.png"))
 		});
+
+	enemy.getComponent<AnimationComponent>().changeAsset("no-move", 4, 104, ren);
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
 	enemy.getComponent<HealthComponent>().setMaxHp(100.f);
@@ -555,8 +560,6 @@ void Game::handleEvents()
 //renderowanie wszytkiego
 void Game::renderering(float mouseX, float mouseY, float deltaTime)
 {
-	//okreslanie tla
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
 	manager.draw(manager, renderer, deltaTime, screenWidth, screenHeight);
@@ -564,10 +567,85 @@ void Game::renderering(float mouseX, float mouseY, float deltaTime)
 	SDL_RenderPresent(renderer);
 }
 
+void Game::StartScreen(const Uint8* keys)
+{
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+	SDL_Color color = { 255, 0, 255, 255 };
+
+	TTF_Font* font = TTF_OpenFont("app852.ttf", 128);
+
+	SDL_Surface* surface = TTF_RenderText_Solid(font, "The Mechan Game", color);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	SDL_Rect dstRect = { 25, 50, 700, 150 };
+
+	SDL_FreeSurface(surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+	color = { 200, 105, 206, 255 };
+
+	dstRect = { 25, 225, 1200, 100 };
+	surface = TTF_RenderText_Solid(font, "W - przod, A - lewo, S - dol, D - prawo", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+
+	dstRect = { 25, 325, 400, 100 };
+	surface = TTF_RenderText_Solid(font, "H - leczenie", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+
+	dstRect = { 25, 425, 1200, 100 };
+	surface = TTF_RenderText_Solid(font, "SPACE - dash (boost do poruszania sie)", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+
+	dstRect = { 25, 525, 1000, 100 };
+	surface = TTF_RenderText_Solid(font, "RIGHT MOUSE BUTTON - strzelanie z luku", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+
+	dstRect = { 25, 625, 1000, 100 };
+	surface = TTF_RenderText_Solid(font, "LEFT MOUSE BUTTON - atak zwykly", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+
+	dstRect = { 25, 725, 1800, 100 };
+	surface = TTF_RenderText_Solid(font, "kursor myszy wskazuje kierunek ataku (jest ograniczenie katu)", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+	color = { 255, 255, 255,255 };
+	dstRect = { 200,925, 1500, 100 };
+	surface = TTF_RenderText_Solid(font, "--Kliknij Enter aby przejsc dalej--", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
+	if (keys[SDL_SCANCODE_RETURN]) { startScreen = false; }
+
+	SDL_RenderPresent(renderer);
+
+	SDL_DestroyTexture(texture);
+	TTF_CloseFont(font);
+}
+
 //metoda zawieracjaca inne metody
 void Game::update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float mouseX, float mouseY)
 {
-	manager.update(manager, renderer, deltaTime, keys, mouseButtons ,mouseX, mouseY );
-	renderering(mouseX, mouseY, deltaTime);
+	if (startScreen)
+	{
+		StartScreen(keys);
+	}
+	else
+	{
+		manager.update(manager, renderer, deltaTime, keys, mouseButtons, mouseX, mouseY);
+		renderering(mouseX, mouseY, deltaTime);
+	}
+
 	handleEvents();
 }

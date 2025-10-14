@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include "SDL_ttf.h"
 #include "Game.h"
 #include <iostream>
 
@@ -8,7 +9,7 @@ int main(int argc, char* argv[])
 {
 	//utworzenie obiektu klasy 'Game' w niej sa wszystkie metody odgrywajace w grze
 
-	if (!SDL_Init(SDL_INIT_EVERYTHING))
+	if (!SDL_Init(SDL_INIT_EVERYTHING) && !TTF_Init())
 	{
 		SDL_SetError("Something gone wrong: %s", SDL_GetError());
 	}
