@@ -113,7 +113,6 @@ void addMeleeEnemy(SDL_Renderer* ren, int x, int y)
 
 	enemy.getComponent<HealthComponent>().setHp(100.f);
 	enemy.getComponent<HealthComponent>().setMaxHp(100.f);
-	enemy.getComponent<DamageComponent>().setArrowDmg(5.f);
 	enemy.getComponent<DamageComponent>().setMeleeDmg(10.f);
 	enemy.getComponent<SpeedComponent>().setSpeed(50.f);
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
@@ -663,3 +662,4 @@ void Game::update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float
 
 	handleEvents();
 }
+
