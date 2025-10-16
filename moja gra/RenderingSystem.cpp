@@ -54,8 +54,6 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 			manager.playerAlive = true;
 			Game::setStartScreen(true);
 			Game::createEveryObject(ren);
-
-			cout << sizeof(manager.getVectorOfEntities());
 		}
 
 		SDL_DestroyTexture(texture);
