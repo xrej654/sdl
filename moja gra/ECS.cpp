@@ -96,7 +96,7 @@ void Systems::collisionSystem(Manager& manager)
 
 							if (hpSc.getHp() <= 0)
 							{
-								if (en->getIsPlayer()) { cout << "Zginales \n"; manager.setEndScreen(true); }
+								if (en->getIsPlayer()) { cout << "Zginales \n"; manager.setEndScreen(true); manager.playerAlive = false; }
 								else if (en->getIsEnemy()) cout << "Zabiles \n";
 
 								en->destroy();

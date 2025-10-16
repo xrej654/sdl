@@ -8,8 +8,10 @@
 //tworzenie Obiektu Manager
 Manager manager;
 
+bool Game::startScreen = true;
+
 //funkcje tworzacze przeciwnkow
-void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
+void addMeleeEnemy(SDL_Renderer* ren, int x, int y)
 {
 	auto& enemy(manager.addEntity());
 	enemy.setIsEnemy();
@@ -117,7 +119,7 @@ void addMeleeEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 }
 
-void addDistanceEnemy(Manager& manager, SDL_Renderer* ren, int x, int y)
+void addDistanceEnemy(SDL_Renderer* ren, int x, int y)
 {
 	auto& enemy(manager.addEntity());
 	enemy.setIsEnemy();
@@ -215,8 +217,204 @@ SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Enemy/Range/no-move/4.png")),
 	enemy.getComponent<DamageComponent>().setKnockbackPower(60.f);
 }
 
+void createPlayer(SDL_Renderer* ren)
+{
+	//tworzenie gracza
+	auto& player(manager.addEntity());
+
+	manager.setPlayer(&player);
+
+	player.setIsPlayer();
+
+	player.addComponent<HitboxComponent>();
+	player.addComponent<VelocityComponent>();
+	player.addComponent<SpriteComponent>();
+	player.addComponent<AttackComponent>();
+	player.addComponent<RotatedRectComponent>();
+	player.addComponent<AttackSpriteComponent>();
+	player.addComponent<HealthComponent>();
+	player.addComponent<DamageComponent>();
+	player.addComponent<SpeedComponent>();
+	player.addComponent<AnimationComponent>();
+	player.addComponent<DashComponent>();
+	player.addComponent<ShootingComponent>();
+	player.addComponent<ShootingSpriteComponent>();
+	player.addComponent<KnockbackComponent>();
+
+	//ustawianie potrzebnych zmiennych
+	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
+	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
+	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
+	player.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
+	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
+	player.getComponent<DashComponent>().setDashCooldown(2500);
+	player.getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(ren, IMG_Load("assets/arrow.png")));
+	player.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
+
+	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/4.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/5.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/6.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/7.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/atackAnimation/8.png")),
+		});
+
+	player.getComponent<AnimationComponent>().addElementOfAssets("no-move", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/no-move/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/no-move/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/no-move/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/no-move/4.png")),
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/up/4.png")),
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/down/4.png")),
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/left/4.png")),
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/right/4.png")),
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-no-move", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/no-move/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/no-move/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/no-move/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/no-move/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/left/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/right/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/up/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("attack-down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/attack/down/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-no-move", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/no-move/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/no-move/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/no-move/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/no-move/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-left", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/left/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/left/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/left/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/left/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-right", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/right/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/right/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/right/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/right/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-up", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/up/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/up/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/up/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/up/4.png"))
+		});
+	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-down", {
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/down/1.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/down/2.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/down/3.png")),
+		SDL_CreateTextureFromSurface(ren, IMG_Load("assets/Player/shoot/down/4.png"))
+		});
+
+	player.getComponent<HealthComponent>().setHp(100.f);
+	player.getComponent<HealthComponent>().setMaxHp(100.f);
+	player.getComponent<HealthComponent>().setPotionCooldown(10000);
+	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
+	player.getComponent<DamageComponent>().setArrowDmg(15.f);
+	player.getComponent<SpeedComponent>().setSpeed(100.f);
+	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
+}
+
+void Game::createEveryObject(SDL_Renderer* ren)
+{
+
+	createPlayer(ren);
+
+	//tworzenie scian i przeciwnikow
+	for (int i = 0; i < 15; i++)
+	{
+		SDL_Rect mapSrcRect = { 0,0,32,32 };
+		SDL_Rect mapDestRect = { 0,0,128,128 };
+		for (int j = 0; j < 8; j++)
+		{
+			mapDestRect = { i * 128 - 32, j * 128 + 32,128,128 };
+			if (mapRuinBossFight2[j][i] == 50 || mapRuinBossFight2[j][i] == 51 || mapRuinBossFight2[j][i] == 52)
+			{
+				mapDestRect = { i * 128, j * 128 + 32,64,64 };
+
+				auto& wall(manager.addObstacle());
+
+				wall.addComponent<HitboxComponent>();
+
+				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
+			}
+			else if (mapRuinBossFight2[j][i] != 0)
+			{
+				auto& wall(manager.addObstacle());
+
+				wall.addComponent<HitboxComponent>();
+
+				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
+			}
+		}
+	}
+
+	for (int i = 0; i < 30; i++)
+	{
+		for (int j = 0; j < 17; j++)
+		{
+			if (mapRuinBossFightEntities[j][i] == 1)
+			{
+				addMeleeEnemy(ren, i * 64, j * 64);
+			}
+			if (mapRuinBossFightEntities[j][i] == 2)
+			{
+				addDistanceEnemy(ren, i * 64, j * 64);
+			}
+		}
+	}
+}
+
 Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fullscreen)
 {
+	startScreen = true;
 	//inicjalizacja okna
 	isRunning = true;
 
@@ -343,192 +541,7 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow1.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow2.png")));
 
-	//tworzenie gracza
-	auto& player(manager.addEntity());
-
-	manager.setPlayer(&player);
-
-	player.setIsPlayer();
-
-	player.addComponent<HitboxComponent>();
-	player.addComponent<VelocityComponent>();
-	player.addComponent<SpriteComponent>();
-	player.addComponent<AttackComponent>();
-	player.addComponent<RotatedRectComponent>();
-	player.addComponent<AttackSpriteComponent>();
-	player.addComponent<HealthComponent>();
-	player.addComponent<DamageComponent>();
-	player.addComponent<SpeedComponent>();
-	player.addComponent<AnimationComponent>();
-	player.addComponent<DashComponent>();
-	player.addComponent<ShootingComponent>();
-	player.addComponent<ShootingSpriteComponent>();	
-	player.addComponent<KnockbackComponent>();	
-
-	//ustawianie potrzebnych zmiennych
-	player.getComponent<HitboxComponent>().setVariables(500.0f, 500.0f, 64.0f, 64.0f);
-	player.getComponent<VelocityComponent>().setVels(100.f, 100.f);
-	player.getComponent<SpriteComponent>().setWidthAndHeight(64, 64);
-	player.getComponent<AnimationComponent>().setWidthAndHeight(64, 64);
-	player.getComponent<AttackSpriteComponent>().setWidthAndHeight(64, 32);
-	player.getComponent<DashComponent>().setDashCooldown(2500);
-	player.getComponent<ShootingSpriteComponent>().setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/arrow.png")));
-	player.getComponent<ShootingSpriteComponent>().setWidthAndHeight(16, 48);
-
-	player.getComponent<AttackSpriteComponent>().addElementOfAssets("attack", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/4.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/5.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/6.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/7.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/atackAnimation/8.png")),
-		});
-
-	player.getComponent<AnimationComponent>().addElementOfAssets("no-move", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/no-move/4.png")),
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("up", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/up/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/up/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/up/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/up/4.png")),
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("down", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/down/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/down/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/down/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/down/4.png")),
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("left", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/left/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/left/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/left/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/left/4.png")),
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("right", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/right/4.png")),
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("attack-no-move", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/no-move/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("attack-left", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/left/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("attack-right", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/right/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("attack-up", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/up/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("attack-down", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/attack/down/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-no-move", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/no-move/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-left", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/left/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-right", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/right/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-up", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/up/4.png"))
-		});
-	player.getComponent<AnimationComponent>().addElementOfAssets("shoot-down", {
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/1.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/2.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/3.png")),
-		SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/Player/shoot/down/4.png"))
-		});
-
-
-	player.getComponent<HealthComponent>().setHp(100.f);
-	player.getComponent<HealthComponent>().setMaxHp(100.f);
-	player.getComponent<HealthComponent>().setPotionCooldown(10000);
-	player.getComponent<DamageComponent>().setMeleeDmg(20.f);
-	player.getComponent<DamageComponent>().setArrowDmg(15.f);
-	player.getComponent<SpeedComponent>().setSpeed(100.f);
-	player.getComponent<DamageComponent>().setKnockbackPower(60.f);
-
-	//tworzenie scian i przeciwnikow
-	for (int i = 0; i < 15; i++)
-	{
-		SDL_Rect mapSrcRect = { 0,0,32,32 };
-		SDL_Rect mapDestRect = { 0,0,128,128 };
-		for (int j = 0; j < 8; j++)
-		{
-			mapDestRect = { i * 128 - 32, j * 128 + 32,128,128 };
-			if (mapRuinBossFight2[j][i] == 50 || mapRuinBossFight2[j][i] == 51 || mapRuinBossFight2[j][i] ==52)
-			{
-				mapDestRect = { i * 128, j * 128 + 32,64,64 };
-
-				auto& wall(manager.addObstacle());
-
-				wall.addComponent<HitboxComponent>();
-
-				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
-			}
-			else if (mapRuinBossFight2[j][i] != 0)
-			{
-				auto& wall(manager.addObstacle());
-
-				wall.addComponent<HitboxComponent>();
-
-				wall.getComponent<HitboxComponent>().setVariables(mapDestRect.x, mapDestRect.y, mapDestRect.w, mapDestRect.h);
-			}
-		}
-	}
-
-	for (int i = 0; i < 30; i++)
-	{
-		for (int j = 0; j < 17; j++)
-		{
-			if (mapRuinBossFightEntities[j][i] == 1)
-			{
-				addMeleeEnemy(manager, renderer, i * 64, j * 64);
-			}
-			if (mapRuinBossFightEntities[j][i] == 2)
-			{
-				addDistanceEnemy(manager, renderer, i * 64, j * 64);
-			 }
-		}
-	}
+	createEveryObject(renderer);
 }
 
 Game::~Game()
@@ -558,22 +571,23 @@ void Game::handleEvents()
 }
 
 //renderowanie wszytkiego
-void Game::renderering(float mouseX, float mouseY, float deltaTime)
+void Game::renderering(float mouseX, float mouseY, float deltaTime, const Uint8* keys)
 {
 	SDL_RenderClear(renderer);
 
-	manager.draw(manager, renderer, deltaTime, screenWidth, screenHeight);
+	manager.draw(manager, renderer, deltaTime, screenWidth, screenHeight, keys);
 
 	SDL_RenderPresent(renderer);
 }
 
 void Game::StartScreen(const Uint8* keys)
 {
+	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	SDL_Color color = { 255, 0, 255, 255 };
 
-	TTF_Font* font = TTF_OpenFont("app852.ttf", 128);
+	TTF_Font* font = TTF_OpenFont("vgafixe.ttf", 128);
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, "The Mechan Game", color);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -644,7 +658,7 @@ void Game::update(const Uint8* keys, float deltaTime, Uint32 mouseButtons, float
 	else
 	{
 		manager.update(manager, renderer, deltaTime, keys, mouseButtons, mouseX, mouseY);
-		renderering(mouseX, mouseY, deltaTime);
+		renderering(mouseX, mouseY, deltaTime, keys);
 	}
 
 	handleEvents();

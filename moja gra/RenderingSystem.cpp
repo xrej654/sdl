@@ -3,8 +3,9 @@
 #include "Components.h"
 #include <string>
 #include "mapy.h"
+#include "Game.h"
 
-void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight)
+void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight, const Uint8* keys)
 {
 	if (manager.getEndScreen())
 	{
@@ -12,7 +13,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 
 		SDL_Color color = { 255, 0, 0, 255 };
 
-		TTF_Font* font = TTF_OpenFont("app852.ttf", 128); 
+		TTF_Font* font = TTF_OpenFont("vgafixe.ttf", 128); 
 
 		SDL_Surface* surface = TTF_RenderText_Solid(font, "przegrales", color);
 
@@ -24,15 +25,41 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(ren, surface);
 		
-		SDL_Rect dstRect = { screenWitdh / 2 - 450, screenHeight / 2 - 200, 900, 400 };
+		SDL_Rect dstRect = { screenWitdh / 2 - 475, screenHeight / 2 - 500, 900, 400 };
+
+		SDL_FreeSurface(surface);
+		SDL_RenderCopy(ren, texture, nullptr, &dstRect);
+
+		surface = TTF_RenderText_Solid(font, "--Kliknij escape--", { 255,255,255,255 });
+		texture = SDL_CreateTextureFromSurface(ren, surface);
+		dstRect = { screenWitdh / 2 - 700, screenHeight - 400, 1400, 200 };
 
 		SDL_FreeSurface(surface);
 		SDL_RenderCopy(ren, texture, nullptr, &dstRect);
 		SDL_RenderPresent(ren);
 
+		for (auto& e : manager.getVectorOfEntities())
+		{
+			e->destroy();
+		}
+
+		for (auto& e : manager.getVectorOfObstacles())
+		{
+			e->destroy();
+		}
+
+		if (keys[SDL_SCANCODE_ESCAPE])
+		{
+			manager.setEndScreen(false);
+			manager.playerAlive = true;
+			Game::setStartScreen(true);
+			Game::createEveryObject(ren);
+
+			cout << sizeof(manager.getVectorOfEntities());
+		}
+
 		SDL_DestroyTexture(texture);
 		TTF_CloseFont(font);
-
 	}
 	else
 	{
@@ -353,7 +380,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 				//rysowanie
 				if (!anim.getTexture())
 				{
-					cout << "Texture is NULL, cannot render!" << endl;
+					//cout << "Texture is NULL, cannot render!" << endl;
 					return;
 				}
 

@@ -153,7 +153,7 @@ public:
     }
 
     // Deklaracje systemów obs³uguj¹cych ró¿ne mechaniki gry
-    static void renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight);
+    static void renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight, const Uint8* keys);
 
     static void collisionSystem(Manager& manager);
     static void knockbackSystem(Manager& manager, float detlaTime);
@@ -191,9 +191,9 @@ public:
     }
 
     // Rysowanie jednostek i systemów
-    void draw(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight)
+    void draw(Manager& manager, SDL_Renderer* ren, float deltaTime, int screenWitdh, int screenHeight, const Uint8* keys)
     {
-        system.renderingSystem(manager, ren, deltaTime, screenWitdh, screenHeight);
+        system.renderingSystem(manager, ren, deltaTime, screenWitdh, screenHeight, keys);
     }
 
     // Usuwanie nieaktywnych jednostek
