@@ -77,56 +77,38 @@ void Systems::playerMovementSystem(Manager& manager, float deltaTime, const Uint
 					if (velo.getDirection() == "-1-1")
 					{
 						anim.changeAsset("up", 4, 250, ren);
-						attack.setBorders(225 + 67.5, 225 - 67.5);
-						shoot.setBorders(225 + 67.5, 225 - 67.5);
 					}
 					else if (velo.getDirection() == "-10")
 					{
 						anim.changeAsset("left", 4, 250, ren);
-						attack.setBorders(180 + 67.5, 180 - 67.5);
-						shoot.setBorders(180 + 67.5, 180 - 67.5);
 					}
 					else if (velo.getDirection() == "-11")
 					{
 						anim.changeAsset("down", 4, 250, ren);
-						attack.setBorders(135 + 67.5, 135 - 67.5);
-						shoot.setBorders(135 + 67.5, 135 - 67.5);
 					}
 					else if (velo.getDirection() == "0-1")
 					{
 						anim.changeAsset("up", 4, 250, ren);
-						attack.setBorders(270 + 67.5, 270 - 67.5);
-						shoot.setBorders(270 + 67.5, 270 - 67.5);
 					}
 					else if (velo.getDirection() == "00")
 					{
 						anim.changeAsset("no-move", 4, 500, ren);
-						attack.setBorders(360, 0);
-						shoot.setBorders(360, 0);
 					}
 					else if (velo.getDirection() == "01")
 					{
 						anim.changeAsset("down", 4, 250, ren);
-						attack.setBorders(90 + 67.5, 90 - 67.5);
-						shoot.setBorders(90 + 67.5, 90 - 67.5);
 					}
 					else if (velo.getDirection() == "1-1")
 					{
 						anim.changeAsset("up", 4, 250, ren);
-						attack.setBorders(315 + 67.5 - 360, 315 - 67.5);
-						shoot.setBorders(315 + 67.5 - 360, 315 - 67.5);
 					}
 					else if (velo.getDirection() == "10")
 					{
 						anim.changeAsset("right", 4, 250, ren);
-						attack.setBorders(0 + 67.5, 360 - 67.5);
-						shoot.setBorders(0 + 67.5, 360 - 67.5);
 					}
 					else if (velo.getDirection() == "11")
 					{
 						anim.changeAsset("down", 4, 250, ren);
-						attack.setBorders(45 + 67.5, 45 - 67.5 + 360);
-						shoot.setBorders(45 + 67.5, 45 - 67.5 + 360);
 					}
 				}
 

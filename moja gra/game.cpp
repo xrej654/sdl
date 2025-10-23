@@ -596,6 +596,13 @@ void Game::StartScreen(const Uint8* keys)
 	SDL_FreeSurface(surface);
 	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
 
+	color = { 255, 0, 0, 255 };
+
+	dstRect = { 475, 5, 600, 50 };
+	surface = TTF_RenderText_Solid(font, "--Prosze przeczytac instrukcje!--", color);
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+
 	color = { 200, 105, 206, 255 };
 
 	dstRect = { 25, 225, 1200, 100 };

@@ -26,33 +26,6 @@ template<typename E> static void handleCalculationOfAttacking(E& e, float target
 				//strona w ktora jest zwrocony atak 
 				attack.setDxAndDy(hitbox.getHitbox(), targetX, targetY);
 
-				float angleF = attack.getAngleFirst();
-				float angleSc = attack.getAngleSecond();
-				float angleDeg = (attack.getAngle() * 180 / M_PI) + 180;
-
-				if (angleF > angleSc)
-				{
-					if (angleDeg >= angleSc && angleDeg <= angleF)
-					{
-						attack.setIsAngleGood(true);
-					}
-					else
-					{
-						attack.setIsAngleGood(false);
-					}
-				}
-				else
-				{
-					if (angleDeg >= angleSc || angleDeg <= angleF)
-					{
-						attack.setIsAngleGood(true);
-					}
-					else
-					{
-						attack.setIsAngleGood(false);
-					}
-				}
-
 				//zmiana kata na radian 
 				rotatedRect.setRad(attack.getAngle() + M_PI / 2.0);
 
@@ -96,35 +69,6 @@ template<typename E> static void handleCalculationOfAttacking(E& e, float target
 
 				//strona w ktora jest zwrocony atak
 				shoot.setDxAndDy(hitbox.getHitbox(), targetX, targetY);
-
-				float angleF = shoot.getAngleFirst();
-				float angleSc = shoot.getAngleSecond();
-				float angleDeg = (shoot.getAngle() * 180 / M_PI) + 180;
-
-				if (angleF > angleSc)
-				{
-					if (angleDeg >= angleSc && angleDeg <= angleF)
-					{
-						shoot.setIsAngleGood(true);
-					}
-					else
-					{
-						shoot.setIsAngleGood(false);
-						shoot.setHasShooted(false);
-					}
-				}
-				else
-				{
-					if (angleDeg >= angleSc || angleDeg <= angleF)
-					{
-						shoot.setIsAngleGood(true);
-					}
-					else
-					{
-						shoot.setIsAngleGood(false);
-						shoot.setHasShooted(false);
-					}
-				}
 
 				//zmiana kata na radian
 				rotatedRect.setRad(shoot.getAngle() + 3 * M_PI / 2.0);
