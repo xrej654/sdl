@@ -10,6 +10,40 @@ Manager manager;
 
 bool Game::startScreen = true;
 
+SDL_Texture* tytul;
+SDL_Texture* info1;
+SDL_Texture* txt1;
+SDL_Texture* txt2;
+SDL_Texture* txt3;
+SDL_Texture* txt4;
+SDL_Texture* txt5;
+SDL_Texture* txt6;
+SDL_Texture* info2;
+
+void Function(SDL_Renderer* renderer)
+{
+	TTF_Font* font = TTF_OpenFont("vgafixe.ttf", 128);
+	SDL_Color color = { 255, 0, 255, 255 };
+
+	tytul = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "The Mechan Game", color));
+
+	color = { 255, 0, 0, 255 };
+	info1 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "--Prosze przeczytac instrukcje!--", color));
+
+	color = { 200, 105, 206, 255 };
+	txt1 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "W - przod, A - lewo, S - dol, D - prawo", color));
+	txt2 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "H - leczenie", color));
+	txt3 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "SPACE - dash (boost do poruszania sie)", color));
+	txt4 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "RIGHT MOUSE BUTTON - strzelanie z luku", color));
+	txt5 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "LEFT MOUSE BUTTON - atak zwykly", color));
+	txt6 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "kursor myszy wskazuje kierunek ataku (jest ograniczenie katu)", color));
+
+	color = { 255, 255, 255,255 };
+	info2 = SDL_CreateTextureFromSurface(renderer, TTF_RenderText_Solid(font, "--Kliknij Enter aby przejsc dalej--", color));
+
+	TTF_CloseFont(font);
+}
+
 //funkcje tworzacze przeciwnkow
 void addMeleeEnemy(SDL_Renderer* ren, int x, int y)
 {
@@ -540,6 +574,10 @@ Game::Game(const char* title, int xpos, int ypos, int witdh, int height, bool fu
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow1.png")));
 	manager.addTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/HUD icons/arrow2.png")));
 
+	cout << "zaladowano assety" << endl;
+
+	Function(renderer);
+
 	createEveryObject(renderer);
 }
 
@@ -584,74 +622,43 @@ void Game::StartScreen(const Uint8* keys)
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-	SDL_Color color = { 255, 0, 255, 255 };
-
-	TTF_Font* font = TTF_OpenFont("vgafixe.ttf", 128);
-
-	SDL_Surface* surface = TTF_RenderText_Solid(font, "The Mechan Game", color);
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-
 	SDL_Rect dstRect = { 25, 50, 700, 150 };
 
-	SDL_FreeSurface(surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
-
-	color = { 255, 0, 0, 255 };
+	SDL_RenderCopy(renderer, tytul, nullptr, &dstRect);
 
 	dstRect = { 475, 5, 600, 50 };
-	surface = TTF_RenderText_Solid(font, "--Prosze przeczytac instrukcje!--", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, info1, nullptr, &dstRect);
 
-	color = { 200, 105, 206, 255 };
 
 	dstRect = { 25, 225, 1200, 100 };
-	surface = TTF_RenderText_Solid(font, "W - przod, A - lewo, S - dol, D - prawo", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, txt1, nullptr, &dstRect);
 
 
 	dstRect = { 25, 325, 400, 100 };
-	surface = TTF_RenderText_Solid(font, "H - leczenie", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, txt2, nullptr, &dstRect);
 
 
 	dstRect = { 25, 425, 1200, 100 };
-	surface = TTF_RenderText_Solid(font, "SPACE - dash (boost do poruszania sie)", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, txt3, nullptr, &dstRect);
 
 
 	dstRect = { 25, 525, 1000, 100 };
-	surface = TTF_RenderText_Solid(font, "RIGHT MOUSE BUTTON - strzelanie z luku", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, txt4, nullptr, &dstRect);
 
 
 	dstRect = { 25, 625, 1000, 100 };
-	surface = TTF_RenderText_Solid(font, "LEFT MOUSE BUTTON - atak zwykly", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
-
+	SDL_RenderCopy(renderer, txt5, nullptr, &dstRect);
 
 	dstRect = { 25, 725, 1800, 100 };
-	surface = TTF_RenderText_Solid(font, "kursor myszy wskazuje kierunek ataku (jest ograniczenie katu)", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, txt6, nullptr, &dstRect);
 
-	color = { 255, 255, 255,255 };
 	dstRect = { 200,925, 1500, 100 };
-	surface = TTF_RenderText_Solid(font, "--Kliknij Enter aby przejsc dalej--", color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+	SDL_RenderCopy(renderer, info2, nullptr, &dstRect);
 
-	if (keys[SDL_SCANCODE_RETURN]) { startScreen = false; }
 
 	SDL_RenderPresent(renderer);
 
-	SDL_DestroyTexture(texture);
-	TTF_CloseFont(font);
+	if (keys[SDL_SCANCODE_RETURN]) { startScreen = false; }
 }
 
 //metoda zawieracjaca inne metody
