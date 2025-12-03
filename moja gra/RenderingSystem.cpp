@@ -362,10 +362,10 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 		{
 
 			//rysowanie hitboxa jesli nie ma sprite'a
-			if (!e->hasComponent<SpriteComponent>() && e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255, 100);
-			if (!e->hasComponent<SpriteComponent>() && e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
-			if (!e->hasComponent<SpriteComponent>() && e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
-			if (!e->hasComponent<SpriteComponent>() && e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().drawHitbox(ren, e->getComponent<ShootingRectComponent>().getHitbox(), 200, 0, 0, 130);
+			//if (e->hasComponent<HitboxComponent>()) e->getComponent<HitboxComponent>().drawHitbox(ren, e->getComponent<HitboxComponent>().getHitbox(), 0, 0, 255, 100);
+			//if (e->hasComponent<DetectedRectComponent>()) e->getComponent<DetectedRectComponent>().drawHitbox(ren, e->getComponent<DetectedRectComponent>().getHitbox(), 255, 255, 0, 100);
+			//if (e->hasComponent<AttackRectComponent>()) e->getComponent<AttackRectComponent>().drawHitbox(ren, e->getComponent<AttackRectComponent>().getHitbox(), 255, 0, 0, 130);
+			//if (e->hasComponent<ShootingRectComponent>()) e->getComponent<ShootingRectComponent>().drawHitbox(ren, e->getComponent<ShootingRectComponent>().getHitbox(), 200, 0, 0, 130);
 
 			if (e->hasComponent<AnimationComponent>() && e->hasComponent<HitboxComponent>())
 			{
@@ -396,7 +396,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 
 				attackSpr.setRects({
 					hitbox.getX() - 32.f,
-					hitbox.getY() + hitbox.getHeight(),
+					hitbox.getY() + hitbox.getHeight() - 20,
 					128,64
 					});
 
@@ -423,7 +423,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 					}
 
 					//rysowanie rogow ataku (tez debbug)
-					/*SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
+					SDL_FPoint* attackCorners = e->getComponent<AttackComponent>().getCorners();
 					for (int i = 0; i < 4; i++) {
 						SDL_Rect pointRect = {
 							(int)(attackCorners[i].x - 2),
@@ -431,7 +431,7 @@ void Systems::renderingSystem(Manager& manager, SDL_Renderer* ren, float deltaTi
 							4, 4
 						};
 						SDL_RenderFillRect(ren, &pointRect);
-					}*/
+					}
 				}
 			}
 
